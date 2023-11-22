@@ -1,4 +1,5 @@
 # app/views.py
+import os
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
@@ -10,12 +11,13 @@ from .models import db, User
 from .controllers import create_user, get_all_users, get_user_by_id, update_user, delete_user
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db' # + os.path.join(app.instance_path, 'site.db')
 app.config['SECRET_KEY'] = 'your_secret_key'  # Cambia esto a una clave secreta segura
 db.init_app(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+# Formulario para la creación de usuarios
 class UserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -26,6 +28,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 @app.route('/')
+@login_required  # Requiere que el usuario esté autenticado para acceder a esta ruta
 def index():
     users = get_all_users()
     return render_template('index.html', users=users)
@@ -46,12 +49,7 @@ def login():
     return render_template('login.html', form=form)
 
 @app.route('/logout')
-@login_required
+@login_required  # Requiere que el usuario esté autenticado para acceder a esta ruta
 def logout():
     logout_user()
     return redirect(url_for('index'))
-
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)

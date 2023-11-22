@@ -1,6 +1,6 @@
-instance
-.vscode
-.venv
+instance/
+.vscode/
+.venv/
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
