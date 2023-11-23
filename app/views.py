@@ -147,3 +147,24 @@ def delete_user(user_id):
         return redirect(url_for('index'))
 
     return render_template('delete_user.html', user_id=user_id)
+
+
+@app.route('/option1')
+@login_required
+def option1():
+    return render_template('option1.html')
+
+@app.route('/option2')
+@login_required
+def option2():
+    return render_template('option2.html')
+
+@app.route('/option3')
+@login_required
+def option3():
+    return render_template('option3.html')
+
+@app.route('/option4')
+@login_required
+def option4():
+    return render_template('option4.html')
