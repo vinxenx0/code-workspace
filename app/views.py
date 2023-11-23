@@ -17,7 +17,7 @@ db.init_app(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
-# Formulario para la creación de usuarios
+# Elimina el campo 'role' del formulario UserForm
 class UserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -27,12 +27,13 @@ class UserForm(FlaskForm):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
 @app.route('/')
-@login_required  # Requiere que el usuario esté autenticado para acceder a esta ruta
+@login_required
 def index():
     users = get_all_users()
     return render_template('index.html', users=users)
-
+    
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = UserForm()
@@ -48,8 +49,79 @@ def login():
             flash('Inicio de sesión fallido. Verifica tus credenciales', 'danger')
     return render_template('login.html', form=form)
 
+# Agrega la nueva ruta de logout
 @app.route('/logout')
-@login_required  # Requiere que el usuario esté autenticado para acceder a esta ruta
+@login_required
 def logout():
     logout_user()
+    flash('Se ha desconectado correctamente.', 'success')
     return redirect(url_for('index'))
+
+# Actualiza la creación de usuarios en la ruta '/register'
+@app.route('/register', methods=['GET', 'POST'])
+@login_required
+def register():
+    if current_user.is_authenticated and current_user.username != 'admin':
+        flash('Solo los administradores pueden registrar nuevos usuarios.', 'danger')
+        return redirect(url_for('index'))
+
+    form = UserForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            flash('El usuario ya existe.', 'danger')
+        else:
+            new_user = User(username=username, password=generate_password_hash(password, method='pbkdf2:sha256'))
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Usuario registrado exitosamente.', 'success')
+            return redirect(url_for('index'))
+
+    return render_template('register.html', form=form)
+
+
+
+@app.route('/edit_user/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def edit_user(user_id):
+    # Asegurémonos de que solo el administrador puede editar cualquier usuario
+    if current_user.username != 'admin':
+        flash('Solo los administradores pueden editar usuarios.', 'danger')
+        return redirect(url_for('index'))
+
+    # Obtener el usuario de la base de datos
+    user_to_edit = User.query.get(user_id)
+
+    if not user_to_edit:
+        flash('Usuario no encontrado.', 'danger')
+        return redirect(url_for('index'))
+
+    form = UserForm(obj=user_to_edit)
+
+    if request.method == 'POST' and form.validate_on_submit():
+        # Actualizar la información del usuario
+        form.populate_obj(user_to_edit)
+
+        # Guardar los cambios en la base de datos
+        db.session.commit()
+
+        flash('Usuario actualizado correctamente.', 'success')
+        return redirect(url_for('index'))
+
+    # Método GET: Mostrar el formulario de edición
+    return render_template('edit_user.html', form=form, user=user_to_edit)
+
+
+
+@app.route('/delete_user/<int:user_id>', methods=['GET'])
+@login_required
+def delete_user_confirmation(user_id):
+    # Asegurémonos de que solo el usuario logueado puede eliminar su propio perfil
+    if current_user.id != user_id:
+        flash('No tienes permisos para eliminar este usuario.', 'danger')
+        return redirect(url_for('index'))
+
+    return render_template('delete_user.html', user_id=user_id)

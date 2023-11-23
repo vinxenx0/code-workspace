@@ -17,4 +17,11 @@ if __name__ == '__main__':
             db.session.add(admin)
             db.session.commit()
 
+        # Añadir el usuario visitante si no existe
+        visitante = User.query.filter_by(username='visitante').first()
+        if not visitante:
+            visitante = User(username='visitante', password=generate_password_hash('visitante', method='pbkdf2:sha256'))
+            db.session.add(visitante)
+            db.session.commit()
+
     app.run(debug=True)

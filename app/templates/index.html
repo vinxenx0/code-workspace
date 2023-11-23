@@ -1,23 +1,29 @@
-<!-- templates/index.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuarios</title>
-</head>
-<body>
+<!-- app/templates/index.html -->
+{% extends 'base.html' %}
 
-    <h1>Dashboard Test</h1>
-    <p>Bienvenido, {{ current_user.username }}!</p>
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Your Dashboard</h1>
+    <h2>Welcome {{ current_user.username }}!</h2>
+    <h3>Your Profile</h3>
+    <p>Username: {{ current_user.username }}</p>
+    <p>Password: *********</p>
+    <!-- Añade un enlace a la página de logout en tu página de inicio -->
     <a href="{{ url_for('logout') }}">Cerrar sesión</a>
 
+    <hr>
 
-    <h2>Lista de Usuarios</h2>
-    <ul>
+    {% if current_user.username == 'admin' %}
+       <h3>Create New User</h3>
+       <a href="{{ url_for('register') }}" class="btn btn-primary">Register New User</a>
+       <hr>
+       <h2>Lista de Usuarios</h2>
+       <ul>
         {% for user in users %}
-            <li>{{ user.username }}</li>
+            <li>{{ user.username }} - <a href="{{ url_for('edit_user', user_id=user.id) }}">Editar</a> |
+                <a href="{{ url_for('delete_user_confirmation', user_id=user.id) }}">Eliminar Usuario</a></li>
         {% endfor %}
     </ul>
-</body>
-</html>
+    {% endif %}
+{% endblock %}

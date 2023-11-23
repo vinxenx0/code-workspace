@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Desconexión{% endblock %}
+
+{% block content %}
+    <h1>Desconexión</h1>
+    <p>{{ get_flashed_messages()[0] }}</p>
+    <p><a href="{{ url_for('index') }}">Volver a la página de inicio</a></p>
+{% endblock %}
