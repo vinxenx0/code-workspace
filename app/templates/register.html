@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Register New User</h2>
+  <h2>Nuevo usuario (visitante)</h2>
   <form method="POST" action="{{ url_for('register') }}">
     {{ form.hidden_tag() }}
     {{ form.username.label }} {{ form.username() }}

@@ -4,9 +4,9 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-    <h1>Your Dashboard</h1>
-    <h2>Welcome {{ current_user.username }}!</h2>
-    <h3>Your Profile</h3>
+    <h1>Escritorio</h1>
+    <h2>Bienvenido {{ current_user.username }}!</h2>
+    <h3>Tus datos</h3>
     <p>Username: {{ current_user.username }}</p>
     <p>Password: *********</p>
     <!-- Añade un enlace a la página de logout en tu página de inicio -->
@@ -15,15 +15,15 @@
     <hr>
 
     {% if current_user.username == 'admin' %}
-       <h3>Create New User</h3>
-       <a href="{{ url_for('register') }}" class="btn btn-primary">Register New User</a>
+       <h3>Crear nuevos usuarios</h3>
+       <a href="{{ url_for('register') }}" class="btn btn-primary">Registrar nuevo</a>
        <hr>
        <h2>Lista de Usuarios</h2>
        <ul>
         {% for user in users %}
-            <li>{{ user.username }} - <a href="{{ url_for('edit_user', user_id=user.id) }}">Editar</a> |
-                <a href="{{ url_for('delete_user_confirmation', user_id=user.id) }}">Eliminar Usuario</a></li>
-        {% endfor %}
+        <li>{{ user.username }} - <a href="{{ url_for('edit_user', user_id=user.id) }}">Editar</a> |
+            <a href="{{ url_for('delete_user', user_id=user.id) }}">Eliminar Usuario</a></li>
+         {% endfor %}
     </ul>
     {% endif %}
 {% endblock %}

@@ -1,6 +1,7 @@
 # app/views.py
 import os
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, flash
+from flask import request
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
@@ -84,6 +85,7 @@ def register():
 
 
 
+# Nueva ruta para editar usuarios
 @app.route('/edit_user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def edit_user(user_id):
@@ -97,13 +99,17 @@ def edit_user(user_id):
 
     if not user_to_edit:
         flash('Usuario no encontrado.', 'danger')
-        return redirect(url_for('index'))
+        return render_template('index.html')
 
     form = UserForm(obj=user_to_edit)
 
     if request.method == 'POST' and form.validate_on_submit():
         # Actualizar la información del usuario
         form.populate_obj(user_to_edit)
+
+        # Actualizar la contraseña solo si se proporciona un nuevo valor
+        if form.password.data:
+            user_to_edit.password = generate_password_hash(form.password.data, method='pbkdf2:sha256')
 
         # Guardar los cambios en la base de datos
         db.session.commit()
@@ -116,12 +122,28 @@ def edit_user(user_id):
 
 
 
-@app.route('/delete_user/<int:user_id>', methods=['GET'])
+@app.route('/delete_user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
-def delete_user_confirmation(user_id):
-    # Asegurémonos de que solo el usuario logueado puede eliminar su propio perfil
-    if current_user.id != user_id:
-        flash('No tienes permisos para eliminar este usuario.', 'danger')
+def delete_user(user_id):
+    # Obtener el usuario de la base de datos
+    user_to_delete = User.query.get(user_id)
+    
+    # Asegúrate de que solo el usuario logueado pueda eliminar su propia cuenta
+    if current_user.username != 'admin':
+        flash('No tienes permisos para eliminar esta cuenta.', 'danger')
+        return redirect(url_for('index'))
+
+    
+
+    if not user_to_delete:
+        flash('Usuario no encontrado.', 'danger')
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        # Eliminar usuario de la base de datos
+        db.session.delete(user_to_delete)
+        db.session.commit()
+        flash('Usuario eliminado correctamente.', 'success')
         return redirect(url_for('index'))
 
     return render_template('delete_user.html', user_id=user_id)
