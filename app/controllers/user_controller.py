@@ -85,7 +85,7 @@ def add_user():
         db.session.add(new_user)
         db.session.commit()
         flash('User added successfully!', 'success')
-        return redirect(url_for('list_users'))
+        return redirect(url_for('admin'))
     return render_template('user/add.html', form=form)
 
 
@@ -98,7 +98,7 @@ def edit_user(user_id):
         form.populate_obj(user)  # Update the user object with the form data
         db.session.commit()
         flash('User updated successfully!', 'success')
-        return redirect(url_for('index'))
+        return redirect(url_for('admin'))
     return render_template('user/edit.html', form=form, user=user)
 
 
@@ -106,8 +106,11 @@ def edit_user(user_id):
 @login_required
 def delete_user(user_id):
     user = User.query.get_or_404(user_id)
-    db.session.delete(user)
-    db.session.commit()
-    return redirect(url_for('index'))
+    if request.method == 'POST':
+        db.session.delete(user)
+        db.session.commit()
+        flash('User deleted successfully!', 'success')
+        return redirect(url_for('admin'))
 
+    return render_template('user/delete.html', user=user)
 
