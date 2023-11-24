@@ -1,4 +1,6 @@
-instance/
+instance
+app.db
+instance/site.db
 .vscode/
 .venv/
 
