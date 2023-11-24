@@ -1,34 +1,10 @@
-<!-- app/templates/index.html -->
 {% extends 'base.html' %}
 
-{% block title %}Dashboard{% endblock %}
-
 {% block content %}
-    <h2>Bienvenido {{ current_user.username }}!</h2>
-    <h3>Tus datos</h3>
-    <p>Username: {{ current_user.username }}</p>
-    <p>Password: *********</p>
-    <!-- Añade un enlace a la página de logout en tu página de inicio -->
-    <a href="{{ url_for('logout') }}" class="btn btn-danger">Cerrar sesión</a>
-
-    <hr>
-
-    {% if current_user.username == 'admin' %}
-       <h3>Crear nuevos usuarios</h3>
-       <a href="{{ url_for('register') }}" class="btn btn-primary">Registrar nuevo</a>
-       <hr>
-        
-        <h2 class="mt-4">Lista de Usuarios</h2>
-        <ul class="list-group">
-            {% for user in users %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                {{ user.username }}
-                <div>
-                    <a class="btn btn-primary" href="{{ url_for('edit_user', user_id=user.id) }}">Editar</a>
-                    <a class="btn btn-danger" href="{{ url_for('delete_user', user_id=user.id) }}">Eliminar Usuario</a>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <h1 class="mt-4">User List</h1>
+    <ul>
+        {% for user in users %}
+            <li>{{ user.username }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
