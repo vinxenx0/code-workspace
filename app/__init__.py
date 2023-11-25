@@ -13,6 +13,8 @@ from flask_babel import Babel, _
 
 app = Flask(__name__)
 
+app.config.from_object('config')
+
 # Configure logging
 log_level = os.environ.get('LOG_LEVEL') or 'DEBUG'
 # Configure logging in "paranoid" mode
@@ -29,7 +31,6 @@ formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(pathname)s:%(lineno
 file_handler.setFormatter(formatter)
 app.logger.addHandler(file_handler)
 
-app.config.from_object('config')
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
@@ -127,3 +128,5 @@ app.jinja_env.globals.update(is_admin=is_admin)
 
 # Add Bootstrap pagination script
 app.jinja_env.globals.update(enumerate=enumerate)
+
+from app.controllers import services_controller  # Add this line to import the new controller

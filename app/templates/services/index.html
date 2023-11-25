@@ -1,0 +1,63 @@
+<!-- app/templates/services/index.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Services</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Status</th>
+                <th>Action</th>  <!-- New column for the switch button -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Web Server</td>
+                <td>
+                    {% if web_status == 'OK' %}<span class="text-success">Running</span>{% else %}<span class="text-danger">Down</span>{% endif %}
+                </td>
+                <td>
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="webSwitch" {% if web_status == 'OK' %}checked{% endif %} onclick="toggleService('web_server')">
+                        <label class="custom-control-label" for="webSwitch"></label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>DNS Resolver</td>
+                <td>
+                    {% if dns_status == 'OK' %}<span class="text-success">Running</span>{% else %}<span class="text-danger">Down</span>{% endif %}
+                </td>
+                <td>
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="{{ service_name }}Switch" {% if SERVICE_STATES[service_name] == 'active' %}checked{% endif %} onclick="toggleService('{{ service_name }}')">
+                        <label class="custom-control-label" for="{{ service_name }}Switch"></label>
+                    </div>
+                </td>                
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function toggleService(serviceName) {
+        // Use AJAX to toggle the service on the server
+        fetch('/toggle_service/' + serviceName, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Service ' + serviceName + ' is now ' + data.state);
+                } else {
+                    alert('Error toggling service ' + serviceName);
+                }
+            })
+            .catch(error => {
+                console.error('Error toggling service:', error);
+            });
+    }
+</script>
+
+{% endblock %}

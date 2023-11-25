@@ -1,0 +1,39 @@
+<!-- app/templates/admin/services.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Services Status</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Web Server</td>
+                <td>
+                    {% if web_server_status %}
+                        <span class="badge badge-success">Running</span>
+                    {% else %}
+                        <span class="badge badge-danger">Not Running</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>DNS Resolver</td>
+                <td>
+                    {% if dns_resolver_status %}
+                        <span class="badge badge-success">Working</span>
+                    {% else %}
+                        <span class="badge badge-danger">Not Working</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
