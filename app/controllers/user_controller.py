@@ -54,13 +54,16 @@ def logout():
 def index():
     return render_template('index.html')
 
-@app.route('/users')
+@app.route('/list_users')
 @login_required
 def list_users():
     page = request.args.get('page', 1, type=int)
     per_page = 9  # Adjust the number of users per page as needed
+    order_by = request.args.get('order_by', 'created_at')  # Default order by created_at
+    users = User.query.order_by(db.desc(getattr(User, order_by))).all()
     users = User.query.paginate(page=page, per_page=per_page, error_out=False)
-    return render_template('user/list.html', users=users)
+    return render_template('user/list.html', users=users, order_by=order_by)
+
 
 # ... other routes ...
 
@@ -102,6 +105,7 @@ def edit_user(user_id):
     form = UserProfileForm(obj=user)  # Pre-populate the form with the existing user data
     if form.validate_on_submit():
         form.populate_obj(user)  # Update the user object with the form data
+        user.updated_at = db.func.current_timestamp()
         db.session.commit()
         flash('User updated successfully!', 'success')
         return redirect(url_for('admin'))
@@ -126,3 +130,5 @@ def set_locale():
         db.session.commit()
     g.locale = request.form['language']
     return redirect(request.referrer)
+
+# app/controllers/user_controller.py
