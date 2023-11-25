@@ -1,0 +1,35 @@
+<!-- app/templates/admin/log_tab.html -->
+
+<table class="table table-bordered table-striped" id="logTable">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Level</th>
+            <th>Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in entries %}
+            <tr class="{{ get_bootstrap_class(entry[1]) }}">
+                <td>{{ entry[0] }}</td>
+                <td>{{ entry[1] }}</td>
+                <td>{{ entry[2] }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        // Initialize DataTables with sorting by the first column (Date)
+        $('#logTable').DataTable({
+            "order": [[0, 'desc']],
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "info": false,
+            "autoWidth": false,
+            "responsive": true
+        });
+    });
+</script>

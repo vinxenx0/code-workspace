@@ -1,0 +1,120 @@
+<!-- app/templates/admin/logs.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Logs</h2>
+
+    <ul class="nav nav-tabs" id="logTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
+            
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="warning-tab" data-toggle="tab" href="#warning" role="tab" aria-controls="warning" aria-selected="false">Warning</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="error-tab" data-toggle="tab" href="#error" role="tab" aria-controls="error" aria-selected="false">Error</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="debug-tab" data-toggle="tab" href="#debug" role="tab" aria-controls="debug" aria-selected="false">Debug</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="critical-tab" data-toggle="tab" href="#critical" role="tab" aria-controls="critical" aria-selected="false">Critical</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="logTabsContent">
+        <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
+            {% set entries = entries_info %}
+            {% include 'admin/log_tab.html' %}
+        </div>
+        <div class="tab-pane fade show active" id="warning" role="tabpanel" aria-labelledby="warning-tab">
+            {% set entries = entries_warning %}
+            {% include 'admin/log_tab.html' %}
+        </div>
+        <div class="tab-pane fade" id="error" role="tabpanel" aria-labelledby="error-tab">
+            {% set entries = entries_error %}
+            {% include 'admin/log_tab.html' %}
+        </div>
+        <div class="tab-pane fade" id="debug" role="tabpanel" aria-labelledby="debug-tab">
+            {% set entries = entries_debug %}
+            {% include 'admin/log_tab.html' %}
+        </div>
+        <div class="tab-pane fade" id="critical" role="tabpanel" aria-labelledby="critical-tab">
+            {% set entries = entries_critical %}
+            {% include 'admin/log_tab.html' %}
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if has_prev %}
+            
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('view_logs', page=page - 1) }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link" aria-hidden="true">&laquo;</span>
+                </li>
+            {% endif %}
+    
+            {% for num in range(1, page + 2) %}
+                <li class="page-item {% if num == page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('view_logs', page=num) }}">{{ num }}</a>
+                </li>
+            {% endfor %}
+    
+            {% if has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('view_logs', page=page + 1) }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link" aria-hidden="true">&raquo;</span>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+<!--
+<script>
+    $(function () {
+        $('#logTabs a').on('click', function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        // Add script to set active tab based on URL hash
+        const hash = window.location.hash;
+        if (hash) {
+            $(`#logTabs a[href="${hash}"]`).tab('show');
+        }
+    });
+</script>
+-->
+<script>
+    $(document).ready(function() {
+        // Use Bootstrap Tabs API
+        $('#logTabs a').on('click', function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        // Set the active tab
+        let activeTab = '{{ active_tab }}';  // Provide the active_tab variable from the Flask context
+        if (activeTab) {
+            $('#logTabs a[href="#' + activeTab + '"]').tab('show');
+        }
+    });
+</script>
+
+
+{% endblock %}
