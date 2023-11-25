@@ -1,11 +1,14 @@
 # app/controllers/user_controller.py
 
+import logging
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, current_user, logout_user, login_required
 from app import app, db, bcrypt
 from app.models.user_model import User
 from app.views.user_view import UserProfileForm, LoginForm
 
+# Get a logger for this module
+logger = logging.getLogger(__name__)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -20,9 +23,11 @@ def login():
                 return redirect(url_for('admin'))
             next_page = request.args.get('next')
             flash('Login successful!', 'success')
+            logger.info(f"User {user.username} logged in successfully.")
             return redirect(next_page) if next_page else redirect(url_for('index'))
         else:
             flash('Login failed. Check your email and password.', 'danger')
+            logger.error("Invalid login attempt.")
     return render_template('user/login.html', form=form)
 
 @app.route('/admin')
@@ -81,10 +86,10 @@ def add_user():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, role=form.role.data)
-
         db.session.add(new_user)
         db.session.commit()
         flash('User added successfully!', 'success')
+        logger.debug(f"User {new_user.username} created.")
         return redirect(url_for('admin'))
     return render_template('user/add.html', form=form)
 
@@ -113,4 +118,3 @@ def delete_user(user_id):
         return redirect(url_for('admin'))
 
     return render_template('user/delete.html', user=user)
-
