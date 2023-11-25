@@ -17,26 +17,31 @@
             <tr>
                 <td>Web Server</td>
                 <td>
-                    {% if web_status == 'OK' %}<span class="text-success">Running</span>{% else %}<span class="text-danger">Down</span>{% endif %}
+                    <span id="web_serverStatus">
+                        {% if web_status == 'Running' %}<span class="text-success">Running</span>{% else %}<span class="text-danger">Stopped</span>{% endif %}
+                    </span>
                 </td>
                 <td>
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="webSwitch" {% if web_status == 'OK' %}checked{% endif %} onclick="toggleService('web_server')">
-                        <label class="custom-control-label" for="webSwitch"></label>
+                        <input type="checkbox" class="custom-control-input" id="web_serverSwitch" {% if web_status == 'Running' %}checked{% endif %} onclick="toggleService('web_server')">
+                        <label class="custom-control-label" for="web_serverSwitch"></label>
                     </div>
                 </td>
             </tr>
+            
             <tr>
                 <td>DNS Resolver</td>
                 <td>
-                    {% if dns_status == 'OK' %}<span class="text-success">Running</span>{% else %}<span class="text-danger">Down</span>{% endif %}
+                    <span id="dns_resolverStatus">
+                        {% if dns_status == 'Running' %}<span class="text-success">Running</span>{% else %}<span class="text-danger">Stopped</span>{% endif %}
+                    </span>
                 </td>
                 <td>
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="{{ service_name }}Switch" {% if SERVICE_STATES[service_name] == 'active' %}checked{% endif %} onclick="toggleService('{{ service_name }}')">
-                        <label class="custom-control-label" for="{{ service_name }}Switch"></label>
+                        <input type="checkbox" class="custom-control-input" id="dns_resolverSwitch" {% if dns_status == 'Running' %}checked{% endif %} onclick="toggleService('dns_resolver')">
+                        <label class="custom-control-label" for="dns_resolverSwitch"></label>
                     </div>
-                </td>                
+                </td>
             </tr>
         </tbody>
     </table>
@@ -50,6 +55,11 @@
             .then(data => {
                 if (data.status === 'success') {
                     alert('Service ' + serviceName + ' is now ' + data.state);
+                    // Update the text in the UI based on the new state
+                    const statusElement = document.getElementById(`${serviceName}Status`);
+                    if (statusElement) {
+                        statusElement.innerText = data.state;
+                    }
                 } else {
                     alert('Error toggling service ' + serviceName);
                 }

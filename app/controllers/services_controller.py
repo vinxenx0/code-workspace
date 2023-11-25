@@ -5,7 +5,7 @@ from flask_login import login_required
 from app import app
 
 # Define service states
-SERVICE_STATES = {'web_server': 'active', 'dns_resolver': 'active'}
+SERVICE_STATES = {'web_server': 'active', 'dns_resolver': 'inactive'}
 
 @app.route('/services')
 @login_required
@@ -63,9 +63,12 @@ def execute_command(command):
     import subprocess
     try:
         subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return 'OK'
+        return 'Running'  # Return a string indicating the service is running
     except subprocess.CalledProcessError as e:
-        return f'Error: {e.stderr.decode().strip()}'
+        return 'Stopped'  # Return a string indicating the service is stopped
+
+
+
 
 def start_service(service_name):
     # Add logic to start the specified service
@@ -76,3 +79,15 @@ def stop_service(service_name):
     # Add logic to stop the specified service
     # You might need to adjust this based on your system configuration
     pass
+
+
+def check_service_status(service_name):
+    # Use system commands to check the status of the services
+    # You might need to adjust these commands based on your system configuration
+    if service_name == 'web_server':
+        return check_web_server_status()
+    elif service_name == 'dns_resolver':
+        return check_dns_resolver_status()
+    else:
+        return 'Unknown Service'
+
