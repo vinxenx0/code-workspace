@@ -28,6 +28,10 @@
                     <span class="text-danger">{{ error }}</span>
                 {% endfor %}
             </div>
+            <div class="form-group">
+                {{ form.language.label(class="form-control-label") }}
+                {{ form.language(class="form-control") }}
+            </div>
             <button type="submit" class="btn btn-primary">Add User</button>
         </form>
         <a href="{{ url_for('list_users') }}" class="btn btn-secondary mt-3">Back to List</a>

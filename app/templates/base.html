@@ -45,6 +45,17 @@
         <div class="row content">
             <!-- Navegación -->
             <div class="col-md-2 bg-light">
+                <!-- Language Selector -->
+                <div class="language-selector">
+                    <form action="{{ url_for('set_locale') }}" method="post">
+                        <select name="language" onchange="this.form.submit()">
+                            <option value="en" {% if g.get('locale', 'en') == 'en' %}selected{% endif %}>English</option>
+                            <option value="es" {% if g.get('locale', 'en') == 'es' %}selected{% endif %}>Español</option>
+                        </select>
+                    </form>
+                </div>
+                
+                
                 {% if current_user.is_authenticated %}
                     <nav class="nav flex-column">
                         <li class="nav-item">

@@ -11,6 +11,7 @@ class UserProfileForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     #role = SelectField('Role', choices=[('user', 'User'), ('admin', 'Admin')], default='user')
     role = SelectField('Role', choices=[('user', 'User'), ('admin', 'Admin')], default='user')
+    language = SelectField('Language', choices=[('en', 'English'), ('es', 'Spanish')], validators=[DataRequired()])
     submit = SubmitField('Update Profile')
 
 

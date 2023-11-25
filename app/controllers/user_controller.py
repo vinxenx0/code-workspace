@@ -6,6 +6,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from app import app, db, bcrypt
 from app.models.user_model import User
 from app.views.user_view import UserProfileForm, LoginForm
+from flask_babel import g, _
 
 # Get a logger for this module
 logger = logging.getLogger(__name__)
@@ -34,7 +35,7 @@ def login():
 @login_required
 def admin():
     if current_user.role != 'admin':
-        flash('You do not have permission to access this page.', 'danger')
+        flash(_('You do not have permission to access this page.'), 'danger')
         return redirect(url_for('index'))
     
     # Your admin-specific logic here
@@ -116,5 +117,12 @@ def delete_user(user_id):
         db.session.commit()
         flash('User deleted successfully!', 'success')
         return redirect(url_for('admin'))
-
     return render_template('user/delete.html', user=user)
+
+@app.route('/set_locale', methods=['POST'])
+def set_locale():
+    if current_user.is_authenticated:
+        current_user.locale = request.form['language']
+        db.session.commit()
+    g.locale = request.form['language']
+    return redirect(request.referrer)

@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, current_user
 from flask_talisman import Talisman
+from flask_babel import Babel, _
 #from flask_babel import Babel
 #from flask_jwt_extended import JWTManager
 
@@ -70,7 +71,10 @@ Talisman(app, content_security_policy=None)
 
 
 # Add Babel for i18n support
-#babel = Babel(app)
+babel = Babel(app)
+# Configure Babel
+babel.init_app(app, default_locale='en')
+
 
 # Add JWTManager for token-based authentication
 #jwt = JWTManager(app)
