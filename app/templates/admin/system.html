@@ -1,0 +1,81 @@
+<!-- app/templates/admin/system.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>System</h2>
+    <ul class="nav nav-tabs" id="systemTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="logs-tab" data-toggle="tab" href="#logs" role="tab" aria-controls="logs" aria-selected="false">Logs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="web-tab" data-toggle="tab" href="#web" role="tab" aria-controls="web" aria-selected="true">Web</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="red-tab" data-toggle="tab" href="#red" role="tab" aria-controls="red" aria-selected="false">Red</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="almacenamiento-tab" data-toggle="tab" href="#almacenamiento" role="tab" aria-controls="almacenamiento" aria-selected="false">Almacenamiento</a>
+        </li>
+        
+    </ul>
+    <div class="tab-content mt-2" id="systemTabsContent">
+        <div class="tab-pane fade  show active" id="logs" role="tabpanel" aria-labelledby="logs-tab">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Level</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in logs %}
+                        <tr class="{% if entry.1 == 'ERROR' %}table-danger{% elif entry.1 == 'WARNING' %}table-warning{% endif %}">
+                            <td>{{ entry.0 }}</td>
+                            <td>{{ entry.1 }}</td>
+                            <td>{{ entry.2 }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-pane fade" id="web" role="tabpanel" aria-labelledby="web-tab">
+            <p>Web system info: {{ web_status }}</p>
+        </div>
+        <div class="tab-pane fade" id="red" role="tabpanel" aria-labelledby="red-tab">
+            <p>{{ network_info }}</p>
+        </div>
+        <div class="tab-pane fade" id="almacenamiento" role="tabpanel" aria-labelledby="almacenamiento-tab">
+            <p>{{ storage_info }}</p>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script>
+        // Ensure tabs change state when clicked
+        document.querySelectorAll('.nav-link').forEach(function (tab) {
+            tab.addEventListener('click', function (e) {
+                e.preventDefault();
+                // Remove active class from all tabs
+                document.querySelectorAll('.nav-link').forEach(function (tab) {
+                    tab.classList.remove('active');
+                });
+                // Add active class to the clicked tab
+                this.classList.add('active');
+                // Show the corresponding tab pane
+                var target = this.getAttribute('href');
+                document.querySelectorAll('.tab-pane').forEach(function (pane) {
+                    pane.classList.remove('show', 'active');
+                });
+                document.querySelector(target).classList.add('show', 'active');
+            });
+        });
+    </script>
+{% endblock %}

@@ -70,3 +70,62 @@ def view_logs():
                            entries_error=entries_error, entries_debug=entries_debug,
                            entries_critical=entries_critical, has_next=has_next, has_prev=has_prev, page=page,
                            get_bootstrap_class=get_bootstrap_class)
+
+# app/controllers/admin_controller.py
+
+from flask import render_template, abort, request
+from flask_login import login_required, current_user
+from app import app
+
+# ... existing code ...
+
+def get_web_status():
+    # Simulate web status (replace with actual web status logic)
+    return "OK"
+
+def get_network_info():
+    # Simulate network info (replace with actual network info logic)
+    return "Network status: OK"
+
+def get_storage_info():
+    # Simulate storage info (replace with actual storage info logic)
+    used_space = "50 GB"  # Replace with actual used space
+    free_space = "100 GB"  # Replace with actual free space
+    return f"Used space: {used_space}, Free space: {free_space}"
+
+@app.route('/system')
+@login_required
+def view_system():
+    if current_user.role != 'admin':
+        abort(403)  # Only admins can view system info
+
+    web_status = get_web_status()
+    network_info = get_network_info()
+    storage_info = get_storage_info()
+    logs = get_system_logs()
+
+    return render_template('admin/system.html', web_status=web_status, network_info=network_info, storage_info=storage_info, logs=logs)
+
+
+def get_web_status():
+    # Simulate web status (replace with actual web status logic)
+    return "OK"
+
+def get_network_info():
+    # Simulate network info (replace with actual network info logic)
+    return "Network status: OK"
+
+def get_storage_info():
+    # Simulate storage info (replace with actual storage info logic)
+    used_space = "50 GB"  # Replace with actual used space
+    free_space = "100 GB"  # Replace with actual free space
+    return f"Used space: {used_space}, Free space: {free_space}"
+
+def get_system_logs():
+    # Simulate system logs (replace with actual system logs retrieval logic)
+    system_logs = [
+        '2023-11-30 10:15:20, ERROR, System error 1',
+        '2023-11-30 10:20:30, WARNING, System warning 1',
+        '2023-11-30 11:05:45, ERROR, System error 2',
+    ]
+    return [parse_log_entry(entry) for entry in system_logs]
