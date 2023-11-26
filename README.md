@@ -10,3 +10,8 @@ $ pip install -r requirements.txt
 
 $ python3 run.py
 
+# doker
+
+snap install docker
+
+sudo docker build -t app .
