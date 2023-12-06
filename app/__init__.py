@@ -84,6 +84,7 @@ from app.controllers import user_controller
 from app.views import user_view
 from app import db
 from app.models.user_model import User
+from app.models.suggestions_model import Suggestion  
 
 with app.app_context():
  

@@ -8,6 +8,7 @@ from app.models.user_model import User
 from app.views.user_view import UserProfileForm, LoginForm
 from sqlalchemy.exc import IntegrityError
 from flask_babel import g, _
+from app.models.suggestions_model import Suggestion
 
 # Get a logger for this module
 logger = logging.getLogger(__name__)
@@ -54,6 +55,13 @@ def logout():
 @login_required
 def index():
     return render_template('index.html')
+
+
+@app.route('/suggestions')
+@login_required
+def list_suggestions():
+    suggestions = Suggestion.query.all()
+    return render_template('user/suggestions.html', suggestions=suggestions)
 
 @app.route('/list_users')
 @login_required

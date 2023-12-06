@@ -1,0 +1,35 @@
+<!-- app/templates/admin/suggestions.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Suggestions - Your App Name{% endblock %}
+
+{% block header %}Suggestions{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Suggestions</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Error Type</th>
+                <th>Origin Page</th>
+                <th>Suggestion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for suggestion in suggestions %}
+                <tr>
+                    <td>{{ suggestion.id }}</td>
+                    <td>{{ suggestion.date }}</td>
+                    <td>{{ suggestion.error_type }}</td>
+                    <td>{{ suggestion.origin_page }}</td>
+                    <td>{{ suggestion.suggestion }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

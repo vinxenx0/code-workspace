@@ -37,20 +37,33 @@
 
 </head>
 <body>
+     <!-- Information Bar -->
+     <div class="information-bar bg-info text-white p-2">
+        <div class="container">
+            <small class="mb-0">Welcome to Your App Name! You are logged in as {{ current_user.username }}.</small>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-primary text-white py-3">
+        <div class="container">
+            <h1>MC Mutua</h1>
+        </div>
+    </header>
+
+   
     <div class="container-fluid">
         <!-- Cabecera -->
         <div class="row bg-dark text-light">
             <div class="col-12">
-                <h1 class="text-center py-3">monitores</h1>
+                <!-- <h2 class="text-center py-3"><monitores></h2> -->
             </div>
         </div>
 
-        <!-- Contenido principal -->
+         <!-- Contenido principal -->
         <div class="row content">
             <!-- Navegación -->
             <div class="col-md-2 bg-light">
-                            
-                
                 {% if current_user.is_authenticated %}
                     <nav class="nav flex-column">
                         <li class="nav-item"><b>Usuario<br /></b>
@@ -59,6 +72,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('user_profile', user_id=current_user.id) }}">Perfil</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('list_suggestions') }}">SUgerencias</a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('logout') }}">Salir</a>
                         </li>
@@ -80,10 +98,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('services') }}">Services</a>
                         </li>
-                        {% endif %}
-                       
-
-                        
+                        {% endif %}  
                         
                     </nav>
                     <!-- Language Selector -->
@@ -106,16 +121,35 @@
             <!-- Columna derecha -->
             <div class="col-md-2 bg-light">
                 <!-- Contenido de la columna derecha aquí -->
-                
                 <p class="text-center mt-3">
-                   {{ get_flashed_messages()[0] }}
-                
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
                 </p>
             </div>
         </div>
 
         <!-- Pre-footer -->
+        
         <div class="container mt-5">
+            <div class="row">
+                <!-- Search Bar -->
+                <div class="search-bar bg-light py-2">
+                    <div class="container">
+                        <form class="form-inline">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-4">
                     <h3>Columna 1</h3>
