@@ -19,5 +19,8 @@ class User(db.Model, UserMixin):
     
     def get_id(self):
         return str(self.id)
+    
+    def is_super_admin(self):
+        return 'super_admin' in self.roles
 
 # app/models/user.py

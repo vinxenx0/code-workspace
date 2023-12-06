@@ -53,31 +53,37 @@
                 
                 {% if current_user.is_authenticated %}
                     <nav class="nav flex-column">
-                        <li class="nav-item">
+                        <li class="nav-item"><b>Usuario<br /></b>
                             <a class="nav-link" href="/">Escritorio</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('user_profile', user_id=current_user.id) }}">Perfil</a>
                         </li>
-                        
-                        {% if is_admin() %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('view_logs') }}">Logs</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('list_users') }}">Users</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('view_system') }}">System</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('services') }}">Services</a>
-                            </li>
-                        {% endif %}
-
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('logout') }}">Salir</a>
                         </li>
+                        {% if is_admin() or current_user.role == 'superadmin'  %}
+                           
+                        <li class="nav-item"><b>Admin<br /></b>
+                            <a class="nav-link" href="{{ url_for('list_users') }}">Users</a>
+                        </li>
+                        
+                        {% endif %}
+
+                        {% if current_user.role == 'superadmin' %}
+                        <li class="nav-item"><b>SuperAdmin<br /></b>
+                            <a class="nav-link" href="{{ url_for('view_logs') }}">Logs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('view_system') }}">System</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('services') }}">Services</a>
+                        </li>
+                        {% endif %}
+                       
+
+                        
                         
                     </nav>
                     <!-- Language Selector -->

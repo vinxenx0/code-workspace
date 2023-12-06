@@ -49,7 +49,7 @@ def get_bootstrap_class(log_level):
 @app.route('/logs')
 @login_required
 def view_logs():
-    if current_user.role != 'admin':
+    if current_user.role != 'superadmin':
         logger.warning(f"Non-admin user {current_user.username} attempted to view logs.")
         abort(403)  # Only admins can view logs
 
@@ -96,7 +96,7 @@ def get_storage_info():
 @app.route('/system')
 @login_required
 def view_system():
-    if current_user.role != 'admin':
+    if current_user.role != 'superadmin':
         abort(403)  # Only admins can view system info
 
     web_status = get_web_status()
