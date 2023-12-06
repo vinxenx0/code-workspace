@@ -1,17 +1,1 @@
-# code-workspace
-
-$ python --version
-
-Python 3.8.10
-
-
-$ pip install -r requirements.txt
-
-
-$ python3 run.py
-
-# doker
-
-snap install docker
-
-sudo docker build -t app .
+See docs folder util info and scripts for save time with tasks
