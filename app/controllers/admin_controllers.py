@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 # Function to read log file and paginate log entries
 def get_paginated_logs(page, per_page):
-    log_file_path = os.environ.get('LOG_FILE') or 'app.log'
+    log_file_path = os.environ.get('LOG_FILE') or 'logs/app.log' #hardcoded
     try:
         with open(log_file_path, 'r') as log_file:
             log_entries = log_file.readlines()
