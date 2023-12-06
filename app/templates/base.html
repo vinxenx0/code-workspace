@@ -28,53 +28,6 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-oKJrLTaiD1R9i3Fz5q5iVPaXxVTf6J1jsMn9hm93z9Kw8bLo1WPFPsOM2U8Z+ztT" crossorigin="anonymous"></script>
   
 
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        #sidebar {
-            position: fixed;
-            height: 100%;
-            width: 250px;
-            background-color: #343a40; /* Bootstrap dark background color */
-            padding-top: 20px;
-            color: white;
-        }
-
-        #content {
-            flex: 1;
-            margin-left: 250px;
-            padding: 20px;
-        }
-
-        #info-bar {
-            background-color: #f8f9fa; /* Bootstrap light background color */
-            padding: 10px;
-            border-bottom: 1px solid #dee2e6; /* Bootstrap border color */
-        }
-
-        #sidebar .nav-item a {
-            color: white;
-        }
-
-        #sidebar .nav-item a:hover {
-            background-color: #495057; /* Bootstrap secondary background color on hover */
-        }
-
-        #sidebar .nav-item a.active {
-            background-color: #343a40; /* Bootstrap dark background color for active item */
-        }
-
-        #footer {
-            background-color: #343a40; /* Bootstrap dark background color for the footer */
-            color: white;
-            padding: 20px 0;
-        }
-    </style>
     <!-- Bootstrap JS (optional, only required if you want to use Bootstrap features like modals, tooltips, etc.) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -94,7 +47,7 @@
       {% if current_user.is_authenticated %}
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="#">
+            <a class="nav-link active" href="/">
               <i class="bi bi-house-door"></i> Inicio
             </a>
           </li>

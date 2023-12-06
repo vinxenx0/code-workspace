@@ -1,34 +1,47 @@
 /* app/static/css/styles.css */
 
-html, body {
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#sidebar {
+    position: fixed;
     height: 100%;
-    margin: 0;
-    
+    width: 250px;
+    background-color: #343a40; /* Bootstrap dark background color */
+    padding-top: 20px;
+    color: white;
 }
 
-body {
-    display: flex;
-    flex-direction: column;
-   
-}
-
-.container-flex {
+#content {
     flex: 1;
-    display: flex;
-    flex-direction: column;
+    margin-left: 250px;
+    padding: 20px;
 }
 
-.row.content {
-    flex: 1;
-    min-height: 100vh; /* Esto asegura que el contenido ocupe al menos el 100% de la altura de la ventana gráfica */
+#info-bar {
+    background-color: #f8f9fa; /* Bootstrap light background color */
+    padding: 10px;
+    border-bottom: 1px solid #dee2e6; /* Bootstrap border color */
 }
 
-/* fonts */
-
-body {
-    font-family: 'Open Sans', sans-serif;
+#sidebar .nav-item a {
+    color: white;
 }
 
-.container {
-    margin-top: 50px;
+#sidebar .nav-item a:hover {
+    background-color: #495057; /* Bootstrap secondary background color on hover */
+}
+
+#sidebar .nav-item a.active {
+    background-color: #343a40; /* Bootstrap dark background color for active item */
+}
+
+#footer {
+    background-color: #343a40; /* Bootstrap dark background color for the footer */
+    color: white;
+    padding: 20px 0;
 }

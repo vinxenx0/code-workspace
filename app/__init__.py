@@ -8,7 +8,6 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, current_user
 from flask_talisman import Talisman
 from flask_babel import Babel, _
-#from flask_babel import Babel
 #from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
@@ -24,7 +23,7 @@ logging.basicConfig(level=log_level, format=log_format)  # Setting level to 10 f
 logger = logging.getLogger(__name__)
 
 # Set up a file handler with detailed format for logs
-log_file = os.environ.get('LOG_FILE') or 'app.log'
+log_file = os.environ.get('LOG_FILE') or 'logs/app.log'
 file_handler = logging.FileHandler(log_file)
 file_handler.setLevel(log_level)
 formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(pathname)s:%(lineno)d - %(message)s')
@@ -93,7 +92,7 @@ with app.app_context():
        
         # Create default users with hashed passwords and roles
         default_user = User(username='user', email='user@user.com', password=bcrypt.generate_password_hash('user').decode('utf-8'), role='user')
-        default_admin = User(username='admin', email='admin@admin.com', password=bcrypt.generate_password_hash('admin').decode('utf-8'), role='admin')
+        default_admin = User(username='admin', email='admin@admin.com', password=bcrypt.generate_password_hash('admin').decode('utf-8'), role='superadmin')
 
         # Add default users to the database
         db.session.add(default_user)
