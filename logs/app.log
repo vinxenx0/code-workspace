@@ -704,3 +704,6 @@ jinja2.exceptions.TemplateSyntaxError: expected token ',', got 'static'
 2023-12-08 01:56:55,900 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
 2023-12-08 01:57:47,020 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
 2023-12-08 01:58:05,210 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+2023-12-08 02:32:30,786 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+2023-12-08 02:34:33,044 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+2023-12-08 02:36:07,240 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.

@@ -21,23 +21,18 @@
         <!-- Info Bar -->
         <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">MC Mutua</a>
+            <a class="navbar-brand ps-3" href="/">MC Mutua</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <!-- <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form> -->
+
             <!-- Navbar-->
             <div class="container-fluid">
                 <div class="d-flex justify-content-between align-items-center w-100">
+                    <!-- Navbar Search-->
                     <div class="me-auto">
                         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                             <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                                <input class="form-control" type="text" placeholder="buscar..." aria-label="buscar..." aria-describedby="btnNavbarSearch" />
                                 <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                             </div>
                         </form>
@@ -60,7 +55,7 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i>Welcome, <strong>{{ current_user.username }}</strong>!</a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{{ url_for('user_profile', user_id=current_user.id) }}">Perfil</a></li>
-                        <li><a class="dropdown-item" href="#!">Soporte</a></li>
+                        <li><a class="dropdown-item" href="#!">Ajustes</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="{{ url_for('logout') }}">Salir</a></li>
                     </ul>
@@ -81,48 +76,131 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Resumen
                             </a>
-                            <a class="nav-link" href="/">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Sugerencias
-                            </a>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMejoras" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Historico
+                                Mejoras
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <div class="collapse" id="collapseMejoras" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Semanal</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Mensual</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Anual</a>
+                                    <a class="nav-link" href="layout-static.html">In/Off page</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Keywords</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">LInks</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Archivo
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseArchivo" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="layout-static.html">Semanas</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Meses</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Años</a>
+                                </nav>
+                            </div>
+                            
+                            <!--
+                            <a class="nav-link" href="/">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Otro tipo
+                            </a>
+                            -->
+
+                            {% if is_admin() or current_user.role == 'superadmin'  %}
+                            <div class="sb-sidenav-menu-heading">Diagnosticos</div>
+                            
+                            
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSEO" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                SEO
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseSEO" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="login.html">Marcado</a>
+                                    <a class="nav-link" href="register.html">meta-tags</a>
+                                    <a class="nav-link" href="password.html">Enlaces rotos</a>
+                                    <a class="nav-link" href="500.html">Imágenes</a>
+                                    <a class="nav-link" href="500.html">Atributos</a>
                                 </nav>
                             </div>
 
-                            {% if is_admin() or current_user.role == 'superadmin'  %}
-                            <div class="sb-sidenav-menu-heading">Herramientas</div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Usabilidad
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Enlaces Rotos</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Velocidad</a>
-                                </nav>
-                            </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAcce" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Accesibilidad
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <div class="collapse" id="collapseAcce" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Imágenes</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Colores</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Estilos</a>
+                                    <a class="nav-link" href="401.html">Test WAI AAA</a>
+                                    <a class="nav-link" href="404.html">Colores</a>
+                                    <a class="nav-link" href="500.html">Contraste</a>
+                                    <a class="nav-link" href="500.html">Tamaño</a>
                                 </nav>
                             </div>
+                          
+                           
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseIdiomas" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Idiomas
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseIdiomas" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="401.html">Español</a>
+                                    <a class="nav-link" href="404.html">Ingles</a>
+                                    <a class="nav-link" href="500.html">Catalá</a>
+                    
+                                </nav>
+                            </div>     
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRanks" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Rankings
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseRanks" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="layout-static.html">Palabras clave</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Búsquedas</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Trafico</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Medios</a>
+                                </nav>
+                            </div>
+                           
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMonitores" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Monitor
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseMonitores" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="layout-static.html">Website</a>
+                                    <a class="nav-link" href="layout-static.html">SPAM/BLs</a>
+                                    <a class="nav-link" href="layout-static.html">Reputación</a>
+                                    <a class="nav-link" href="layout-static.html">Marcas</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">GDPR/LSSI</a>
+                                    <a class="nav-link" href="layout-static.html">Texto Legal</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Propiedad intelectual</a>
+                                </nav>
+                            </div>
+                            
+                            {% endif %}
+          
+                            {% if current_user.role == 'superadmin' %}
+                            <div class="sb-sidenav-menu-heading">Sistema</div>
+                            
+                            <a class="nav-link" href="{{ url_for('services') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Salud
+                            </a>
+
+                            <a class="nav-link btn-link btn me-3" href="{{ url_for('list_users') }}">
+                                <i class="fas fa-user fa-fw"></i></i> Usuarios
+                            </a>
+                            
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts3" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Diccionarios
@@ -134,42 +212,7 @@
                                     <a class="nav-link" href="layout-sidenav-light.html">Catalá</a>
                                 </nav>
                             </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages2" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Accsibilidad
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapsePages2" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth2" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        WAI AAA
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="login.html">Login</a>
-                                            <a class="nav-link" href="register.html">Register</a>
-                                            <a class="nav-link" href="password.html">Forgot Password</a>
-                                        </nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Usabilidad
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="401.html">Imagenes</a>
-                                            <a class="nav-link" href="404.html">Ortografia</a>
-                                            <a class="nav-link" href="500.html">Estilo</a>
-                                            <a class="nav-link" href="500.html">Colores</a>
-                                        </nav>
-                                    </div>
-                                </nav>
-                            </div>
-                            {% endif %}
-          
-                            {% if current_user.role == 'superadmin' %}
-                            <div class="sb-sidenav-menu-heading">Sistema</div>
+                            <!-- 
                             <a class="nav-link" href="{{ url_for('view_logs') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Logs
@@ -178,13 +221,9 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Sistema
                             </a>
-                            <a class="nav-link" href="{{ url_for('services') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Servicios
-                            </a>
-                            <a class="nav-link btn-link btn me-3" href="{{ url_for('list_users') }}">
-                                <i class="fas fa-user fa-fw"></i></i> Usuarios
-                            </a>
+                            -->
+                           
+                            
                             {% endif %}
                         </div>
                     </div>
@@ -198,22 +237,31 @@
             <div id="layoutSidenav_content">
                 <main>
                     <!-- alert box -->
-                    <div>
-                        <p class="text-center">
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                            {% if messages %}
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{ category }}">
-                                {{ message }}
-                                </div>
-                                {% endfor %}
-                            {% endif %}
-                        {% endwith %}
-                        </p>
-                    </div>
+                    
 
                     <div class="container-fluid px-4">
 
+                        <div>
+                            <p class="text-center">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                    </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                            </p>
+                        </div>
+
+                        <!-- <div>
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                                <li class="breadcrumb-item active">estoy aqui</li>
+                            </ol>
+                        </div>
+                        -->
                         {% block content %}{% endblock %}
 
                     </div>
