@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bootstrap Dashboard</title>
+    <!-- Bootstrap CSS 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+
+     <!-- Bootstrap CSS -->
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  
+    <!-- Bootstrap Icons CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <!-- Inline scripts -->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-oKJrLTaiD1R9i3Fz5q5iVPaXxVTf6J1jsMn9hm93z9Kw8bLo1WPFPsOM2U8Z+ztT" crossorigin="anonymous"></script>
+  
+
+    <!-- Bootstrap JS (optional, only required if you want to use Bootstrap features like modals, tooltips, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
+
+
+</head>
+<body>
+
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <div class="container-fluid">
+      <h1>MC Mutua</h1>
+      {% if current_user.is_authenticated %}
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="/">
+              <i class="bi bi-house-door"></i> Inicio
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="bi bi-graph-up"></i> SEO
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="bi bi-person"></i> Estadísticas
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="bi bi-envelope"></i> Ortografía
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="bi bi-file-earmark-text"></i> Accesibilidad
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="bi bi-calendar"></i> Usabilidad
+            </a>
+          </li>
+          {% if is_admin() or current_user.role == 'superadmin'  %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="bi bi-gear"></i> Configuración
+            </a>
+          </li>                    
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('list_users') }}">Usuarios</a>
+          </li>
+          {% endif %}
+          
+          {% if current_user.role == 'superadmin' %}
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('view_logs') }}">Logs</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('view_system') }}">Sistema</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('services') }}">Estado</a>
+          </li>
+          {% endif %}  
+        </ul>
+      {% endif %}
+  </div>
+</nav>
+
+
+<!-- Main Content -->
+<div id="content">
+  {% if current_user.is_authenticated %}
+  <!-- Info Bar -->
+  <nav id="info-bar" class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <div class="me-auto">
+                Welcome, <strong>{{ current_user.username }}</strong>!
+            </div>
+            <div class="d-flex">
+                <!-- Language Selector -->
+                <div class="language-selector me-3">
+                  <form action="{{ url_for('set_locale') }}" method="post">
+                      <select name="language" onchange="this.form.submit()">
+                          <option value="en" {% if g.get('locale', 'en') == 'en' %}selected{% endif %}>English</option>
+                          <option value="es" {% if g.get('locale', 'en') == 'es' %}selected{% endif %}>Español</option>
+                      </select>
+                  </form>
+              </div>
+                {% if is_admin() or current_user.role == 'superadmin' %}
+                <a class="nav-link btn-link btn me-3" href="{{ url_for('list_users') }}">
+                  <i class="bi bi-person"></i> Usuarios
+                </a>
+                {% endif %}
+                <a href="{{ url_for('user_profile', user_id=current_user.id) }}"
+                  class="btn btn-link nav-link me-3">
+                  <i class="bi bi-person"></i> Profile
+                </a>
+                <a href="{{ url_for('logout') }}" class="btn btn-link nav-link">
+                  <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+  </nav>
+  <!-- alert box -->
+  <div>
+    <p class="text-center">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+           {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </p>
+  </div>
+
+  {% endif %}
+
+  <!-- Main Content -->
+  <div class="container-fluid">
+    {% block content %}{% endblock %}
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h4>Company Information</h4>
+        <p>Your Company Name</p>
+        <p>123 Main Street, City</p>
+        <p>Phone: (555) 123-4567</p>
+      </div>
+      <div class="col-md-4">
+        <h4>Quick Links</h4>
+        <ul class="list-unstyled">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h4>Social Media</h4>
+        <ul class="list-unstyled">
+          <li><a href="#"><i class="bi bi-facebook"></i> Facebook</a></li>
+          <li><a href="#"><i class="bi bi-twitter"></i> Twitter</a></li>
+          <li><a href="#"><i class="bi bi-linkedin"></i> LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom script for sidebar toggling -->
+<script>
+  $(document).ready(function () {
+    $('#sidebarCollapse').on('click', function () {
+      $('#sidebar').toggleClass('active');
+    });
+  });
+</script>
+</body>
+</html>

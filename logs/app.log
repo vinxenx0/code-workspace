@@ -208,3 +208,499 @@
 2023-12-06 23:56:14,275 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
 
 2023-12-06 23:56:14,275 [INFO] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:68 - Admin user admin viewed logs.
+2023-12-07 01:23:09,467 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 01:23:09,467 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 01:23:09,467 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 01:23:09,467 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 01:23:09,467 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-07 01:23:09,467 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 01:23:09,467 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 01:23:09,467 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 01:23:09,467 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 01:23:09,468 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 01:23:09,468 [INFO] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:68 - Admin user admin viewed logs.
+2023-12-07 16:30:35,966 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 16:30:35,966 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 16:30:35,967 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 16:30:35,968 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-07 16:30:35,968 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 16:30:35,968 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 16:30:35,968 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 16:30:35,968 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-07 16:30:35,968 [INFO] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:68 - Admin user admin viewed logs.
+2023-12-07 21:33:23,739 [ERROR] /home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py:825 - Exception on / [GET]
+Traceback (most recent call last):
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask_login/utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+  File "/home/vinxenxo/code-workspace/app/controllers/user_controller.py", line 57, in index
+    return render_template('index.html')
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/templating.py", line 152, in render_template
+    return _render(app, template, context)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/templating.py", line 133, in _render
+    rv = template.render(context)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/jinja2/environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/jinja2/environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/vinxenxo/code-workspace/app/templates/index.html", line 1, in top-level template code
+    {% extends 'base.html' %}
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/jinja2/environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/vinxenxo/code-workspace/app/templates/base.html", line 786, in template
+    <script src="{{ url_for('static', filename='dist/js/jquery.dataTables.min.js') }}"></script>
+jinja2.exceptions.TemplateSyntaxError: expected token ',', got 'static'
+2023-12-07 21:33:23,812 [ERROR] /home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py:825 - Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 841, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 450, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/ctx.py", line 353, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/werkzeug/routing/map.py", line 624, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 752, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 727, in handle_http_exception
+    return self.ensure_sync(handler)(e)
+  File "/home/vinxenxo/code-workspace/app/__init__.py", line 114, in not_found_error
+    return render_template('errors/404.html'), 404
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/templating.py", line 152, in render_template
+    return _render(app, template, context)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/templating.py", line 133, in _render
+    rv = template.render(context)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/jinja2/environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/jinja2/environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/vinxenxo/code-workspace/app/templates/errors/404.html", line 3, in top-level template code
+    {% extends 'base.html' %}
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/jinja2/environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/vinxenxo/code-workspace/app/templates/base.html", line 786, in template
+    <script src="{{ url_for('static', filename='dist/js/jquery.dataTables.min.js') }}"></script>
+jinja2.exceptions.TemplateSyntaxError: expected token ',', got 'static'
+2023-12-07 22:01:13,163 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+2023-12-07 22:34:36,821 [ERROR] /home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py:825 - Exception on /index.html [GET]
+Traceback (most recent call last):
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 841, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 450, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/ctx.py", line 353, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/werkzeug/routing/map.py", line 624, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 752, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/app.py", line 727, in handle_http_exception
+    return self.ensure_sync(handler)(e)
+  File "/home/vinxenxo/code-workspace/app/__init__.py", line 114, in not_found_error
+    return render_template('errors/404.html'), 404
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/templating.py", line 152, in render_template
+    return _render(app, template, context)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/flask/templating.py", line 133, in _render
+    rv = template.render(context)
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/jinja2/environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/jinja2/environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/vinxenxo/code-workspace/app/templates/errors/404.html", line 3, in top-level template code
+    {% extends 'base.html' %}
+  File "/home/vinxenxo/code-workspace/.venv/lib/python3.8/site-packages/jinja2/environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/vinxenxo/code-workspace/app/templates/base.html", line 686, in template
+    <script src="{{ url_for('static', filename='dist/assets/demo/chart-area-demo.js') }}"></script>
+jinja2.exceptions.TemplateSyntaxError: expected token ',', got 'static'
+2023-12-08 00:42:36,783 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:42:36,783 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:42:36,783 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:42:36,783 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:42:36,784 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-08 00:42:36,784 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:42:36,784 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:42:36,784 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:42:36,784 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:42:36,784 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 00:42:36,785 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 00:42:36,785 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 00:42:36,785 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 00:42:36,785 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 00:42:36,785 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-08 00:42:36,785 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:42:36,785 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:42:36,786 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:42:36,786 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:42:36,786 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:42:36,786 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:42:36,786 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:42:36,786 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:42:36,787 [INFO] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:68 - Admin user admin viewed logs.
+2023-12-08 00:49:39,084 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:49:39,084 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:49:39,084 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:49:39,084 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:49:39,084 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-08 00:49:39,084 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:49:39,084 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:49:39,084 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:49:39,085 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:49:39,086 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 00:49:39,086 [INFO] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:68 - Admin user admin viewed logs.
+2023-12-08 00:53:41,338 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+2023-12-08 00:55:56,782 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+2023-12-08 01:00:42,922 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:00:42,923 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:00:42,923 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:00:42,923 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:00:42,924 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-08 01:00:42,924 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:00:42,924 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:00:42,925 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:00:42,925 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:00:42,925 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:00:42,925 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:00:42,926 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:00:42,926 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:00:42,926 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:00:42,927 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-08 01:00:42,927 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:00:42,927 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:00:42,927 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:00:42,928 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:00:42,928 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:00:42,928 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:00:42,928 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:00:42,929 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:00:42,929 [INFO] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:68 - Admin user admin viewed logs.
+2023-12-08 01:02:34,124 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:02:34,125 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:02:34,125 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:02:34,126 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:02:34,126 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-08 01:02:34,127 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:02:34,127 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:02:34,127 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:02:34,128 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:02:34,128 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:02:34,128 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:02:34,128 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:02:34,129 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:02:34,129 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:02:34,129 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-08 01:02:34,130 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:02:34,130 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:02:34,130 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:02:34,130 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:02:34,131 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:02:34,131 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:02:34,131 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:02:34,132 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:02:34,132 [INFO] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:68 - Admin user admin viewed logs.
+2023-12-08 01:13:14,468 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+2023-12-08 01:32:50,422 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:32:50,422 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:32:50,422 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:32:50,423 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:32:50,423 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-08 01:32:50,423 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:32:50,423 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:32:50,424 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:32:50,424 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:32:50,424 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:32:50,424 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:32:50,424 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:32:50,424 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:32:50,425 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:32:50,425 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-08 01:32:50,425 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:32:50,425 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:32:50,425 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:32:50,425 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:32:50,426 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:32:50,426 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:32:50,426 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:32:50,426 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:32:50,426 [INFO] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:68 - Admin user admin viewed logs.
+2023-12-08 01:44:07,528 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:44:07,528 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:24,008 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:15,263 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:16,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:17,792 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:19,199 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:48:26,654 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:44:07,529 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:15,072 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:44:07,530 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:29,720 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:44:07,530 [WARNING] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:35 - Invalid log entry format: 2023-12-06 23:49:33,449 [ERROR] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:25 - Log file not found: app.log
+
+2023-12-08 01:44:07,530 [INFO] /home/vinxenxo/code-workspace/app/controllers/admin_controllers.py:68 - Admin user admin viewed logs.
+2023-12-08 01:56:55,900 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+2023-12-08 01:57:47,020 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+2023-12-08 01:58:05,210 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
