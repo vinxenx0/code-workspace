@@ -9,11 +9,59 @@
         <title>Dashboard</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/styles.css') }}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+       
        
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
        
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-      
+
+        <style>
+            .sb-sidenav-light, .navbar-light .bg-light {
+                background-color: #005b72!important;
+               
+            }
+
+            .sb-sidenav-light .sb-sidenav-menu .nav-link {
+                color: #f9b000;
+            }
+            .sb-sidenav-light .sb-sidenav-menu .nav-link:hover,
+            .sb-sidenav-light .sb-sidenav-menu .nav-link .sb-nav-link-icon {
+                color: #fff;
+            }
+
+            .sb-sidenav-light .sb-sidenav-menu .nav-link.active {
+                color: #fff;
+                font-weight: bolder;
+            }
+
+            .sb-sidenav-light .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
+                color: #fff;
+            }
+
+            .sb-sidenav-light .sb-sidenav-footer {
+                background-color: #f9b000;
+                color: #000;
+            }
+
+            .btn-primary {
+                color: #000;
+                background-color: #f9b000;
+                border-color: #f9b000;
+            }
+
+            .form-check-input:checked {
+                    background-color: #f9b000;
+                    border-color: #f9b000;
+            }
+
+            h1,h2,h3,h4, legend {
+                    color: #005b72 !important;
+                    font-weight: bolder;
+            }
+
+          </style>
+      <!--  #005b72 #f9b000 -->
 
     </head>
     <body class="sb-nav-fixed">
@@ -21,7 +69,9 @@
         <!-- Info Bar -->
         <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="/">MC Mutua</a>
+            <a class="navbar-brand ps-3" href="/">
+                <img src="{{ url_for('static', filename='images/logo_MC.png') }}" alt="MC Mutua" />
+            </a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 
@@ -55,11 +105,20 @@
                        <button type="submit" class="btn btn-primary">PDF</button>
                   </form>
                 </div>
+                <div class="pdf-btn me-3">
+                    <form action="#" method="post">
+                         <button type="submit" class="btn btn-primary">EMAIL</button>
+                    </form>
+                </div>
+                <div class="pdf-btn me-3">
+                    <form action="#" method="post">
+                         <button type="submit" class="btn btn-primary">CSV</button>
+                    </form>
+                </div>
             </div>
-            <ul class="navbar-nav d-none d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
-                <li class="nav-item align-items-center">
-                    <strong>{{ current_user.username }}</strong>
-                </li>
+            
+            <ul class="navbar-nav d-none d-md-inline-block ms-auto me-0">
+                <li><a class="nav-item" href="{{ url_for('logout') }}">{{ current_user.username }}(<strong>Salir</strong>)</a></li>
             </ul>
             
         </nav>
@@ -72,27 +131,20 @@
                         <div class="nav">
                             
                             <div class="sb-sidenav-menu-heading">Informes</div>
-                            <a class="nav-link" href="/">
+                            <a class="nav-link {% if request.endpoint == 'index' %} active {% endif %}" href="/">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-simple"></i></div>
                                 Resumen
                             </a>  
-                            <a class="nav-link" href="/">
+                            <a class="nav-link {% if request.endpoint == 'consultas' %} active {% endif %}" href="{{ url_for('consultas') }}">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-                                Consultas
+                                Informes
                             </a>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMejoras" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fa-solid fa-comments"></i></i></i></div>
+                            <a class="nav-link {% if request.endpoint == 'mejoras' %} active {% endif %}" href="{{ url_for('mejoras') }}">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-comments"></i></div>
                                 Sugerencias
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseMejoras" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="#">Posicionamiento</a>
-                                    <a class="nav-link" href="#">Accesibilidad</a>
-                                    <a class="nav-link" href="#">Usabilidad</a>
-                                    <a class="nav-link" href="#">Otros</a>
-                                </nav>
-                            </div>
+
+                            <!--
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-inbox"></i></div>
                                 Históricos
@@ -105,7 +157,7 @@
                                     <a class="nav-link" href="#">Años</a>
                                 </nav>
                             </div>
-                            
+                            -->
                             <!--
                             <a class="nav-link" href="/">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
@@ -115,26 +167,26 @@
 
                             {% if is_admin() or current_user.role == 'superadmin'  %}
                             <div class="sb-sidenav-menu-heading">Herramientas</div>
-                            
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRanks" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                SEO
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseRanks" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="#">Salud</a>
-                                    <a class="nav-link" href="#">Posicionamiento</a>
-                                    <a class="nav-link" href="#">Palabras Clave</a>
-                                    <a class="nav-link" href="#">Tráfico Organico</a>
-                                    <a class="nav-link" href="#">Competencia</a>
-                                    <a class="nav-link" href="#">Backlinks</a>
-                                    <a class="nav-link" href="#">Indexación</a>
-                                    <a class="nav-link" href="#">Velocidad</a>
-                                                
-                                </nav>
-                            </div>
-                            
+  
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRanks" aria-expanded="false" aria-controls="collapseLayouts">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                    SEO
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+
+                                <div class="collapse" id="collapseRanks" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link {% if request.endpoint == 'seo_health_check' %} active {% endif %}" href="{{ url_for('seo_health_check') }}">Salud</a>
+                                    <a class="nav-link {% if request.endpoint == 'seo_posicionamiento' %} active {% endif %}" href="{{ url_for('seo_posicionamiento') }}">Posicionamiento</a>
+                                    <a class="nav-link {% if request.endpoint == 'seo_keywords' %} active {% endif %}" href="{{ url_for('seo_keywords') }}">Palabras Clave</a>
+                                    <a class="nav-link {% if request.endpoint == 'seo_traffic' %} active {% endif %}" href="{{ url_for('seo_traffic') }}">Tráfico Orgánico</a>
+                                    <a class="nav-link {% if request.endpoint == 'seo_competencia' %} active {% endif %}" href="{{ url_for('seo_competencia') }}">Competencia</a>
+                                    <a class="nav-link {% if request.endpoint == 'seo_backlinks' %} active {% endif %}" href="{{ url_for('seo_backlinks') }}">Backlinks</a>
+                                    <a class="nav-link {% if request.endpoint == 'seo_indexing' %} active {% endif %}" href="{{ url_for('seo_indexing') }}">Indexación</a>
+                                    <a class="nav-link {% if request.endpoint == 'seo_speed' %} active {% endif %}" href="{{ url_for('seo_speed') }}">Velocidad</a>
+                                    </nav>
+                                </div>
+                  
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSEO" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-thumbs-up"></i></div>
                                 Usabilidad
@@ -142,13 +194,12 @@
                             </a>
                             <div class="collapse" id="collapseSEO" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    
-                                    <a class="nav-link" href="#">Enlaces rotos</a>
-                                    <a class="nav-link" href="#">Navegación</a>
-                                    <a class="nav-link" href="#">Formularios</a>
-                                    <a class="nav-link" href="#">Responsive</a>
-                                    <a class="nav-link" href="#">Fuentes/Colores</a>
-                                    <a class="nav-link" href="#">Estándares w3c</a>
+                                    <a class="nav-link {% if request.endpoint == 'usa_broken_links' %} active {% endif %}" href="{{ url_for('usa_broken_links') }}">Enlaces rotos</a>
+                                    <a class="nav-link {% if request.endpoint == 'usa_nav' %} active {% endif %}" href="{{ url_for('usa_nav') }}">Navegación</a>
+                                    <a class="nav-link {% if request.endpoint == 'usa_form' %} active {% endif %}" href="{{ url_for('usa_form') }}">Formularios</a>
+                                    <a class="nav-link {% if request.endpoint == 'usa_responsive' %} active {% endif %}" href="{{ url_for('usa_responsive') }}">Responsive</a>
+                                    <a class="nav-link {% if request.endpoint == 'usa_font_colors' %} active {% endif %}" href="{{ url_for('usa_font_colors') }}">Fuentes/Colores</a>
+                                    <a class="nav-link {% if request.endpoint == 'usa_w3c' %} active {% endif %}" href="{{ url_for('usa_w3c') }}">Estándares w3c</a>
                                 </nav>
                             </div>
 
@@ -159,14 +210,14 @@
                             </a>
                             <div class="collapse" id="collapseAcce" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="#">Validadores</a>
-                                    <a class="nav-link" href="#">Imágenes</a>
-                                    <a class="nav-link" href="#">Sintaxis</a>
-                                    <a class="nav-link" href="#">Estructura</a>
-                                    <a class="nav-link" href="#">Multimedia</a>
-                                    <a class="nav-link" href="#">Contraste</a>
-                                    <a class="nav-link" href="#">Lectores</a>
-                                    <a class="nav-link" href="#">Compatibilidad</a>
+                                    <a class="nav-link {% if request.endpoint == 'acc_validators' %} active {% endif %}" href="{{ url_for('acc_validators') }}">Validadores</a>
+                                    <a class="nav-link {% if request.endpoint == 'acc_images' %} active {% endif %}" href="{{ url_for('acc_images') }}">Imágenes</a>
+                                    <a class="nav-link {% if request.endpoint == 'acc_sintax' %} active {% endif %}" href="{{ url_for('acc_sintax') }}">Sintaxis</a>
+                                    <a class="nav-link {% if request.endpoint == 'acc_structure' %} active {% endif %}" href="{{ url_for('acc_structure') }}">Estructura</a>
+                                    <a class="nav-link {% if request.endpoint == 'acc_media' %} active {% endif %}" href="{{ url_for('acc_media') }}">Multimedia</a>
+                                    <a class="nav-link {% if request.endpoint == 'acc_contraste' %} active {% endif %}" href="{{ url_for('acc_contraste') }}">Contraste</a>
+                                    <a class="nav-link {% if request.endpoint == 'acc_lectores' %} active {% endif %}" href="{{ url_for('acc_lectores') }}">Lectores</a>
+                                    <a class="nav-link {% if request.endpoint == 'acc_comp' %} active {% endif %}" href="{{ url_for('acc_comp') }}">Compatibilidad</a>
                                     
                                     
                                 </nav>
@@ -180,9 +231,9 @@
                             </a>
                             <div class="collapse" id="collapseIdiomas" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="#">Español</a>
-                                    <a class="nav-link" href="#">Ingles</a>
-                                    <a class="nav-link" href="#">Catalán</a>
+                                    <a class="nav-link {% if request.endpoint == 'dicc_spanish' %} active {% endif %}" href="{{ url_for('dicc_spanish') }}">Español</a>
+                                    <a class="nav-link {% if request.endpoint == 'dicc_english' %} active {% endif %}" href="{{ url_for('dicc_english') }}">Ingles</a>
+                                    <a class="nav-link {% if request.endpoint == 'dicc_catalan' %} active {% endif %}" href="{{ url_for('dicc_catalan') }}">Catalán</a>
                     
                                 </nav>
                             </div>     
@@ -196,16 +247,15 @@
                             </a>
                             <div class="collapse" id="collapseMonitores" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="#">Dominios</a>
-                                    <a class="nav-link" href="#">SPAM/BLs</a>
-                                    <a class="nav-link" href="#">Reputación</a>
-                                    <a class="nav-link" href="#">GDPR/LSSI</a>
-                                    <a class="nav-link" href="#">Textos Legales</a>
-                                    <a class="nav-link" href="#">Propiedad intelectual</a>
+                                    <a class="nav-link {% if request.endpoint == 'diag_domains' %} active {% endif %}" href="{{ url_for('diag_domains') }}">Dominios</a>
+                                    <a class="nav-link {% if request.endpoint == 'diag_spam' %} active {% endif %}"  href="{{ url_for('diag_spam') }}">SPAM/BLs</a>
+                                    <a class="nav-link {% if request.endpoint == 'diag_gdpr' %} active {% endif %}" href="{{ url_for('diag_gdpr') }}">GDPR/LSSI</a>
+                                    <a class="nav-link {% if request.endpoint == 'diag_textos_legales' %} active {% endif %}" href="{{ url_for('diag_textos_legales') }}">Textos Legales</a>
+                                    <a class="nav-link {% if request.endpoint == 'diag_copyright' %} active {% endif %}" href="{{ url_for('diag_copyright') }}">Propiedad intelectual</a>
                                 </nav>
                             </div>
 
-                            <a class="nav-link" href="/">
+                            <a class="nav-link" href="{{ url_for('tools_config') }}">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
                                 Configuración
                             </a>
@@ -219,12 +269,12 @@
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
                                 Usuarios
                             </a>
-
+                            <!--
                             <a class="nav-link" href="{{ url_for('services') }}">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-server"></i></div>
                                 Nube
                             </a>
-                            <!-- 
+                             
                             <a class="nav-link" href="{{ url_for('view_logs') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Logs
@@ -240,7 +290,7 @@
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
-                        <div class="small">{{ current_user.username }} login as
+                        <div class="small">Bienvenido
                             <ul class="navbar-nav d-none d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i><strong>{{ current_user.username }}</strong></a>
@@ -264,20 +314,7 @@
 
                     <div class="container-fluid px-4">
 
-                        <div>
-                            <p class="text-center">
-                            <!-- alert box -->
-                            {% with messages = get_flashed_messages(with_categories=true) %}
-                                {% if messages %}
-                                {% for category, message in messages %}
-                                    <div class="alert alert-{{ category }}">
-                                    {{ message }}
-                                    </div>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endwith %}
-                            </p>
-                        </div>
+                        
 
                         <!-- <div>
                             <ol class="breadcrumb mb-4">
@@ -286,24 +323,46 @@
                             </ol>
                         </div>
                         -->
-                        {% block content %}{% endblock %}
+                        <div class="card mt-5">
+                            <div class="card-body">
+                                <div>
+                                    <p class="text-center">
+                                    <!-- alert box -->
+                                    {% with messages = get_flashed_messages(with_categories=true) %}
+                                        {% if messages %}
+                                        {% for category, message in messages %}
+                                            <div class="alert alert-{{ category }}">
+                                            {{ message }}
+                                            </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endwith %}
+                                    </p>
+                                </div>
+
+                                {% block content %}{% endblock %}
+                            </div>
+                        </div>
 
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                            <div class="text-muted">Copyright &copy; MC-Mutual 2023</div>
                             <div>
-                                <a href="#">Privacy Policy</a>
+                                <a href="#">Aviso Legal</a>
                                 &middot;
-                                <a href="#">Terms &amp; Conditions</a>
+                                <a href="#">Términos &amp; Condiciones</a>
                             </div>
                         </div>
                     </div>
                 </footer>
             </div>
         </div>
+        
+        
+         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         
         <script src="{{ url_for('static', filename='dist/js/scripts.js') }}"></script>
@@ -311,5 +370,35 @@
         <script src="{{ url_for('static', filename='dist/assets/demo/chart-bar-demo.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="{{ url_for('static', filename='dist/js/datatables-simple-demo.js') }}"></script>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+              // Recuperar el estado del collapse del localStorage para cada elemento colapsable
+              var collapseStates = JSON.parse(localStorage.getItem('collapseStates')) || {};
+          
+              // Iterar sobre cada collapse y aplicar el estado correspondiente
+              Object.keys(collapseStates).forEach(function (collapseId) {
+                if (collapseStates[collapseId]) {
+                  $('#' + collapseId).addClass('show');
+                }
+              });
+          
+              // Manejar eventos del collapse para actualizar el localStorage
+              $('.collapse').on('show.bs.collapse', function () {
+                var collapseId = $(this).attr('id');
+                collapseStates[collapseId] = true;
+                localStorage.setItem('collapseStates', JSON.stringify(collapseStates));
+              });
+          
+              $('.collapse').on('hide.bs.collapse', function () {
+                var collapseId = $(this).attr('id');
+                collapseStates[collapseId] = false;
+                localStorage.setItem('collapseStates', JSON.stringify(collapseStates));
+              });
+            });
+          </script>
+
     </body>
 </html>

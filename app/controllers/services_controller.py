@@ -7,6 +7,7 @@ from app import app
 # Define service states
 SERVICE_STATES = {'web_server': 'active', 'dns_resolver': 'inactive'}
 
+
 @app.route('/services')
 @login_required
 def services():
