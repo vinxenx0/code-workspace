@@ -1,8 +1,13 @@
 __pycache__
 .venv
+.env
+.git
 .vscode
 .test
-cert.pem
-key.pem
-privkey.pem
-fullchai.pem
+.ssl
+*.pem
+*.cer
+*.key
+*.fullchain
+venv
+env

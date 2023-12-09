@@ -5,4 +5,4 @@ See docs folder util info and scripts for save time with tasks
 
 # Run app
 
-flask --app run run --host=0.0.0.0 --cert=adhoc --debug
+flask --app run run --host=0.0.0.0 --cert=.ssl/cert.pem --key=.ssl/privkey.pem --debug
