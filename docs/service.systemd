@@ -1,0 +1,27 @@
+sudo nano /etc/systemd/system/my_flask_app.service
+
+
+[Unit]
+Description=MC Mutua frontend
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/var/www/html/code-workspace
+ExecStart=flask --app run run --host=0.0.0.0 --cert=adhoc --debug
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
+sudo systemctl daemon-reload
+
+sudo systemctl enable my_flask_app.service
+
+sudo systemctl start my_flask_app.service
+
+sudo systemctl status my_flask_app.service
+
+journalctl -u my_flask_app.service

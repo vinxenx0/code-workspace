@@ -25,11 +25,11 @@ def login():
             if user.role not in ['admin', 'superadmin']:
                 return redirect(url_for('admin'))
             next_page = request.args.get('next')
-            flash('Login successful!', 'success')
-            logger.info(f"User {user.username} logged in successfully.")
+            flash('Acceso correcto!', 'success')
+            logger.info(f"Usuario {user.username} se ha identificado.")
             return redirect(next_page) if next_page else redirect(url_for('index'))
         else:
-            flash('Login failed. Check your email and password.', 'danger')
+            flash('Acceso fallido, comprueba email y contraseña.', 'danger')
             logger.error("Invalid login attempt.")
     return render_template('user/login.html', form=form)
 
@@ -37,7 +37,7 @@ def login():
 @login_required
 def admin():
     if current_user.role not in ['admin', 'superadmin']:
-        flash(_('You do not have permission to access this page.'), 'danger')
+        flash(_('No tienes permisos para acceder a esta pagina..'), 'danger')
         return redirect(url_for('index'))
     
     # Your admin-specific logic here
@@ -88,7 +88,7 @@ def user_profile(user_id):
     if current_user.is_authenticated and (current_user == user or current_user.role == 'admin' or current_user.role == 'superadmin'):
         return render_template('user/profile.html', user=user)
     else:
-        flash('Permission denied. You can only view your own profile.', 'danger')
+        flash('Permiso denegado. Solo puede ver tu propio perfil.', 'danger')
         return redirect(url_for('index'))
 
 
@@ -96,7 +96,7 @@ def user_profile(user_id):
 @login_required
 def add_user():
     if current_user.role not in ['admin', 'superadmin']:
-        flash('Permission denied. Only admins can add users.', 'danger')
+        flash('Solo administradores pueden añadir usuarios.', 'danger')
         return redirect(url_for('index'))
 
     form = UserProfileForm()
@@ -105,7 +105,7 @@ def add_user():
         new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, role=form.role.data)
         db.session.add(new_user)
         db.session.commit()
-        flash('User added successfully!', 'success')
+        flash('Usuario nuevo añadido correctamente!', 'success')
         logger.debug(f"User {new_user.username} created.")
         return redirect(url_for('admin'))
     return render_template('user/add.html', form=form)
@@ -133,7 +133,7 @@ def edit_user(user_id):
         # Check if the new username is unique before updating
         new_username = form.username.data
         if new_username != user.username and User.query.filter_by(username=new_username).first():
-            flash('Username already exists. Please choose a different username.', 'danger')
+            flash('Ese nombre ya existe, elije otro.', 'danger')
             return render_template('user/edit.html', form=form, user=user)
 
         # Update the user object with the form data
@@ -142,11 +142,11 @@ def edit_user(user_id):
 
         try:
             db.session.commit()
-            flash('User updated successfully!', 'success')
+            flash('Usuario actualizado correctamente', 'success')
             return redirect(url_for('admin'))
         except IntegrityError as e:
             db.session.rollback()
-            flash('An error occurred while updating the user. Please try again.', 'danger')
+            flash('Ha ocurrido un error, intentalo de nuevo.', 'danger')
             app.logger.error(f"IntegrityError during user update: {e}")
 
     return render_template('user/edit.html', form=form, user=user)
@@ -159,7 +159,7 @@ def delete_user(user_id):
     if request.method == 'POST':
         db.session.delete(user)
         db.session.commit()
-        flash('User deleted successfully!', 'success')
+        flash('Usuario borrado correctamente', 'success')
         return redirect(url_for('admin'))
     return render_template('user/delete.html', user=user)
 

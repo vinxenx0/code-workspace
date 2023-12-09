@@ -28,7 +28,7 @@
             <!-- Navbar-->
             <div class="container-fluid">
                 <div class="d-flex justify-content-between align-items-center w-100">
-                    <!-- Navbar Search-->
+                    <!-- Navbar Search
                     <div class="me-auto">
                         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                             <div class="input-group">
@@ -36,29 +36,29 @@
                                 <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                             </div>
                         </form>
-                    </div>
+                    </div> -->
+                    <!-- PDF 
                     <div class="d-flex">
-                        <!-- Language Selector -->
-                        <div class="language-selector me-3">
-                          <form action="{{ url_for('set_locale') }}" method="post">
-                              <select name="language" onchange="this.form.submit()">
-                                  <option value="en" {% if g.get('locale', 'en') == 'en' %}selected{% endif %}>English</option>
-                                  <option value="es" {% if g.get('locale', 'en') == 'es' %}selected{% endif %}>Español</option>
-                              </select>
+                        <div class="pdf-btn me-3">
+                          <form action="#" method="post">
+                               <button type="submit" class="btn btn-primary">Generar PDF</button>
                           </form>
                         </div>
                     </div>
+                    -->
+                </div>
+            </div>
+            <!-- PDF -->
+            <div class="d-flex">
+                <div class="pdf-btn me-3">
+                  <form action="#" method="post">
+                       <button type="submit" class="btn btn-primary">PDF</button>
+                  </form>
                 </div>
             </div>
             <ul class="navbar-nav d-none d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i>Welcome, <strong>{{ current_user.username }}</strong>!</a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ url_for('user_profile', user_id=current_user.id) }}">Perfil</a></li>
-                        <li><a class="dropdown-item" href="#!">Ajustes</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Salir</a></li>
-                    </ul>
+                <li class="nav-item align-items-center">
+                    <strong>{{ current_user.username }}</strong>
                 </li>
             </ul>
             
@@ -73,31 +73,36 @@
                             
                             <div class="sb-sidenav-menu-heading">Informes</div>
                             <a class="nav-link" href="/">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-simple"></i></div>
                                 Resumen
+                            </a>  
+                            <a class="nav-link" href="/">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                Consultas
                             </a>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMejoras" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Mejoras
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-comments"></i></i></i></div>
+                                Sugerencias
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseMejoras" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">In/Off page</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Keywords</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">LInks</a>
+                                    <a class="nav-link" href="#">Posicionamiento</a>
+                                    <a class="nav-link" href="#">Accesibilidad</a>
+                                    <a class="nav-link" href="#">Usabilidad</a>
+                                    <a class="nav-link" href="#">Otros</a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Archivo
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-inbox"></i></div>
+                                Históricos
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseArchivo" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Semanas</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Meses</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Años</a>
+                                    <a class="nav-link" href="#">Semanas</a>
+                                    <a class="nav-link" href="#">Meses</a>
+                                    <a class="nav-link" href="#">Años</a>
                                 </nav>
                             </div>
                             
@@ -109,109 +114,116 @@
                             -->
 
                             {% if is_admin() or current_user.role == 'superadmin'  %}
-                            <div class="sb-sidenav-menu-heading">Diagnosticos</div>
+                            <div class="sb-sidenav-menu-heading">Herramientas</div>
                             
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRanks" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                SEO
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseRanks" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="#">Salud</a>
+                                    <a class="nav-link" href="#">Posicionamiento</a>
+                                    <a class="nav-link" href="#">Palabras Clave</a>
+                                    <a class="nav-link" href="#">Tráfico Organico</a>
+                                    <a class="nav-link" href="#">Competencia</a>
+                                    <a class="nav-link" href="#">Backlinks</a>
+                                    <a class="nav-link" href="#">Indexación</a>
+                                    <a class="nav-link" href="#">Velocidad</a>
+                                                
+                                </nav>
+                            </div>
                             
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSEO" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                SEO
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-thumbs-up"></i></div>
+                                Usabilidad
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseSEO" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="login.html">Marcado</a>
-                                    <a class="nav-link" href="register.html">meta-tags</a>
-                                    <a class="nav-link" href="password.html">Enlaces rotos</a>
-                                    <a class="nav-link" href="500.html">Imágenes</a>
-                                    <a class="nav-link" href="500.html">Atributos</a>
+                                    
+                                    <a class="nav-link" href="#">Enlaces rotos</a>
+                                    <a class="nav-link" href="#">Navegación</a>
+                                    <a class="nav-link" href="#">Formularios</a>
+                                    <a class="nav-link" href="#">Responsive</a>
+                                    <a class="nav-link" href="#">Fuentes/Colores</a>
+                                    <a class="nav-link" href="#">Estándares w3c</a>
                                 </nav>
                             </div>
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAcce" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-wheelchair fa-fw"></i></div>
                                 Accesibilidad
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseAcce" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="401.html">Test WAI AAA</a>
-                                    <a class="nav-link" href="404.html">Colores</a>
-                                    <a class="nav-link" href="500.html">Contraste</a>
-                                    <a class="nav-link" href="500.html">Tamaño</a>
+                                    <a class="nav-link" href="#">Validadores</a>
+                                    <a class="nav-link" href="#">Imágenes</a>
+                                    <a class="nav-link" href="#">Sintaxis</a>
+                                    <a class="nav-link" href="#">Estructura</a>
+                                    <a class="nav-link" href="#">Multimedia</a>
+                                    <a class="nav-link" href="#">Contraste</a>
+                                    <a class="nav-link" href="#">Lectores</a>
+                                    <a class="nav-link" href="#">Compatibilidad</a>
+                                    
+                                    
                                 </nav>
                             </div>
                           
                            
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseIdiomas" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Idiomas
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-book-atlas"></i></div>
+                                Diccionarios
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseIdiomas" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="401.html">Español</a>
-                                    <a class="nav-link" href="404.html">Ingles</a>
-                                    <a class="nav-link" href="500.html">Catalá</a>
+                                    <a class="nav-link" href="#">Español</a>
+                                    <a class="nav-link" href="#">Ingles</a>
+                                    <a class="nav-link" href="#">Catalán</a>
                     
                                 </nav>
                             </div>     
 
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRanks" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Rankings
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseRanks" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Palabras clave</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Búsquedas</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Trafico</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Medios</a>
-                                </nav>
-                            </div>
+                            
                            
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMonitores" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Monitor
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-stethoscope"></i></div>
+                                Diagnosticos
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseMonitores" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Website</a>
-                                    <a class="nav-link" href="layout-static.html">SPAM/BLs</a>
-                                    <a class="nav-link" href="layout-static.html">Reputación</a>
-                                    <a class="nav-link" href="layout-static.html">Marcas</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">GDPR/LSSI</a>
-                                    <a class="nav-link" href="layout-static.html">Texto Legal</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Propiedad intelectual</a>
+                                    <a class="nav-link" href="#">Dominios</a>
+                                    <a class="nav-link" href="#">SPAM/BLs</a>
+                                    <a class="nav-link" href="#">Reputación</a>
+                                    <a class="nav-link" href="#">GDPR/LSSI</a>
+                                    <a class="nav-link" href="#">Textos Legales</a>
+                                    <a class="nav-link" href="#">Propiedad intelectual</a>
                                 </nav>
                             </div>
+
+                            <a class="nav-link" href="/">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
+                                Configuración
+                            </a>
                             
                             {% endif %}
           
                             {% if current_user.role == 'superadmin' %}
                             <div class="sb-sidenav-menu-heading">Sistema</div>
-                            
-                            <a class="nav-link" href="{{ url_for('services') }}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Salud
-                            </a>
 
                             <a class="nav-link btn-link btn me-3" href="{{ url_for('list_users') }}">
-                                <i class="fas fa-user fa-fw"></i></i> Usuarios
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
+                                Usuarios
                             </a>
-                            
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts3" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Diccionarios
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+
+                            <a class="nav-link" href="{{ url_for('services') }}">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-server"></i></div>
+                                Nube
                             </a>
-                            <div class="collapse" id="collapseLayouts3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Español</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Catalá</a>
-                                </nav>
-                            </div>
                             <!-- 
                             <a class="nav-link" href="{{ url_for('view_logs') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -228,21 +240,33 @@
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
-                        <div class="small">{{ current_user.username }} login as</div>
-                        {{ current_user.role }}
+                        <div class="small">{{ current_user.username }} login as
+                            <ul class="navbar-nav d-none d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i><strong>{{ current_user.username }}</strong></a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item" href="{{ url_for('user_profile', user_id=current_user.id) }}">Perfil</a></li>
+                                        <li><a class="dropdown-item" href="#!">Ajustes</a></li>
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Salir</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </nav>
             </div>
             {% endif %}
             <div id="layoutSidenav_content">
                 <main>
-                    <!-- alert box -->
+                    
                     
 
                     <div class="container-fluid px-4">
 
                         <div>
                             <p class="text-center">
+                            <!-- alert box -->
                             {% with messages = get_flashed_messages(with_categories=true) %}
                                 {% if messages %}
                                 {% for category, message in messages %}

@@ -4,38 +4,48 @@
 
 {% block content %}
 
-    <h2>Login</h2>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    <form method="POST" action="{{ url_for('login') }}">
-        {{ form.csrf_token }}
-        <div class="form-group">
-            <label for="email">Email:</label>
-            {{ form.email(class="form-control", placeholder="Enter email") }}
-            {% for error in form.email.errors %}
-                <span class="text-danger">{{ error }}</span>
-            {% endfor %}
+<div class="justify-content-center">
+    <div class="col-lg-4">
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+            <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}   
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('login') }}">
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        {{ form.email(class="form-control", placeholder="correo electronico") }}
+                        {% for error in form.email.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        {{ form.password(class="form-control", placeholder="contraseña") }}
+                        {% for error in form.password.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group form-check">
+                        {{ form.remember(class="form-check-input") }}
+                        <label class="form-check-label" for="remember">Recordarme</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3">
+                <div class="small"><a href="#">Problemas para entrar?</a></div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            {{ form.password(class="form-control", placeholder="Enter password") }}
-            {% for error in form.password.errors %}
-                <span class="text-danger">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div class="form-group form-check">
-            {{ form.remember(class="form-check-input") }}
-            <label class="form-check-label" for="remember">Remember me</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-    </form>
-
+    </div>
+</div>
 {% endblock %}
-

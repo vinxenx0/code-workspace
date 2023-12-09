@@ -7,14 +7,14 @@
             {{ form.csrf_token }}
             <div class="form-group">
                 <label for="username">Username:</label>
-                {{ form.username(class="form-control", placeholder="Enter username") }}
+                {{ form.username(class="form-control", placeholder="nombre usuario") }}
                 {% for error in form.username.errors %}
                     <span class="text-danger">{{ error }}</span>
                 {% endfor %}
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                {{ form.email(class="form-control", placeholder="Enter email") }}
+                {{ form.email(class="form-control", placeholder="correo electronico") }}
                 {% for error in form.email.errors %}
                     <span class="text-danger">{{ error }}</span>
                 {% endfor %}
@@ -27,8 +27,8 @@
                 {{ form.language.label(class="form-control-label") }}
                 {{ form.language(class="form-control") }}
             </div>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
         </form>
-        <a href="{{ url_for('list_users') }}" class="btn btn-secondary mt-3">Back to List</a>
+        <a href="{{ url_for('list_users') }}" class="btn btn-secondary mt-3">Volver al listado</a>
 
 {% endblock %}

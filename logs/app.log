@@ -707,3 +707,9 @@ jinja2.exceptions.TemplateSyntaxError: expected token ',', got 'static'
 2023-12-08 02:32:30,786 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
 2023-12-08 02:34:33,044 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
 2023-12-08 02:36:07,240 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+2023-12-08 11:15:09,516 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+2023-12-08 20:10:51,327 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - User admin logged in successfully.
+2023-12-08 20:53:52,041 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - Usuario admin se ha identificado.
+2023-12-08 20:59:13,235 [ERROR] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:33 - Invalid login attempt.
+2023-12-08 20:59:50,076 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - Usuario admin se ha identificado.
+2023-12-08 21:03:01,003 [INFO] /home/vinxenxo/code-workspace/app/controllers/user_controller.py:29 - Usuario admin se ha identificado.
