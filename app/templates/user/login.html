@@ -1,6 +1,5 @@
 <!-- app/templates/user/login.html -->
 {% extends 'base.html' %}
-
 {% block content %}
                         <div class="col-lg-4">
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
@@ -8,20 +7,24 @@
                                     <img src="/static/images/logo_MC.png" alt="MC Mutua" />
                                 </div>
                                 <div class="card-body">
-                                    <form method="POST" action="/login">
-                                        <input id="csrf_token" name="csrf_token" type="hidden" value="ImE4ZjBkMGFkMWQ1YjBjMzhhMmRiM2Y0YTViYjdhNDVhNzg0ZmMxNmIi.ZXTeXg.c25ULT7BYCFq8YEO9DObRvLhWOY">
+                                    <form method="POST" action="{{ url_for('login') }}">
+                                        {{ form.csrf_token }}
                                         <div class="form-group">
                                             <label for="email">Email:</label>
-                                            <input class="form-control" id="email" name="email" placeholder="correo electronico" required type="text" value="">
-                                            
+                                            {{ form.email(class="form-control", placeholder="correo electronico") }}
+                                            {% for error in form.email.errors %}
+                                                <span class="text-danger">{{ error }}</span>
+                                            {% endfor %}
                                         </div>
                                         <div class="form-group">
                                             <label for="password">Password:</label>
-                                            <input class="form-control" id="password" name="password" placeholder="contraseña" required type="password" value="">
-                                            
+                                            {{ form.password(class="form-control", placeholder="contraseña") }}
+                                            {% for error in form.password.errors %}
+                                                <span class="text-danger">{{ error }}</span>
+                                            {% endfor %}
                                         </div>
                                         <div class="form-group form-check">
-                                            <input class="form-check-input" id="remember" name="remember" type="checkbox" value="y">
+                                            {{ form.remember(class="form-check-input") }}
                                             <label class="form-check-label" for="remember">Recordarme</label>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Entrar</button>
