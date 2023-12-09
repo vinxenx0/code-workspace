@@ -98,13 +98,15 @@
                     -->
                 </div>
             </div>
-            <!-- PDF -->
+            <!-- PDF 
             <div class="d-flex">
+               
                 <div class="pdf-btn me-3">
                   <form action="#" method="post">
                        <button type="submit" class="btn btn-primary">PDF</button>
                   </form>
                 </div>
+                
                 <div class="pdf-btn me-3">
                     <form action="#" method="post">
                          <button type="submit" class="btn btn-primary">EMAIL</button>
@@ -115,12 +117,17 @@
                          <button type="submit" class="btn btn-primary">CSV</button>
                     </form>
                 </div>
+                
             </div>
-            
+            -->
+            <!--
             <ul class="navbar-nav d-none d-md-inline-block ms-auto me-0">
-                <li><a class="nav-item" href="{{ url_for('logout') }}">{{ current_user.username }}(<strong>Salir</strong>)</a></li>
+                <li>
+                    <a class="nav-item" href="{{ url_for('logout') }}">{{ current_user.username }}(<strong>Salir</strong>)</a>
+                </li>
             </ul>
-            
+            -->
+            <a class="nav-item" href="{{ url_for('logout') }}"><strong>Salir</strong></a>
         </nav>
         {% endif %}
         <div id="layoutSidenav">
