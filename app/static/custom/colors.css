@@ -45,3 +45,41 @@ h1,h2,h3,h4, legend {
         color: #005b72 !important;
         font-weight: bolder;
 }
+
+/*
+control form
+*/
+
+
+
+.control-card {
+    max-width: 600px;
+  /* margin: 50px auto; */
+}
+
+.status-icon {
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+.status-text {
+    font-size: 18px;
+}
+
+.control-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.control-buttons button {
+    flex: 1;
+    margin: 0 5px;
+}
+
+.status-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

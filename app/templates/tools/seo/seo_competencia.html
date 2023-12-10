@@ -6,8 +6,182 @@
     
 <h1 class="mt-4">Competencia</h1>
 
+<div class="card control-card mb-4">
+    <div class="card-body">
+        <!-- Status Section -->
+        <div class="mb-3 status-section">
+            <div>
+                <i class="fas fa-info-circle status-icon text-primary"></i>
+                <span class="status-text">Estado: <strong>Activo</strong></span>
+            </div>
+
+            <!-- Last Execution Section -->
+            <div>
+                <i class="fas fa-history status-icon text-success"></i>
+                <span class="status-text">Ultima ejecución: <strong>12 mins</strong></span>
+            </div>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="control-buttons">
+            <button class="btn btn-primary" type="button"><i class="fas fa-play"></i> Start</button>
+            <button class="btn btn-warning" type="button"><i class="fas fa-pause"></i> Pause</button>
+            <button class="btn btn-danger" type="button"><i class="fas fa-stop"></i> Stop</button>
+        </div>
+    </div>
+</div>
+
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item active">Análisis de competidores</li>
 </ol>
+
+<div class="container mt-5">
+    <h1 class="text-center">SEO Competition Dashboard</h1>
+
+    <div class="row">
+        <!-- Organic Traffic Comparison Bar Chart -->
+        <div class="col-md-6 my-4">
+            <h2 class="text-center">Comparativas Tráfico Orgánico</h2>
+            <canvas id="organicTrafficComparisonChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Keyword Rankings Comparison Line Chart -->
+        <div class="col-md-6 my-4">
+            <h2 class="text-center">Ranking palabras clave</h2>
+            <canvas id="keywordRankingsComparisonChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Backlinks Comparison Bar Chart -->
+        <div class="col-md-6 my-4">
+            <h2 class="text-center">Backlinksn</h2>
+            <canvas id="backlinksComparisonChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Page Load Time Comparison Line Chart -->
+        <div class="col-md-6 my-4">
+            <h2 class="text-center">Carga media de página</h2>
+            <canvas id="pageLoadTimeComparisonChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mock SEO competition data (replace with real data)
+    var organicTrafficComparisonData = {
+        labels: ['Site A', 'Site B', 'Site C'],
+        datasets: [{
+            label: 'Organic Traffic',
+            data: [2500, 1800, 2000],
+            backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)'],
+            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+            borderWidth: 1
+        }]
+    };
+
+    var keywordRankingsComparisonData = {
+        labels: ['Keyword 1', 'Keyword 2', 'Keyword 3'],
+        datasets: [{
+            label: 'Site A',
+            data: [2, 5, 8],
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            fill: false
+        }, {
+            label: 'Site B',
+            data: [4, 7, 10],
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            fill: false
+        }, {
+            label: 'Site C',
+            data: [1, 3, 6],
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            fill: false
+        }]
+    };
+
+    var backlinksComparisonData = {
+        labels: ['Site A', 'Site B', 'Site C'],
+        datasets: [{
+            label: 'Internal Backlinks',
+            data: [120, 90, 110],
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }, {
+            label: 'External Backlinks',
+            data: [80, 110, 95],
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    var pageLoadTimeComparisonData = {
+        labels: ['Site A', 'Site B', 'Site C'],
+        datasets: [{
+            label: 'Page Load Time (s)',
+            data: [2.5, 3.2, 2.8],
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            fill: false
+        }]
+    };
+
+    // Chart configurations
+    var organicTrafficComparisonConfig = {
+        type: 'bar',
+        data: organicTrafficComparisonData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    var keywordRankingsComparisonConfig = {
+        type: 'line',
+        data: keywordRankingsComparisonData
+    };
+
+    var backlinksComparisonConfig = {
+        type: 'bar',
+        data: backlinksComparisonData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    stacked: true
+                }
+            }
+        }
+    };
+
+    var pageLoadTimeComparisonConfig = {
+        type: 'line',
+        data: pageLoadTimeComparisonData
+    };
+
+    // Create charts
+    var ctxOrganicTrafficComparison = document.getElementById('organicTrafficComparisonChart').getContext('2d');
+    var organicTrafficComparisonChart = new Chart(ctxOrganicTrafficComparison, organicTrafficComparisonConfig);
+
+    var ctxKeywordRankingsComparison = document.getElementById('keywordRankingsComparisonChart').getContext('2d');
+    var keywordRankingsComparisonChart = new Chart(ctxKeywordRankingsComparison, keywordRankingsComparisonConfig);
+
+    var ctxBacklinksComparison = document.getElementById('backlinksComparisonChart').getContext('2d');
+    var backlinksComparisonChart = new Chart(ctxBacklinksComparison, backlinksComparisonConfig);
+
+    var ctxPageLoadTimeComparison = document.getElementById('pageLoadTimeComparisonChart').getContext('2d');
+    var pageLoadTimeComparisonChart = new Chart(ctxPageLoadTimeComparison, pageLoadTimeComparisonConfig);
+</script>
+
 
 {% endblock %}

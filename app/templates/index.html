@@ -3,7 +3,7 @@
 {% block content %}
         <h1>Resumen</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">últimos 7 dias</li>
+                            <li class="breadcrumb-item active">últimos informes</li>
                         </ol>
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
@@ -56,13 +56,221 @@
                             <div class="col-xl-6">
                                 <div class="card mb-4">
                                     <div class="card-header">
+                                        <i class="fas fa-chart-bar me-1"></i>Horizontal Bar Chart
+                                        <div class="card-body"><canvas id="horizontalBarChart" width="400" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
                                         <i class="fas fa-chart-bar me-1"></i>
                                         Bar Chart Example
                                     </div>
                                     <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
                                 </div>
+                            </div> -->
+                        </div>
+
+                        <div class="container mt-5">
+                            <h1 class="text-center">SEO Dashboard</h1>
+                        
+                            <div class="row">
+                                <!-- Organic Traffic Bar Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Organic Traffic</h2>
+                                    <canvas id="organicTrafficChart" width="400" height="200"></canvas>
+                                </div>
+                        
+                                <!-- Keyword Rankings Doughnut Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Keyword Rankings</h2>
+                                    <canvas id="keywordRankingsChart" width="200" height="200"></canvas>
+                                </div>
+                            </div>
+                        
+                            <div class="row">
+                                <!-- Backlinks Stacked Bar Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Backlinks</h2>
+                                    <canvas id="backlinksChart" width="400" height="200"></canvas>
+                                </div>
+                        
+                                <!-- Page Load Time Doughnut Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Page Load Time</h2>
+                                    <canvas id="pageLoadTimeChart" width="200" height="200"></canvas>
+                                </div>
                             </div>
                         </div>
+                        
+                        <script>
+                            // Mock SEO data (replace with real data)
+                            var organicTrafficData = {
+                                labels: ['January', 'February', 'March', 'April', 'May'],
+                                datasets: [{
+                                    label: 'Organic Traffic',
+                                    data: [1200, 1500, 2000, 1800, 2500],
+                                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            var keywordRankingsData = {
+                                labels: ['Top 3', 'Top 10', 'Top 20'],
+                                datasets: [{
+                                    data: [30, 40, 30],
+                                    backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+                                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            var backlinksData = {
+                                labels: ['January', 'February', 'March', 'April', 'May'],
+                                datasets: [{
+                                    label: 'Internal',
+                                    data: [50, 60, 70, 80, 90],
+                                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    borderWidth: 1
+                                }, {
+                                    label: 'External',
+                                    data: [30, 40, 50, 60, 70],
+                                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            var pageLoadTimeData = {
+                                labels: ['Mobile', 'Desktop'],
+                                datasets: [{
+                                    data: [3, 2],
+                                    backgroundColor: ['rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'],
+                                    borderColor: ['rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            // Chart configurations
+                            var organicTrafficConfig = {
+                                type: 'bar',
+                                data: organicTrafficData,
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            };
+                        
+                            var keywordRankingsConfig = {
+                                type: 'doughnut',
+                                data: keywordRankingsData
+                            };
+                        
+                            var backlinksConfig = {
+                                type: 'bar',
+                                data: backlinksData,
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        },
+                                        x: {
+                                            stacked: true
+                                        }
+                                    }
+                                }
+                            };
+                        
+                            var pageLoadTimeConfig = {
+                                type: 'doughnut',
+                                data: pageLoadTimeData
+                            };
+                        
+                            // Create charts
+                            var ctxOrganicTraffic = document.getElementById('organicTrafficChart').getContext('2d');
+                            var organicTrafficChart = new Chart(ctxOrganicTraffic, organicTrafficConfig);
+                        
+                            var ctxKeywordRankings = document.getElementById('keywordRankingsChart').getContext('2d');
+                            var keywordRankingsChart = new Chart(ctxKeywordRankings, keywordRankingsConfig);
+                        
+                            var ctxBacklinks = document.getElementById('backlinksChart').getContext('2d');
+                            var backlinksChart = new Chart(ctxBacklinks, backlinksConfig);
+                        
+                            var ctxPageLoadTime = document.getElementById('pageLoadTimeChart').getContext('2d');
+                            var pageLoadTimeChart = new Chart(ctxPageLoadTime, pageLoadTimeConfig);
+                        </script>
+
+                        <div class="container mt-5">
+                            <h1 class="text-center">Accessibility KPI Dashboard</h1>
+
+                            <div class="row">
+                                <!-- Overall Accessibility Score Doughnut Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Overall Accessibility Score</h2>
+                                    <canvas id="overallAccessibilityChart" width="200" height="200"></canvas>
+                                </div>
+
+                                <!-- Page Titles KPI -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Page Titles</h2>
+                                    <div class="text-center">
+                                        <h3 class="display-4">85%</h3>
+                                        <p class="lead">Compliance</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!-- Alt Text KPI -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Alt Text</h2>
+                                    <div class="text-center">
+                                        <h3 class="display-4">92%</h3>
+                                        <p class="lead">Compliance</p>
+                                    </div>
+                                </div>
+
+                                <!-- Keyboard Navigation KPI -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Keyboard Navigation</h2>
+                                    <div class="text-center">
+                                        <h3 class="display-4">98%</h3>
+                                        <p class="lead">Compliance</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            // Mock accessibility data (replace with real data)
+                            var overallAccessibilityData = {
+                                labels: ['Compliant', 'Non-Compliant'],
+                                datasets: [{
+                                    data: [85, 15],
+                                    backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+                                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+
+                            // Chart configurations
+                            var overallAccessibilityConfig = {
+                                type: 'doughnut',
+                                data: overallAccessibilityData
+                            };
+
+                            // Create charts
+                            var ctxOverallAccessibility = document.getElementById('overallAccessibilityChart').getContext('2d');
+                            var overallAccessibilityChart = new Chart(ctxOverallAccessibility, overallAccessibilityConfig);
+                        </script>
+
 
                         <div class="row">
                             <div class="col-xl-6">
@@ -85,6 +293,71 @@
                             </div>
                         </div>
                     
+                        <div class="container mt-5">
+                            <h1 class="text-center">Usability KPI Dashboard</h1>
+                        
+                            <div class="row">
+                                <!-- Overall Satisfaction Score Doughnut Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Overall Satisfaction Score</h2>
+                                    <canvas id="overallSatisfactionChart" width="200" height="200"></canvas>
+                                </div>
+                        
+                                <!-- Page Load Time KPI -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Page Load Time</h2>
+                                    <div class="text-center">
+                                        <h3 class="display-4">2.5s</h3>
+                                        <p class="lead">Average Load Time</p>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="row">
+                                <!-- Mobile Responsiveness KPI -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Mobile Responsiveness</h2>
+                                    <div class="text-center">
+                                        <h3 class="display-4">96%</h3>
+                                        <p class="lead">Compliance</p>
+                                    </div>
+                                </div>
+                        
+                                <!-- Bounce Rate KPI -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Bounce Rate</h2>
+                                    <div class="text-center">
+                                        <h3 class="display-4">20%</h3>
+                                        <p class="lead">Average Bounce Rate</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <script>
+                            // Mock usability data (replace with real data)
+                            var overallSatisfactionData = {
+                                labels: ['Satisfied', 'Not Satisfied'],
+                                datasets: [{
+                                    data: [75, 25],
+                                    backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+                                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            // Chart configurations
+                            var overallSatisfactionConfig = {
+                                type: 'doughnut',
+                                data: overallSatisfactionData
+                            };
+                        
+                            // Create charts
+                            var ctxOverallSatisfaction = document.getElementById('overallSatisfactionChart').getContext('2d');
+                            var overallSatisfactionChart = new Chart(ctxOverallSatisfaction, overallSatisfactionConfig);
+                        </script>
+                        
+
                         <div class="row">
                             <div class="col-xl-6">
                                 <div class="card mb-4">
@@ -106,6 +379,132 @@
                             </div>
                         </div>
                     
+                        
+                        <div class="container mt-5">
+                            <h1 class="text-center">Spelling Check Dashboard</h1>
+                        
+                            <div class="row">
+                                <!-- Overall Spelling Accuracy Doughnut Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Overall Spelling Accuracy</h2>
+                                    <canvas id="overallSpellingAccuracyChart" width="200" height="200"></canvas>
+                                </div>
+                        
+                                <!-- Spelling Errors Bar Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Spelling Errors</h2>
+                                    <canvas id="spellingErrorsChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        
+                            <div class="row">
+                                <!-- Spelling Accuracy by Language Doughnut Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Spelling Accuracy by Language</h2>
+                                    <canvas id="spellingAccuracyByLanguageChart" width="200" height="200"></canvas>
+                                </div>
+                        
+                                <!-- Spelling Errors by Language Bar Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Spelling Errors by Language</h2>
+                                    <canvas id="spellingErrorsByLanguageChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <script>
+                            // Mock spelling check data (replace with real data)
+                            var overallSpellingAccuracyData = {
+                                labels: ['Correct', 'Incorrect'],
+                                datasets: [{
+                                    data: [95, 5],
+                                    backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+                                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            var spellingErrorsData = {
+                                labels: ['Spanish', 'English', 'Catalan'],
+                                datasets: [{
+                                    label: 'Spelling Errors',
+                                    data: [20, 15, 10],
+                                    backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+                                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            var spellingAccuracyByLanguageData = {
+                                labels: ['Spanish', 'English', 'Catalan'],
+                                datasets: [{
+                                    data: [92, 98, 95],
+                                    backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+                                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            var spellingErrorsByLanguageData = {
+                                labels: ['Spanish', 'English', 'Catalan'],
+                                datasets: [{
+                                    label: 'Spelling Errors',
+                                    data: [10, 8, 5],
+                                    backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+                                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            // Chart configurations
+                            var overallSpellingAccuracyConfig = {
+                                type: 'doughnut',
+                                data: overallSpellingAccuracyData
+                            };
+                        
+                            var spellingErrorsConfig = {
+                                type: 'bar',
+                                data: spellingErrorsData,
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            };
+                        
+                            var spellingAccuracyByLanguageConfig = {
+                                type: 'doughnut',
+                                data: spellingAccuracyByLanguageData
+                            };
+                        
+                            var spellingErrorsByLanguageConfig = {
+                                type: 'bar',
+                                data: spellingErrorsByLanguageData,
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            };
+                        
+                            // Create charts
+                            var ctxOverallSpellingAccuracy = document.getElementById('overallSpellingAccuracyChart').getContext('2d');
+                            var overallSpellingAccuracyChart = new Chart(ctxOverallSpellingAccuracy, overallSpellingAccuracyConfig);
+                        
+                            var ctxSpellingErrors = document.getElementById('spellingErrorsChart').getContext('2d');
+                            var spellingErrorsChart = new Chart(ctxSpellingErrors, spellingErrorsConfig);
+                        
+                            var ctxSpellingAccuracyByLanguage = document.getElementById('spellingAccuracyByLanguageChart').getContext('2d');
+                            var spellingAccuracyByLanguageChart = new Chart(ctxSpellingAccuracyByLanguage, spellingAccuracyByLanguageConfig);
+                        
+                            var ctxSpellingErrorsByLanguage = document.getElementById('spellingErrorsByLanguageChart').getContext('2d');
+                            var spellingErrorsByLanguageChart = new Chart(ctxSpellingErrorsByLanguage, spellingErrorsByLanguageConfig);
+                        </script>
+                        
 
 
                     <div class="row">
@@ -638,7 +1037,7 @@
 <script>
     // Sample data for different types of charts
     var horizontalBarChartData = {
-        labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'],
+        labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4'],
         datasets: [{
             label: 'Dataset 1',
             data: [12, 19, 3, 5, 2],
