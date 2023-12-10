@@ -1,0 +1,47 @@
+@charset "UTF-8";
+/*!
+* corporate colors
+ */
+
+ .sb-sidenav-light, .navbar-light .bg-light {
+    background-color: #005b72!important;
+   
+}
+
+.sb-sidenav-light .sb-sidenav-menu .nav-link {
+    color: #f9b000;
+}
+.sb-sidenav-light .sb-sidenav-menu .nav-link:hover,
+.sb-sidenav-light .sb-sidenav-menu .nav-link .sb-nav-link-icon {
+    color: #fff;
+}
+
+.sb-sidenav-light .sb-sidenav-menu .nav-link.active {
+    color: #fff;
+    font-weight: bolder;
+}
+
+.sb-sidenav-light .sb-sidenav-menu .nav-link.active .sb-nav-link-icon {
+    color: #fff;
+}
+
+.sb-sidenav-light .sb-sidenav-footer {
+    background-color: #f9b000;
+    color: #000;
+}
+
+.btn-primary {
+    color: #000;
+    background-color: #f9b000;
+    border-color: #f9b000;
+}
+
+.form-check-input:checked {
+        background-color: #f9b000;
+        border-color: #f9b000;
+}
+
+h1,h2,h3,h4, legend {
+        color: #005b72 !important;
+        font-weight: bolder;
+}

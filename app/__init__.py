@@ -23,7 +23,7 @@ logging.basicConfig(level=log_level, format=log_format)  # Setting level to 10 f
 logger = logging.getLogger(__name__)
 
 # Set up a file handler with detailed format for logs
-log_file = os.environ.get('LOG_FILE') or 'logs/app.log'
+log_file = os.environ.get('LOG_FILE') or '.logs/app.log'
 file_handler = logging.FileHandler(log_file)
 file_handler.setLevel(log_level)
 formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(pathname)s:%(lineno)d - %(message)s')
@@ -131,3 +131,9 @@ app.jinja_env.globals.update(enumerate=enumerate)
 
 from app.controllers import services_controller  # Add this line to import the new controller
 from app.controllers import tools_controller  # Add this line to import the new controller
+
+# import pdfkit
+
+# pdfkit_config = pdfkit.configuration(wkhtmltopdf='/path/to/wkhtmltopdf')
+# pdfkit.from_url('http://google.com', 'out.pdf', configuration=pdfkit_config)
+

@@ -5,10 +5,12 @@ __pycache__
 .vscode
 .test
 .ssl
+.logs
+.databases
 *.pem
 *.cer
 *.key
 *.fullchain
 venv
 env
-logs
+
