@@ -1,0 +1,193 @@
+<div class="sb-sidenav-menu">
+    <div class="nav">
+        
+        <div class="sb-sidenav-menu-heading">Informes</div>
+        <a class="nav-link {% if request.endpoint == 'index' %} active {% endif %}" href="/">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-simple"></i></div>
+            Resumen
+        </a>  
+        <a class="nav-link {% if request.endpoint == 'consultas' %} active {% endif %}" href="{{ url_for('consultas') }}">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+            Informes
+        </a>
+        <a class="nav-link {% if request.endpoint == 'mejoras' %} active {% endif %}" href="{{ url_for('mejoras') }}">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-comments"></i></div>
+            Sugerencias
+        </a>
+
+        <!--
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseLayouts">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-inbox"></i></div>
+            Históricos
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapseArchivo" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="#">Semanas</a>
+                <a class="nav-link" href="#">Meses</a>
+                <a class="nav-link" href="#">Años</a>
+            </nav>
+        </div>
+        -->
+        <!--
+        <a class="nav-link" href="/">
+            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+            Otro tipo
+        </a>
+        -->
+
+        {% if is_admin() or current_user.role == 'superadmin'  %}
+        <div class="sb-sidenav-menu-heading">Herramientas</div>
+
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRanks" aria-expanded="false" aria-controls="collapseLayouts">
+                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                SEO
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+
+            <div class="collapse" id="collapseRanks" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link {% if request.endpoint == 'seo_health_check' %} active {% endif %}" href="{{ url_for('seo_health_check') }}">Salud</a>
+                <a class="nav-link {% if request.endpoint == 'seo_posicionamiento' %} active {% endif %}" href="{{ url_for('seo_posicionamiento') }}">Posicionamiento</a>
+                <a class="nav-link {% if request.endpoint == 'seo_keywords' %} active {% endif %}" href="{{ url_for('seo_keywords') }}">Palabras Clave</a>
+                <a class="nav-link {% if request.endpoint == 'seo_traffic' %} active {% endif %}" href="{{ url_for('seo_traffic') }}">Tráfico Orgánico</a>
+                <!-- 
+                    <a class="nav-link {% if request.endpoint == 'seo_competencia' %} active {% endif %}" href="{{ url_for('seo_competencia') }}">Competencia</a>
+                -->
+                <a class="nav-link {% if request.endpoint == 'seo_backlinks' %} active {% endif %}" href="{{ url_for('seo_backlinks') }}">Backlinks</a>
+                <a class="nav-link {% if request.endpoint == 'seo_indexing' %} active {% endif %}" href="{{ url_for('seo_indexing') }}">Indexación</a>
+                <a class="nav-link {% if request.endpoint == 'seo_speed' %} active {% endif %}" href="{{ url_for('seo_speed') }}">Velocidad</a>
+                </nav>
+            </div>
+
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSEO" aria-expanded="false" aria-controls="collapseLayouts">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-thumbs-up"></i></div>
+            Usabilidad
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapseSEO" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link {% if request.endpoint == 'usa_broken_links' %} active {% endif %}" href="{{ url_for('usa_broken_links') }}">Enlaces rotos</a>
+                <a class="nav-link {% if request.endpoint == 'usa_nav' %} active {% endif %}" href="{{ url_for('usa_nav') }}">Navegación</a>
+                <!--
+                    <a class="nav-link {% if request.endpoint == 'usa_form' %} active {% endif %}" href="{{ url_for('usa_form') }}">Formularios</a>
+                -->
+                <a class="nav-link {% if request.endpoint == 'usa_responsive' %} active {% endif %}" href="{{ url_for('usa_responsive') }}">Responsive</a>
+                <a class="nav-link {% if request.endpoint == 'usa_font_colors' %} active {% endif %}" href="{{ url_for('usa_font_colors') }}">Fuentes/Colores</a>
+                <!--
+                    <a class="nav-link {% if request.endpoint == 'usa_w3c' %} active {% endif %}" href="{{ url_for('usa_w3c') }}">Estándares w3c</a>
+                -->
+            </nav>
+        </div>
+
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAcce" aria-expanded="false" aria-controls="collapseLayouts">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-wheelchair fa-fw"></i></div>
+            Accesibilidad
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapseAcce" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link {% if request.endpoint == 'acc_validators' %} active {% endif %}" href="{{ url_for('acc_validators') }}">Validadores</a>
+                <a class="nav-link {% if request.endpoint == 'acc_images' %} active {% endif %}" href="{{ url_for('acc_images') }}">Imágenes</a>
+                <!-- 
+                <a class="nav-link {% if request.endpoint == 'acc_sintax' %} active {% endif %}" href="{{ url_for('acc_sintax') }}">Sintaxis</a>
+                <a class="nav-link {% if request.endpoint == 'acc_structure' %} active {% endif %}" href="{{ url_for('acc_structure') }}">Estructura</a>
+               
+                <a class="nav-link {% if request.endpoint == 'acc_media' %} active {% endif %}" href="{{ url_for('acc_media') }}">Multimedia</a>
+                 -->
+                <a class="nav-link {% if request.endpoint == 'acc_contraste' %} active {% endif %}" href="{{ url_for('acc_contraste') }}">Contraste</a>
+                <!-- 
+                <a class="nav-link {% if request.endpoint == 'acc_lectores' %} active {% endif %}" href="{{ url_for('acc_lectores') }}">Lectores</a>
+                <a class="nav-link {% if request.endpoint == 'acc_comp' %} active {% endif %}" href="{{ url_for('acc_comp') }}">Compatibilidad</a>
+                -->
+                
+            </nav>
+        </div>
+      
+       
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseIdiomas" aria-expanded="false" aria-controls="collapseLayouts">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-book-atlas"></i></div>
+            Diccionarios
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapseIdiomas" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link {% if request.endpoint == 'dicc_spanish' %} active {% endif %}" href="{{ url_for('dicc_spanish') }}">Español</a>
+                <a class="nav-link {% if request.endpoint == 'dicc_english' %} active {% endif %}" href="{{ url_for('dicc_english') }}">Ingles</a>
+                <a class="nav-link {% if request.endpoint == 'dicc_catalan' %} active {% endif %}" href="{{ url_for('dicc_catalan') }}">Catalán</a>
+
+            </nav>
+        </div>     
+
+        
+       
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMonitores" aria-expanded="false" aria-controls="collapseLayouts">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-stethoscope"></i></div>
+            Diagnosticos
+            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapseMonitores" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav">
+                <!--
+                <a class="nav-link {% if request.endpoint == 'diag_domains' %} active {% endif %}" href="{{ url_for('diag_domains') }}">Dominios</a>
+                -->
+                <a class="nav-link {% if request.endpoint == 'diag_spam' %} active {% endif %}"  href="{{ url_for('diag_spam') }}">SPAM/BLs</a>
+                <a class="nav-link {% if request.endpoint == 'diag_gdpr' %} active {% endif %}" href="{{ url_for('diag_gdpr') }}">GDPR/LSSI</a>
+                <a class="nav-link {% if request.endpoint == 'diag_textos_legales' %} active {% endif %}" href="{{ url_for('diag_textos_legales') }}">Textos Legales</a>
+                <!--
+                <a class="nav-link {% if request.endpoint == 'diag_copyright' %} active {% endif %}" href="{{ url_for('diag_copyright') }}">Propiedad intelectual</a>
+                -->
+            </nav>
+        </div>
+
+        
+        
+        {% endif %}
+
+        {% if current_user.role == 'superadmin' %}
+        <div class="sb-sidenav-menu-heading">Sistema</div>
+
+        <a class="nav-link" href="{{ url_for('tools_config') }}">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
+            Configuración
+        </a>
+
+        <a class="nav-link btn-link btn me-3" href="{{ url_for('list_users') }}">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
+            Usuarios
+        </a>
+        <!--
+        <a class="nav-link" href="{{ url_for('services') }}">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-server"></i></div>
+            Nube
+        </a>
+         
+        <a class="nav-link" href="{{ url_for('view_logs') }}">
+            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+            Logs
+        </a>
+        <a class="nav-link" href="{{ url_for('view_system') }}">
+            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+            Sistema
+        </a>
+        -->
+       
+        
+        {% endif %}
+    </div>
+</div>
+<div class="sb-sidenav-footer">
+    <div class="small">
+        <ul class="navbar-nav d-none d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i><strong>{{ current_user.username }}</strong>({{ current_user.role }})</a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="{{ url_for('user_profile', user_id=current_user.id) }}">Perfil</a></li>
+                    <li><a class="dropdown-item" href="#!">Ajustes</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li><a class="dropdown-item" href="{{ url_for('logout') }}">Salir</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

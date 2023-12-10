@@ -5,9 +5,159 @@
 {% block content %}
     
 <h1 class="mt-4">Inglés</h1>
+    <div class="card control-card mb-4">
+        <div class="card-body">
+            <!-- Status Section -->
+            <div class="mb-3 status-section">
+                <div>
+                    <i class="fas fa-info-circle status-icon text-primary"></i>
+                    <span class="status-text">Estado: <strong>Activo</strong></span>
+                </div>
+    
+                <!-- Last Execution Section -->
+                <div>
+                    <i class="fas fa-history status-icon text-success"></i>
+                    <span class="status-text">Ultima ejecución: <strong>12 mins</strong></span>
+                </div>
+            </div>
+    
+            <!-- Control Buttons -->
+            <div class="control-buttons">
+                <button class="btn btn-primary" type="button"><i class="fas fa-play"></i> Start</button>
+                <button class="btn btn-warning" type="button"><i class="fas fa-pause"></i> Pause</button>
+                <button class="btn btn-danger" type="button"><i class="fas fa-stop"></i> Stop</button>
+            </div>
+        </div>
+    </div>
 
 <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item active">Gestión de palabras en Inglés</li>
 </ol>
+
+<div class="container mt-5">
+    
+
+    <div class="row">
+        <!-- Overall Spelling Accuracy Doughnut Chart -->
+        <div class="col-md-6 my-4">
+            <h2 class="text-center">Overall Spelling Accuracy</h2>
+            <canvas id="overallSpellingAccuracyChart" width="200" height="200"></canvas>
+        </div>
+
+        <!-- Subdomain Spelling Errors Bar Chart -->
+        <div class="col-md-6 my-4">
+            <h2 class="text-center">Subdomain Spelling Errors</h2>
+            <canvas id="subdomainSpellingErrorsChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Spelling Accuracy by Language Doughnut Chart -->
+        <div class="col-md-6 my-4">
+            <h2 class="text-center">Spelling Accuracy by Language</h2>
+            <canvas id="spellingAccuracyByLanguageChart" width="200" height="200"></canvas>
+        </div>
+
+        <!-- Spelling Errors by Language Bar Chart -->
+        <div class="col-md-6 my-4">
+            <h2 class="text-center">Spelling Errors by Language</h2>
+            <canvas id="spellingErrorsByLanguageChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mock spelling check data (replace with real data)
+    var overallSpellingAccuracyData = {
+        labels: ['Correct', 'Incorrect'],
+        datasets: [{
+            data: [90, 10],
+            backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+            borderWidth: 1
+        }]
+    };
+
+    var subdomainSpellingErrorsData = {
+        labels: ['Subdomain 1', 'Subdomain 2', 'Subdomain 3'],
+        datasets: [{
+            label: 'Spelling Errors',
+            data: [5, 8, 3],
+            backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+            borderWidth: 1
+        }]
+    };
+
+    var spellingAccuracyByLanguageData = {
+        labels: ['English'],
+        datasets: [{
+            data: [92],
+            backgroundColor: ['rgba(255, 99, 132, 0.6)'],
+            borderColor: ['rgba(255, 99, 132, 1)'],
+            borderWidth: 1
+        }]
+    };
+
+    var spellingErrorsByLanguageData = {
+        labels: ['English'],
+        datasets: [{
+            label: 'Spelling Errors',
+            data: [8],
+            backgroundColor: ['rgba(255, 99, 132, 0.6)'],
+            borderColor: ['rgba(255, 99, 132, 1)'],
+            borderWidth: 1
+        }]
+    };
+
+    // Chart configurations
+    var overallSpellingAccuracyConfig = {
+        type: 'doughnut',
+        data: overallSpellingAccuracyData
+    };
+
+    var subdomainSpellingErrorsConfig = {
+        type: 'bar',
+        data: subdomainSpellingErrorsData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    var spellingAccuracyByLanguageConfig = {
+        type: 'doughnut',
+        data: spellingAccuracyByLanguageData
+    };
+
+    var spellingErrorsByLanguageConfig = {
+        type: 'bar',
+        data: spellingErrorsByLanguageData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // Create charts
+    var ctxOverallSpellingAccuracy = document.getElementById('overallSpellingAccuracyChart').getContext('2d');
+    var overallSpellingAccuracyChart = new Chart(ctxOverallSpellingAccuracy, overallSpellingAccuracyConfig);
+
+    var ctxSubdomainSpellingErrors = document.getElementById('subdomainSpellingErrorsChart').getContext('2d');
+    var subdomainSpellingErrorsChart = new Chart(ctxSubdomainSpellingErrors, subdomainSpellingErrorsConfig);
+
+    var ctxSpellingAccuracyByLanguage = document.getElementById('spellingAccuracyByLanguageChart').getContext('2d');
+    var spellingAccuracyByLanguageChart = new Chart(ctxSpellingAccuracyByLanguage, spellingAccuracyByLanguageConfig);
+
+    var ctxSpellingErrorsByLanguage = document.getElementById('spellingErrorsByLanguageChart').getContext('2d');
+    var spellingErrorsByLanguageChart = new Chart(ctxSpellingErrorsByLanguage, spellingErrorsByLanguageConfig);
+</script>
+
 
 {% endblock %}

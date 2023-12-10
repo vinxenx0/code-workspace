@@ -18,6 +18,7 @@ from datetime import datetime
 logger = logging.getLogger(__name__)
 
 @app.route('/generate_pdf')
+@login_required
 def generate_pdf():
     # Obtén el nombre del template actual
     template_name = request.endpoint.split('.')[-1]

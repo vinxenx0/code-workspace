@@ -10,4 +10,91 @@
     <li class="breadcrumb-item active">Analisis de elementos graficos, videos, audios, ppt</li>
 </ol>
 
+<div class="container mt-5">
+    
+    <div class="row">
+        <!-- Overall Multimedia Accessibility Doughnut Chart -->
+        <div class="col-md-6 my-4">
+            <h2 class="text-center">Overall Multimedia Accessibility</h2>
+            <canvas id="overallMultimediaAccessibilityChart" width="200" height="200"></canvas>
+        </div>
+
+        <!-- Subdomain Multimedia Accessibility Bar Chart -->
+        <div class="col-md-6 my-4">
+            <h2 class="text-center">Subdomain Multimedia Accessibility</h2>
+            <canvas id="subdomainMultimediaAccessibilityChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Video Captions Compliance KPI -->
+        <div class="col-md-6 my-4">
+            <h2 class="text-center">Video Captions Compliance</h2>
+            <div class="text-center">
+                <h3 class="display-4">90%</h3>
+                <p class="lead">Compliance</p>
+            </div>
+        </div>
+
+        <!-- Audio Descriptions Compliance KPI -->
+        <div class="col-md-6 my-4">
+            <h2 class="text-center">Audio Descriptions Compliance</h2>
+            <div class="text-center">
+                <h3 class="display-4">85%</h3>
+                <p class="lead">Compliance</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mock accessibility multimedia data (replace with real data)
+    var overallMultimediaAccessibilityData = {
+        labels: ['Accessible', 'Not Accessible'],
+        datasets: [{
+            data: [75, 25],
+            backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+            borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+            borderWidth: 1
+        }]
+    };
+
+    var subdomainMultimediaAccessibilityData = {
+        labels: ['Subdomain 1', 'Subdomain 2', 'Subdomain 3'],
+        datasets: [{
+            label: 'Multimedia Accessibility',
+            data: [80, 85, 90],
+            backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+            borderWidth: 1
+        }]
+    };
+
+    // Chart configurations
+    var overallMultimediaAccessibilityConfig = {
+        type: 'doughnut',
+        data: overallMultimediaAccessibilityData
+    };
+
+    var subdomainMultimediaAccessibilityConfig = {
+        type: 'bar',
+        data: subdomainMultimediaAccessibilityData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // Create charts
+    var ctxOverallMultimediaAccessibility = document.getElementById('overallMultimediaAccessibilityChart').getContext('2d');
+    var overallMultimediaAccessibilityChart = new Chart(ctxOverallMultimediaAccessibility, overallMultimediaAccessibilityConfig);
+
+    var ctxSubdomainMultimediaAccessibility = document.getElementById('subdomainMultimediaAccessibilityChart').getContext('2d');
+    var subdomainMultimediaAccessibilityChart = new Chart(ctxSubdomainMultimediaAccessibility, subdomainMultimediaAccessibilityConfig);
+</script>
+
+
 {% endblock %}

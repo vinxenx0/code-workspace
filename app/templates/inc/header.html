@@ -1,0 +1,35 @@
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/styles.css') }}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='custom/colors.css') }}" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+
+        <!--  #005b72 #f9b000 -->
+
+        <script>
+            // Recuperar el estado del collapse del localStorage para cada elemento colapsable
+            document.addEventListener('DOMContentLoaded', function () {
+              var collapseStates = JSON.parse(localStorage.getItem('collapseStates')) || {};
+          
+              // Iterar sobre cada collapse y aplicar el estado correspondiente
+              Object.keys(collapseStates).forEach(function (collapseId) {
+                if (collapseStates[collapseId]) {
+                  $('#' + collapseId).addClass('show');
+                }
+              });
+          
+              // Manejar eventos del collapse para actualizar el localStorage
+              $('.collapse').on('show.bs.collapse', function () {
+                var collapseId = $(this).attr('id');
+                collapseStates[collapseId] = true;
+                localStorage.setItem('collapseStates', JSON.stringify(collapseStates));
+              });
+          
+              $('.collapse').on('hide.bs.collapse', function () {
+                var collapseId = $(this).attr('id');
+                collapseStates[collapseId] = false;
+                localStorage.setItem('collapseStates', JSON.stringify(collapseStates));
+              });
+            });
+          </script>
