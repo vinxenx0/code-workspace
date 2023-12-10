@@ -9,9 +9,38 @@ from app.views.user_view import UserProfileForm, LoginForm
 from sqlalchemy.exc import IntegrityError
 from flask_babel import g, _
 from app.models.suggestions_model import Suggestion
+from flask import render_template, send_file
+import tempfile
+from weasyprint import HTML
+from datetime import datetime
 
 # Get a logger for this module
 logger = logging.getLogger(__name__)
+
+@app.route('/generate_pdf')
+def generate_pdf():
+    # Obtén el nombre del template actual
+    template_name = request.endpoint.split('.')[-1]
+
+    # Get the current URL
+    current_url = request.url_root + request.path
+
+    # Render the HTML content with the specified template
+    #html = render_template(f'{template_name}.html')
+    html = render_template(f'index.html')
+
+    # Create a name for the PDF based on the template's name and timestamp
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    pdf_filename = f'{template_name}_{timestamp}.pdf'
+
+    # Create a temporary file to store the PDF
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_pdf:
+        # Generate PDF using WeasyPrint
+        HTML(string=html, base_url=current_url).write_pdf(temp_pdf.name)
+
+    # Send the PDF as an attachment with the generated filename
+    return send_file(temp_pdf.name, as_attachment=True, download_name=pdf_filename)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
