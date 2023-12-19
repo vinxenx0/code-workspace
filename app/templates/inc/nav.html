@@ -112,9 +112,11 @@
         </a>
         <div class="collapse" id="collapseIdiomas" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
             <nav class="sb-sidenav-menu-nested nav">
+               
                 <a class="nav-link {% if request.endpoint == 'dicc_spanish' %} active {% endif %}" href="{{ url_for('dicc_spanish') }}">Español</a>
                 <a class="nav-link {% if request.endpoint == 'dicc_english' %} active {% endif %}" href="{{ url_for('dicc_english') }}">Ingles</a>
                 <a class="nav-link {% if request.endpoint == 'dicc_catalan' %} active {% endif %}" href="{{ url_for('dicc_catalan') }}">Catalán</a>
+               
 
             </nav>
         </div>     

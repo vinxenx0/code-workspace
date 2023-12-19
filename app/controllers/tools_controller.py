@@ -3,7 +3,7 @@
 from flask import render_template
 from flask_login import login_required
 from app import app
-
+from app.models.broken_links_results import Broken_Links_Results
 
 # Tools rutas
 
@@ -60,7 +60,8 @@ def seo_speed():
 @app.route('/usabilidad/broken-links')
 @login_required
 def usa_broken_links():
-    return render_template('tools/usa/usa_broken_links.html')
+    results = Broken_Links_Results.query.all()
+    return render_template('tools/usa/usa_broken_links.html', results=results)
 
 @app.route('/usabilidad/font-colors')
 @login_required
