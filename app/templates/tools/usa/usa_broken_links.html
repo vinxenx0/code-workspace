@@ -39,6 +39,21 @@
            });
          });
       </script>
+      <style>
+         /* Estilo para las tarjetas de ScanResults */
+         .scan-result-card {
+             background-color: #e9ecef; /* Color de fondo gris claro */
+             border: 1px solid #ced4da; /* Borde gris */
+             margin-bottom: 20px; /* Margen inferior */
+         }
+     
+         /* Estilo para las tarjetas de DomainStats */
+         .domain-stat-card {
+             background-color: #d4edda; /* Color de fondo verde claro */
+             border: 1px solid #c3e6cb; /* Borde verde */
+             margin-bottom: 20px; /* Margen inferior */
+         }
+     </style>
    </head>
    <body class="sb-nav-fixed">
       {% if current_user.is_authenticated %}
@@ -146,7 +161,7 @@
                                  <!-- Last Execution Section -->
                                  <div>
                                     <i class="fas fa-history status-icon text-success"></i>
-                                    <span class="status-text">Ultima ejecución: <strong>12 mins</strong></span>
+                                    <span class="status-text">Ultima ejecución: <strong>{{ first_end_time }}</strong></span>
                                  </div>
                               </div>
                               <!-- Control Buttons -->
@@ -161,39 +176,63 @@
                            <li class="breadcrumb-item active">Busca enlaces rotos en el sitio</li>
                         </ol>
                         <div class="row">
-                                             <!-- Primera columna con los checkboxes -->
-                        <div class="col-md-6 mb-4">
-                           <div class="form-inline">
-                              <label>URL:</label>
-                              <!-- Agregamos el dropdown en lugar de checkboxes -->
-                              <select id="targetUrlDropdown">
-                                 <option value="">Ver todas</option>
-                                 <option value="https://www.mc-mutual.com">www.mc-mutual.com</option>
-                                 <option value="https://mejoratuabsentismo.mc-mutual.com">mejoratuabsentismo.mc-mutual.com</option>
-                                 <option value="https://prevencion.mc-mutual.com">prevencion.mc-mutual.com</option>
-                           </select>
-                           </div>
-                        </div>
+                           <!-- Itera sobre los últimos resultados de DomainStats -->
+                           {% for stat in latest_stats %}
+                               <div class="col-md-4 mb-4">
+                                   <div class="card domain-stat-card">
+                                       <div class="card-body">
+                                           <h5 class="card-title">{{ stat.domain }}</h5>
+                                           <p class="card-text">
+                                               <strong>Timestamp:</strong> {{ stat.latest_timestamp }}<br>
+                                               <strong>Status Code:</strong> {{ stat.status_code }}<br>
+                                               <strong>Page Count:</strong> {{ stat.page_count }}<br />
+                                               <strong>Broken_links:</strong> {{ stat.broken_links }}<br />
+                                               <strong>Start Time:</strong> {{ stat.start_time }}<br>
+                                               <strong>End Time:</strong> {{ stat.end_time }}<br>
+                                               <strong>Total Time:</strong> {{ stat.total_time }}<br>
 
-                        <!-- Segunda columna con los botones de radio 
-                        <div class="col-md-6">
-                           <div class="form-inline">
-                              <label class="mr-2">Fecha:</label>
-                              <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="dateFilter" id="yesterday" value="yesterday">
-                                    <label class="form-check-label" for="yesterday">Ayer</label>
-                              </div>
-                              <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="dateFilter" id="thisWeek" value="thisWeek">
-                                    <label class="form-check-label" for="thisWeek">Esta semana</label>
-                              </div>
-                              <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="dateFilter" id="thisMonth" value="thisMonth">
-                                    <label class="form-check-label" for="thisMonth">Este mes</label>
+                                               <!-- Agrega otros campos según sea necesario -->
+                                           </p>
+                                       </div>
+                                   </div>
+                               </div>
+                           {% endfor %}
+                       </div>
+
+                        <div class="row">
+                           <!-- Primera columna con los checkboxes -->
+                           <div class="col-md-6 mb-4">
+                              <div class="form-inline">
+                                 <label>URL:</label>
+                                 <!-- Agregamos el dropdown en lugar de checkboxes -->
+                                 <select id="targetUrlDropdown">
+                                    <option value="">Ver todas</option>
+                                    <option value="https://www.mc-mutual.com">www.mc-mutual.com</option>
+                                    <option value="https://mejoratuabsentismo.mc-mutual.com">mejoratuabsentismo.mc-mutual.com</option>
+                                    <option value="https://prevencion.mc-mutual.com">prevencion.mc-mutual.com</option>
+                              </select>
                               </div>
                            </div>
-                        </div>
-                        -->
+
+                           <!-- Segunda columna con los botones de radio 
+                           <div class="col-md-6">
+                              <div class="form-inline">
+                                 <label class="mr-2">Fecha:</label>
+                                 <div class="form-check form-check-inline">
+                                       <input class="form-check-input" type="radio" name="dateFilter" id="yesterday" value="yesterday">
+                                       <label class="form-check-label" for="yesterday">Ayer</label>
+                                 </div>
+                                 <div class="form-check form-check-inline">
+                                       <input class="form-check-input" type="radio" name="dateFilter" id="thisWeek" value="thisWeek">
+                                       <label class="form-check-label" for="thisWeek">Esta semana</label>
+                                 </div>
+                                 <div class="form-check form-check-inline">
+                                       <input class="form-check-input" type="radio" name="dateFilter" id="thisMonth" value="thisMonth">
+                                       <label class="form-check-label" for="thisMonth">Este mes</label>
+                                 </div>
+                              </div>
+                           </div>
+                           -->
                         </div>
 
                         <!-- Agregamos un botón de reset 
@@ -218,6 +257,7 @@
                                        -->
                                        <th>Origen</th>
                                        <th>Url rota</th>
+                                       <th>Anchor</th>
                                        <th>Error</th>
                                     </tr>
                                  </thead>
@@ -232,17 +272,19 @@
                                        -->
                                        <th>Origen</th>
                                        <th>Url rota</th>
+                                       <th>Anchor</th>
                                        <th>Error</th>
                                     </tr>
                                  </tfoot>
                                  <tbody>
-                                    {% for result in results %}
+                                    {% for result in scan_results %}
                                     <tr>
                                        <!-- <td>{{ result.id }}</td> -->
                                        <td>{{ result.timestamp }}</td>
                                        <!-- <td>{{ result.target_url }}</td> -->
                                        <td>{{ result.scanned_url }}</td>
                                        <td><a href="{{ result.broken_url }}" target="_blank">{{ result.broken_url }}</a></td>
+                                       <td>{{ result.anchor_text }}</tdh>
                                        <td>{{ result.error_code }}</td>
                                     </tr>
                                     {% endfor %}
