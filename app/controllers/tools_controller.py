@@ -2,8 +2,9 @@
 
 from flask import render_template
 from flask_login import login_required
-from app import app
-from app.models.broken_links_results import Broken_Links_Results
+from app import app, db
+from sqlalchemy import desc,func
+from app.models.broken_links_results import Broken_Links_Results, DomainStats
 
 # Tools rutas
 
@@ -60,8 +61,32 @@ def seo_speed():
 @app.route('/usabilidad/broken-links')
 @login_required
 def usa_broken_links():
+    # Obtén los resultados de ScanResults
     results = Broken_Links_Results.query.all()
-    return render_template('tools/usa/usa_broken_links.html', results=results)
+
+    # Obtén los últimos resultados de DomainStats para cada dominio
+    latest_stats = db.session.query(
+        DomainStats.domain,
+        func.max(DomainStats.timestamp).label('latest_timestamp'),
+        DomainStats.status_code,
+        DomainStats.page_count,
+        DomainStats.broken_links,
+        DomainStats.other_links,
+        DomainStats.doctype_counts,
+        DomainStats.start_time,
+        DomainStats.end_time,
+        DomainStats.total_time
+        # Agrega otros campos necesarios
+    ).group_by(DomainStats.domain).order_by(desc('latest_timestamp')).limit(3).all()
+
+     # Accede al primer elemento y luego al atributo end_time
+    first_end_time = latest_stats[2].end_time if latest_stats else None
+
+
+    # Envía los resultados al template
+    return render_template('tools/usa/usa_broken_links.html', scan_results=results, latest_stats=latest_stats, first_end_time=first_end_time)
+
+
 
 @app.route('/usabilidad/font-colors')
 @login_required

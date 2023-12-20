@@ -83,7 +83,7 @@ from app.controllers import user_controller
 from app.views import user_view
 from app import db
 from app.models.user_model import User
-from app.models.suggestions_model import Suggestion  
+#from app.models.suggestions_model import Suggestion  
 
 with app.app_context():
  
@@ -131,6 +131,7 @@ app.jinja_env.globals.update(enumerate=enumerate)
 
 from app.controllers import services_controller  # Add this line to import the new controller
 from app.controllers import tools_controller  # Add this line to import the new controller
+
 
 # import pdfkit
 
