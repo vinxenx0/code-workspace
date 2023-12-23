@@ -1,81 +1,95 @@
 <!-- app/templates/tools/usa/usa_broken_links.html -->
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-      <title>MC-Mutual - Dashboard</title>
-      <meta name="description" content="" />
 
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<head>
+   <meta charset="utf-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+   <title>MC-Mutual - Dashboard</title>
+   <meta name="description" content="" />
 
-      <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/styles.css') }}" />
-   
-     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
-      <link rel="stylesheet" href="{{ url_for('static', filename='custom/colors.css') }}" />
-      <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"></script>
 
-     
-      <script>
-         // Recuperar el estado del collapse del localStorage para cada elemento colapsable
-         document.addEventListener('DOMContentLoaded', function () {
-           var collapseStates = JSON.parse(localStorage.getItem('collapseStates')) || {};
-         
-           // Iterar sobre cada collapse y aplicar el estado correspondiente
-           Object.keys(collapseStates).forEach(function (collapseId) {
-             if (collapseStates[collapseId]) {
+   <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/styles.css') }}" />
+
+   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+   <script src="{{ url_for('static', filename='dist/js/scripts.js') }}"></script>
+   <link rel="stylesheet" href="{{ url_for('static', filename='custom/colors.css') }}" />
+   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+   <!-- Gauge.js -->
+   <script src="https://cdn.jsdelivr.net/npm/progressbar.js@1.0.1/dist/progressbar.min.js"></script>
+
+
+
+   <script>
+      // Recuperar el estado del collapse del localStorage para cada elemento colapsable
+      document.addEventListener('DOMContentLoaded', function () {
+         var collapseStates = JSON.parse(localStorage.getItem('collapseStates')) || {};
+
+         // Iterar sobre cada collapse y aplicar el estado correspondiente
+         Object.keys(collapseStates).forEach(function (collapseId) {
+            if (collapseStates[collapseId]) {
                $('#' + collapseId).addClass('show');
-             }
-           });
-         
-           // Manejar eventos del collapse para actualizar el localStorage
-           $('.collapse').on('show.bs.collapse', function () {
-             var collapseId = $(this).attr('id');
-             collapseStates[collapseId] = true;
-             localStorage.setItem('collapseStates', JSON.stringify(collapseStates));
-           });
-         
-           $('.collapse').on('hide.bs.collapse', function () {
-             var collapseId = $(this).attr('id');
-             collapseStates[collapseId] = false;
-             localStorage.setItem('collapseStates', JSON.stringify(collapseStates));
-           });
+            }
          });
-      </script>
-      <style>
-         /* Estilo para las tarjetas de ScanResults */
-         .scan-result-card {
-             background-color: #e9ecef; /* Color de fondo gris claro */
-             border: 1px solid #ced4da; /* Borde gris */
-             margin-bottom: 20px; /* Margen inferior */
-         }
-     
-         /* Estilo para las tarjetas de DomainStats */
-         .domain-stat-card {
-             background-color: #d4edda; /* Color de fondo verde claro */
-             border: 1px solid #c3e6cb; /* Borde verde */
-             margin-bottom: 20px; /* Margen inferior */
-         }
-     </style>
-   </head>
-   <body class="sb-nav-fixed">
-      {% if current_user.is_authenticated %}
-      <!-- Info Bar -->
-      <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
-         <!-- Navbar Brand-->
-         <a class="navbar-brand ps-3" href="/">
+
+         // Manejar eventos del collapse para actualizar el localStorage
+         $('.collapse').on('show.bs.collapse', function () {
+            var collapseId = $(this).attr('id');
+            collapseStates[collapseId] = true;
+            localStorage.setItem('collapseStates', JSON.stringify(collapseStates));
+         });
+
+         $('.collapse').on('hide.bs.collapse', function () {
+            var collapseId = $(this).attr('id');
+            collapseStates[collapseId] = false;
+            localStorage.setItem('collapseStates', JSON.stringify(collapseStates));
+         });
+      });
+   </script>
+   <style>
+      /* Estilo para las tarjetas de ScanResults */
+      .scan-result-card {
+         background-color: #e9ecef;
+         /* Color de fondo gris claro */
+         border: 1px solid #ced4da;
+         /* Borde gris */
+         margin-bottom: 20px;
+         /* Margen inferior */
+      }
+
+      /* Estilo para las tarjetas de DomainStats */
+      .domain-stat-card {
+         background-color: #d4edda;
+         /* Color de fondo verde claro */
+         border: 1px solid #c3e6cb;
+         /* Borde verde */
+         margin-bottom: 20px;
+         /* Margen inferior */
+      }
+   </style>
+</head>
+
+<body class="sb-nav-fixed">
+   {% if current_user.is_authenticated %}
+   <!-- Info Bar -->
+   <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-3" href="/">
          <img src="{{ url_for('static', filename='images/logo_MC.png') }}" alt="MC Mutua" />
-         </a>
-         <!-- Sidebar Toggle-->
-         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-         <!-- Navbar-->
-         <div class="container-fluid">
-            <div class="d-flex justify-content-between align-items-center w-100">
-               <!-- Navbar Search
+      </a>
+      <!-- Sidebar Toggle-->
+      <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+            class="fas fa-bars"></i></button>
+      <!-- Navbar-->
+      <div class="container-fluid">
+         <div class="d-flex justify-content-between align-items-center w-100">
+            <!-- Navbar Search
                   <div class="me-auto">
                       <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                           <div class="input-group">
@@ -84,7 +98,7 @@
                           </div>
                       </form>
                   </div> -->
-               <!-- PDF 
+            <!-- PDF 
                   <div class="d-flex">
                       <div class="pdf-btn me-3">
                         <form action="#" method="post">
@@ -93,13 +107,13 @@
                       </div>
                   </div>
                   -->
-            </div>
          </div>
-         <div class="d-flex">
-            <div class="pdf-btn me-3">
-               <a href="{{ url_for('generate_pdf') }}" class="btn btn-info" target="_blank">PDF</a>
-            </div>
-            <!--
+      </div>
+      <div class="d-flex">
+         <div class="pdf-btn me-3">
+            <a href="{{ url_for('generate_pdf') }}" class="btn btn-info" target="_blank">PDF</a>
+         </div>
+         <!--
                <div class="pdf-btn me-3">
                    <form action="#" method="post">
                         <button type="submit" class="btn btn-primary">EMAIL</button>
@@ -111,426 +125,611 @@
                    </form>
                </div>
                -->
-         </div>
-         <!--
+      </div>
+      <!--
             <ul class="navbar-nav d-none d-md-inline-block ms-auto me-0">
                 <li>
                     <a class="nav-item" href="{{ url_for('logout') }}">{{ current_user.username }}(<strong>Salir</strong>)</a>
                 </li>
             </ul>
             -->
-         <a class="nav-item" href="{{ url_for('logout') }}"><strong>Salir</strong></a>
-      </nav>
+      <a class="nav-item" href="{{ url_for('logout') }}"><strong>Salir</strong></a>
+   </nav>
+   {% endif %}
+   <div id="layoutSidenav">
+      {% if current_user.is_authenticated %}
+      <div id="layoutSidenav_nav">
+         <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+            {% include 'inc/nav.html' %}
+         </nav>
+      </div>
       {% endif %}
-      <div id="layoutSidenav">
-         {% if current_user.is_authenticated %}
-         <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-               {% include 'inc/nav.html' %}
-            </nav>
-         </div>
-         {% endif %}
-         <div id="layoutSidenav_content">
-            <main>
-               <div class="container-fluid px-4">
-                  <!-- <div>
+      <div id="layoutSidenav_content">
+         <main>
+            <div class="container-fluid px-4">
+               <!-- <div>
                      <ol class="breadcrumb mb-4">
                          <li class="breadcrumb-item"><a href="/">Inicio</a></li>
                          <li class="breadcrumb-item active">estoy aqui</li>
                      </ol>
                      </div>
                      -->
-                  <div class="card mt-5">
-                     <div class="card-body">
+               <div class="_card mt-5">
+                  <div class="card-body">
+                     <div>
+                        <p class="text-center">
+                           <!-- alert box -->
+                           {% with messages = get_flashed_messages(with_categories=true) %}
+                           {% if messages %}
+                           {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                           {{ message }}
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+                        </p>
+                     </div>
+                  </div>
+               </div>
+               <h1 class="mt-4">Enlaces rotos</h1>
+               <div class="card control-card mb-4">
+                  <div class="card-body">
+                     <!-- Status Section -->
+                     <div class="mb-3 status-section">
                         <div>
-                           <p class="text-center">
-                              <!-- alert box -->
-                              {% with messages = get_flashed_messages(with_categories=true) %}
-                              {% if messages %}
-                              {% for category, message in messages %}
-                           <div class="alert alert-{{ category }}">
-                              {{ message }}
-                           </div>
-                           {% endfor %}
-                           {% endif %}
-                           {% endwith %}
+                           <i class="fas fa-info-circle status-icon text-primary"></i>
+                           <span class="status-text">Estado: <strong>Activo</strong></span>
+                        </div>
+                        <!-- Last Execution Section -->
+                        <div>
+                           <i class="fas fa-history status-icon text-success"></i>
+                           <span class="status-text">Ultima ejecución: <strong>{{ first_end_time }}</strong></span>
+                        </div>
+                     </div>
+                     <!-- Control Buttons -->
+                     <div class="control-buttons">
+                        <button class="btn btn-primary" type="button"><i class="fas fa-play"></i> Start</button>
+                        <button class="btn btn-warning" type="button"><i class="fas fa-pause"></i> Pause</button>
+                        <button class="btn btn-danger" type="button"><i class="fas fa-stop"></i> Stop</button>
+                     </div>
+                  </div>
+               </div>
+               <ol class="breadcrumb mb-4">
+                  <li class="breadcrumb-item active">Busca enlaces rotos en el sitio</li>
+               </ol>
+               <div class="row">
+                  <!-- Overall Satisfaction Score Doughnut Chart -->
+                  <div class="col-md-6 my-4">
+                     <h2 class="text-center">Score</h2>
+                     <div class="text-center">
+                        <h3 class="display-4 text-success font-weight-bolder">96.16%</h3>
+                        <p class="lead">enlaces buenos</p>
+                     </div>
+                  </div>
+
+                  <!-- Page Load Time KPI -->
+                  <div class="col-md-6 my-4">
+                     <h2 class="text-center">Tiempo de Respuesta</h2>
+                     <div class="text-center">
+                        <h3 class="display-4 text-danger font-weight-bolder">9.03m</h3>
+                        <p class="lead">media / página</p>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <!-- Itera sobre los últimos resultados de DomainStats -->
+                  {% for stat in latest_stats %}
+                  <div class="col-md-4">
+                     <div class="card domain-stat-card">
+                        <div class="card-body">
+                           <h5 class="card-title font-weight-bolder text-success">{{ stat.domain }}</h5>
+                           <p class="card-text">
+                              <strong>Ultimo scan:</strong> {{ stat.latest_timestamp }}<br>
+                              <strong>Estado:</strong>UP({{ stat.status_code }})<br>
+                              <strong>Páginas:</strong> {{ stat.page_count }}<br />
+                              <strong>Rotas:</strong> <span class="text-danger font-weight-bolder"><strong>{{
+                                    stat.broken_links }}</strong></span><br />
+                              <strong>Inicio:</strong> {{ stat.start_time }}<br>
+                              <strong>Fin:</strong> {{ stat.end_time }}<br>
+                              <strong>Duración:</strong> {{ stat.total_time }}<br>
+
+                              <!-- Agrega otros campos según sea necesario -->
                            </p>
                         </div>
-                        <h1 class="mt-4">Enlaces rotos</h1>
-                        <div class="card control-card mb-4">
-                           <div class="card-body">
-                              <!-- Status Section -->
-                              <div class="mb-3 status-section">
-                                 <div>
-                                    <i class="fas fa-info-circle status-icon text-primary"></i>
-                                    <span class="status-text">Estado: <strong>Activo</strong></span>
-                                 </div>
-                                 <!-- Last Execution Section -->
-                                 <div>
-                                    <i class="fas fa-history status-icon text-success"></i>
-                                    <span class="status-text">Ultima ejecución: <strong>{{ first_end_time }}</strong></span>
-                                 </div>
-                              </div>
-                              <!-- Control Buttons -->
-                              <div class="control-buttons">
-                                 <button class="btn btn-primary" type="button"><i class="fas fa-play"></i> Start</button>
-                                 <button class="btn btn-warning" type="button"><i class="fas fa-pause"></i> Pause</button>
-                                 <button class="btn btn-danger" type="button"><i class="fas fa-stop"></i> Stop</button>
+                     </div>
+                  </div>
+                  {% endfor %}
+               </div>
+
+               <div class="row">
+                  <!-- Score Global - prevencion.mc-mutual.com -->
+                  <div class="col-md-4">
+                     <div class="card">
+
+                        <div class="card-body">
+                           <canvas id="scoreGlobalChartPrevencion"></canvas>
+                        </div>
+                        <div class="card-footer small text-muted font-weight-bolder">prevencion.mc-mutual.com</div>
+                     </div>
+                  </div>
+
+                  <!-- Score Global - mejoratuabsentismo.mc-mutual.com -->
+                  <div class="col-md-4">
+                     <div class="card">
+
+                        <div class="card-body">
+                           <canvas id="scoreGlobalChartMejora"></canvas>
+                        </div>
+                        <div class="card-footer small text-muted font-weight-bolder">mejoratuabsentismo.mc-mutual.com
+                        </div>
+                     </div>
+                  </div>
+
+                  <!-- Score Global - www.mc-mutual.com -->
+                  <div class="col-md-4">
+                     <div class="card">
+
+                        <div class="card-body">
+                           <canvas id="scoreGlobalChartWww"></canvas>
+                        </div>
+                        <div class="card-footer small text-muted font-weight-bolder">www.mc-mutual.com</div>
+                     </div>
+                  </div>
+               </div>
+
+
+               <div class="row mt-5">
+                  <!-- Enlaces Rotos - Gráfico de Barras Horizontales -->
+                  <div class="col-md-6">
+                     <div class="card">
+                        <div class="card-header">
+                           <h5 class="card-title">Comparativa Enlaces Rotos</h5>
+                        </div>
+                        <div class="card-body">
+                           <canvas id="enlacesRotosBarChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="card-footer text-muted">
+                           <small>Comparativa de enlaces rotos entre los dominios</small>
+                        </div>
+                     </div>
+                  </div>
+
+                  <!-- Enlaces Rotos - Gráfico Polar -->
+                  <div class="col-md-6">
+                     <div class="card">
+                        <div class="card-header">
+                           <h5 class="card-title">Paginas Totales / Enlaces Rotos</h5>
+                        </div>
+                        <div class="card-body">
+                           <canvas id="multiSeriesStackedColumnChart" width="600" height="300"></canvas>
+                        </div>
+                        <div class="card-footer text-muted">
+                           <small>Comparativa de total de páginas, tiempo de escaneo y errores entre los
+                              dominios</small>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+
+               <div class="row mt-4">
+                  <!-- Tiempo de Escaneo - Gráfico de Barras Verticales -->
+                  <div class="col-md-6">
+                     <div class="card">
+                        <div class="card-header">
+                           <h5 class="card-title">Comparativa Tiempo de Escaneo</h5>
+                        </div>
+                        <div class="card-body">
+                           <canvas id="tiempoEscaneoBarChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="card-footer text-muted">
+                           <small>Comparativa del tiempo total de escaneo entre los dominios</small>
+                        </div>
+                     </div>
+                  </div>
+
+                  <!-- Duración Promedio por Página - Gráfico Polar -->
+                  <div class="col-md-6">
+                     <div class="card">
+                        <div class="card-header">
+                           <h5 class="card-title">Rspuesta promedio por página</h5>
+                        </div>
+                        <div class="card-body">
+                           <canvas id="duracionPromedioPolarChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="card-footer text-muted">
+                           <small>Comparativa de la duración promedio por página entre los dominios</small>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <script>
+                  // Datos para el Multi-Series 100% Stacked Column Chart
+                  var multiSeriesStackedData = {
+                     labels: ['prevencion.mc-mutual.com', 'mejoratuabsentismo.mc-mutual.com', 'mc-mutual.com'],
+                     datasets: [
+                        {
+                           label: 'Total de Páginas',
+                           data: [784, 172, 1154],
+                           backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+                           borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                           borderWidth: 1
+                        },
+
+                        {
+                           label: 'Errores',
+                           data: [53, 19, 9], // Porcentajes calculados en base a los datos originales
+                           backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+                           borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                           borderWidth: 1
+                        }
+                     ]
+                  };
+
+                  // Configuración del Multi-Series 100% Stacked Column Chart
+                  var multiSeriesStackedOptions = {
+                     scales: {
+                        x: { stacked: true },
+                        y: { stacked: true }
+                     }
+                  };
+
+                  // Crear el Multi-Series 100% Stacked Column Chart
+                  var ctxMultiSeriesStackedColumn = document.getElementById('multiSeriesStackedColumnChart').getContext('2d');
+                  new Chart(ctxMultiSeriesStackedColumn, {
+                     type: 'bar',
+                     data: multiSeriesStackedData,
+                     options: multiSeriesStackedOptions
+                  });
+               </script>
+
+
+
+
+               <script>
+                  // Datos para el gráfico de Barras Verticales de Tiempo de Escaneo en minutos
+                  var tiempoEscaneoDataInMinutes = [259.93, 8.98, 134.95];
+
+                  // Configuración del gráfico de Barras Verticales de Tiempo de Escaneo
+                  var tiempoEscaneoBarConfig = {
+                     type: 'bar',
+                     data: {
+                        labels: ['prevencion.mc-mutual.com', 'mejoratuabsentismo.mc-mutual.com', 'mc-mutual.com'],
+                        datasets: [{
+                           label: 'Tiempo de Escaneo (minutos)',
+                           data: tiempoEscaneoDataInMinutes,
+                           backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                           borderWidth: 1
+                        }]
+                     },
+                     options: {
+                        scales: {
+                           y: {
+                              beginAtZero: true,
+                              title: {
+                                 display: true,
+                                 text: 'Tiempo de Escaneo (minutos)'
+                              }
+                           }
+                        }
+                     }
+                  };
+
+                  // Crear el gráfico de Barras Verticales de Tiempo de Escaneo
+                  var ctxTiempoEscaneoBar = document.getElementById('tiempoEscaneoBarChart').getContext('2d');
+                  new Chart(ctxTiempoEscaneoBar, tiempoEscaneoBarConfig);
+
+                  // Datos para el gráfico Polar de Duración Promedio por Página
+                  var duracionPromedioData = [16.7, 3.14, 7.26];
+
+                  // Configuración del gráfico Polar de Duración Promedio por Página
+                  var duracionPromedioPolarConfig = {
+                     type: 'polarArea',
+                     data: {
+                        labels: ['prevencion.mc-mutual.com', 'mejoratuabsentismo.mc-mutual.com', 'mc-mutual.com'],
+                        datasets: [{
+                           label: 'Duración Promedio por Página',
+                           data: duracionPromedioData,
+                           backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                           borderWidth: 1
+                        }]
+                     },
+                     options: {
+                        scales: {
+                           r: {
+                              suggestedMin: 0,
+                              suggestedMax: 6
+                           }
+                        }
+                     }
+                  };
+
+                  // Crear el gráfico Polar de Duración Promedio por Página
+                  var ctxDuracionPromedioPolar = document.getElementById('duracionPromedioPolarChart').getContext('2d');
+                  new Chart(ctxDuracionPromedioPolar, duracionPromedioPolarConfig);
+               </script>
+
+               <script>
+                  // Datos de los dominios
+                  var dominios = ['prevencion.mc-mutual.com', 'mejoratuabsentismo.mc-mutual.com', 'mc-mutual.com'];
+                  var enlacesRotosData = [53, 19, 9];
+                  var tiempoEscaneoData = [15596, 539, 8097];
+                  var duracionPromedioData = [16.7, 3.14, 7.26];
+
+                  // Configuración del gráfico de barras horizontales
+                  var enlacesRotosBarConfig = {
+                     type: 'horizontalBar',
+                     data: {
+                        labels: dominios,
+                        datasets: [{
+                           label: 'Enlaces Rotos',
+                           data: enlacesRotosData,
+                           backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                           borderWidth: 1
+                        }]
+                     },
+                     options: {
+                        scales: {
+                           x: {
+                              beginAtZero: true
+                           }
+                        }
+                     }
+                  };
+
+                  // Configuración del gráfico polar
+                  var enlacesRotosPolarConfig = {
+                     type: 'polarArea',
+                     data: {
+                        labels: dominios,
+                        datasets: [{
+                           label: 'Enlaces Rotos',
+                           data: enlacesRotosData,
+                           backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                           borderWidth: 1
+                        }]
+                     }
+                  };
+
+                  // Datos para el gráfico de Barras Verticales de Tiempo de Escaneo en minutos
+                  var tiempoEscaneoDataInMinutes = [259.93, 8.98, 134.95];
+
+                  // Configuración del gráfico de Barras Verticales de Tiempo de Escaneo
+                  var tiempoEscaneoBarConfig = {
+                     type: 'bar',
+                     data: {
+                        labels: ['prevencion.mc-mutual.com', 'mejoratuabsentismo.mc-mutual.com', 'mc-mutual.com'],
+                        datasets: [{
+                           label: 'Tiempo de Escaneo (minutos)',
+                           data: tiempoEscaneoDataInMinutes,
+                           backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                           borderWidth: 1
+                        }]
+                     },
+                     options: {
+                        scales: {
+                           y: {
+                              beginAtZero: true
+                           }
+                        }
+                     }
+                  };
+
+                  // Configuración del gráfico polar para duración promedio por página
+                  var duracionPromedioPolarConfig = {
+                     type: 'polarArea',
+                     data: {
+                        labels: dominios,
+                        datasets: [{
+                           label: 'Duración Promedio por Página (segundos)',
+                           data: duracionPromedioData,
+                           backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                           borderWidth: 1
+                        }]
+                     }
+                  };
+
+                  var scoreGlobalDataPrevencion = {
+                     labels: ["Enlaces Rotos", "Tiempo de Escaneo (minutos)", "Duración Promedio por Página"],
+                     datasets: [{
+                        label: "prevencion.mc-mutual.com",
+                        backgroundColor: "rgba(255,192,203,0.5)",
+                        borderColor: "rgba(255,192,203,1)",
+                        pointBackgroundColor: "rgba(255,192,203,1)",
+                        data: [53, 4 * 60 + 19 + 56, 4 * 60 + 19 + 56 / 784]
+                     }]
+                  };
+
+                  var scoreGlobalDataMejora = {
+                     labels: ["Enlaces Rotos", "Tiempo de Escaneo (minutos)", "Duración Promedio por Página"],
+                     datasets: [{
+                        label: "mejoratuabsentismo.mc-mutual.com",
+                        backgroundColor: "rgba(152,251,152,0.5)",
+                        borderColor: "rgba(152,251,152,1)",
+                        pointBackgroundColor: "rgba(152,251,152,1)",
+                        data: [19, 8 + 59, 8 + 59 / 172]
+                     }]
+                  };
+                  var scoreGlobalDataWww = {
+                     labels: ["Enlaces Rotos", "Tiempo de Escaneo (minutos)", "Duración Promedio por Página"],
+                     datasets: [{
+                        label: "www.mc-mutual.com",
+                        backgroundColor: "rgba(173,216,230,0.5)",
+                        borderColor: "rgba(173,216,230,1)",
+                        pointBackgroundColor: "rgba(173,216,230,1)",
+                        data: [9, 2 * 60 + 14 + 57, 2 * 60 + 14 + 57 / 1154]
+
+                     }]
+                  };
+                  var scoreGlobalChartPrevencion = new Chart(document.getElementById('scoreGlobalChartPrevencion').getContext('2d'), {
+                     type: 'radar',
+                     data: scoreGlobalDataPrevencion,
+                     options: {
+                        scale: {
+                           ticks: { beginAtZero: true }
+                        }
+                     }
+                  });
+
+                  var scoreGlobalChartMejora = new Chart(document.getElementById('scoreGlobalChartMejora').getContext('2d'), {
+                     type: 'radar',
+                     data: scoreGlobalDataMejora,
+                     options: {
+                        scale: {
+                           ticks: { beginAtZero: true }
+                        }
+                     }
+                  });
+
+                  var scoreGlobalChartWww = new Chart(document.getElementById('scoreGlobalChartWww').getContext('2d'), {
+                     type: 'radar',
+                     data: scoreGlobalDataWww,
+                     options: {
+                        scale: {
+                           ticks: { beginAtZero: true }
+                        }
+                     }
+                  });
+
+                  // Crear gráficos
+                  var ctxEnlacesRotosBar = document.getElementById('enlacesRotosBarChart').getContext('2d');
+                  new Chart(ctxEnlacesRotosBar, enlacesRotosBarConfig);
+
+                  var ctxEnlacesRotosPolar = document.getElementById('enlacesRotosPolarChart').getContext('2d');
+                  new Chart(ctxEnlacesRotosPolar, enlacesRotosPolarConfig);
+
+                  var ctxTiempoEscaneoBar = document.getElementById('tiempoEscaneoBarChart').getContext('2d');
+                  new Chart(ctxTiempoEscaneoBar, tiempoEscaneoBarConfig);
+
+                  var ctxDuracionPromedioPolar = document.getElementById('duracionPromedioPolarChart').getContext('2d');
+                  new Chart(ctxDuracionPromedioPolar, duracionPromedioPolarConfig);
+               </script>
+
+
+               <div class="container">
+                  <div class="row mt-4 mr-2">
+                     <div class="col-md-4">
+                        <div class="card bg-success text-white mb-4">
+                           <div class="card-body text-dark font-weight-bolder">
+                              <h5>Índice 404 bajo</h5>
+                           </div>
+                           <div class="card-footer d-flex align-items-center justify-content-between">
+                              <a class="small text-white stretched-link" data-bs-toggle="collapse"
+                                 href="#collapseMejoras" role="button" aria-expanded="false"
+                                 aria-controls="collapseMejoras">Ver Sugerencias</a>
+                              <div class="small text-white"><i class="fas fa-angle-right" data-bs-toggle="collapse"
+                                    href="#collapseMejoras" role="button" aria-expanded="false"
+                                    aria-controls="collapseMejoras"></i></div>
+                           </div>
+                           <div class="collapse" id="collapseMejoras">
+                              <div class="card card-body">
+                                 <p class="text-dark"><i class="fa-solid fa-arrow-up"></i> 95% de las páginas OK (200)
+                                 </p>
                               </div>
                            </div>
                         </div>
-                        <ol class="breadcrumb mb-4">
-                           <li class="breadcrumb-item active">Busca enlaces rotos en el sitio</li>
-                        </ol>
-                        <div class="row">
-                           <!-- Itera sobre los últimos resultados de DomainStats -->
-                           {% for stat in latest_stats %}
-                               <div class="col-md-4 mb-4">
-                                   <div class="card domain-stat-card">
-                                       <div class="card-body">
-                                           <h5 class="card-title">{{ stat.domain }}</h5>
-                                           <p class="card-text">
-                                               <strong>Timestamp:</strong> {{ stat.latest_timestamp }}<br>
-                                               <strong>Status Code:</strong> {{ stat.status_code }}<br>
-                                               <strong>Page Count:</strong> {{ stat.page_count }}<br />
-                                               <strong>Broken_links:</strong> {{ stat.broken_links }}<br />
-                                               <strong>Start Time:</strong> {{ stat.start_time }}<br>
-                                               <strong>End Time:</strong> {{ stat.end_time }}<br>
-                                               <strong>Total Time:</strong> {{ stat.total_time }}<br>
-
-                                               <!-- Agrega otros campos según sea necesario -->
-                                           </p>
-                                       </div>
-                                   </div>
-                               </div>
-                           {% endfor %}
-                       </div>
-
-
-                       <div class="row">
-                        <!-- Enlaces Rotos -->
-                        <div class="col-md-4">
-                            <div class="card">
-                              <div class="card-header bg-dark text-white">
-                                    Enlaces Rotos
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="enlacesRotosChart"></canvas>
-                                </div>
-                                <div class="card-footer small text-muted">Datos de: prevencion.mc-mutual.com, mejoratuabsentismo.mc-mutual.com, www.mc-mutual.com</div>
-                            </div>
-                        </div>
-                
-                        <!-- Tiempo de Escaneo -->
-                        <div class="col-md-4">
-                            <div class="card">
-                              <div class="card-header bg-dark text-white">
-                                    Tiempo de Escaneo
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="tiempoEscaneoChart"></canvas>
-                                </div>
-                                <div class="card-footer small text-muted">Datos de: prevencion.mc-mutual.com, mejoratuabsentismo.mc-mutual.com, www.mc-mutual.com</div>
-                            </div>
-                        </div>
-                
-                        <!-- Total de URLs -->
-                        <div class="col-md-4">
-                            <div class="card">
-                              <div class="card-header bg-dark text-white">
-                                    Total de URLs
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="totalUrlsChart"></canvas>
-                                </div>
-                                <div class="card-footer small text-muted">Datos de: prevencion.mc-mutual.com, mejoratuabsentismo.mc-mutual.com, www.mc-mutual.com</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                     <!-- Enlaces Rotos (dominio individual) -->
-                     <div class="col-md-4">
-                         <div class="card">
-                           <div class="card-header bg-dark text-white">
-                                 Enlaces Rotos - prevencion.mc-mutual.com
-                             </div>
-                             <div class="card-body">
-                                 <canvas id="enlacesRotosIndividualChart"></canvas>
-                             </div>
-                             <div class="card-footer small text-muted">Proporción de enlaces rotos en prevencion.mc-mutual.com</div>
-                         </div>
                      </div>
-             
-                     <!-- Tiempo de Escaneo (dominio individual) -->
                      <div class="col-md-4">
-                         <div class="card">
-                           <div class="card-header bg-dark text-white">
-                                 Tiempo de Escaneo - prevencion.mc-mutual.com
-                             </div>
-                             <div class="card-body">
-                                 <canvas id="tiempoEscaneoIndividualChart"></canvas>
-                             </div>
-                             <div class="card-footer small text-muted">Proporción de tiempo de escaneo en prevencion.mc-mutual.com</div>
-                         </div>
+                        <div class="card bg-warning text-white mb-4">
+                           <div class="card-body text-dark font-weight-bolder">
+                              <h5>Problemas de Indexación</h5>
+                           </div>
+                           <div class="card-footer d-flex align-items-center justify-content-between">
+                              <a class="small text-white stretched-link" data-bs-toggle="collapse"
+                                 href="#collapseNuevosAvisos" role="button" aria-expanded="false"
+                                 aria-controls="collapseNuevosAvisos">Ver Sugerencias</a>
+                              <div class="small text-white"><i class="fas fa-angle-right" data-bs-toggle="collapse"
+                                    href="#collapseNuevosAvisos" role="button" aria-expanded="false"
+                                    aria-controls="collapseNuevosAvisos"></i></div>
+                           </div>
+                           <div class="collapse" id="collapseNuevosAvisos">
+                              <div class="card card-body">
+                                 <p class="text-dark"><i class="fa-solid fa-triangle-exclamation"></i> El tiempo de
+                                    escaneo es muy alto: los buscadores pueden abandonar tu sitio.</p>
+                              </div>
+                           </div>
+                        </div>
                      </div>
-             
-                     <!-- Duración Promedio por Página -->
+
                      <div class="col-md-4">
-                         <div class="card">
-                           <div class="card-header bg-dark text-white">
-                                 Duración Promedio por Página
-                             </div>
-                             <div class="card-body">
-                                 <canvas id="duracionPromedioChart"></canvas>
-                             </div>
-                             <div class="card-footer small text-muted">Datos de: prevencion.mc-mutual.com, mejoratuabsentismo.mc-mutual.com, www.mc-mutual.com</div>
-                         </div>
+                        <div class="card bg-danger text-white mb-4">
+                           <div class="card-body text-dark font-weight-bolder">
+                              <h5>Error: Response time > 180s</h5>
+                           </div>
+                           <div class="card-footer d-flex align-items-center justify-content-between">
+                              <a class="small text-white stretched-link" data-bs-toggle="collapse"
+                                 href="#collapseErrores" role="button" aria-expanded="false"
+                                 aria-controls="collapseErrores">Ver sugerencias</a>
+                              <div class="small text-white"><i class="fas fa-angle-right" data-bs-toggle="collapse"
+                                    href="#collapseErrores" role="button" aria-expanded="false"
+                                    aria-controls="collapseErrores"></i></div>
+                           </div>
+                           <div class="collapse" id="collapseErrores">
+                              <div class="card card-body">
+                                 <p class="text-danger">El tiempo de respues es superior a 180 segundos.<br /><br />
+                                    <i class="fa fa-check" aria-hidden="true"></i> Comprueba el tiempo de TIMEOUT
+                                    configurado en el servidor<br />
+                                    <i class="fa fa-check" aria-hidden="true"></i> Comprueba el balanceo de servidores
+                                    de Liferay
+                                 </p>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+
                      </div>
-                 </div>
-
-                 <div class="row">
-                  <!-- Score Global - prevencion.mc-mutual.com -->
-                  <div class="col-md-4">
-                      <div class="card">
-                          <div class="card-header bg-dark text-white">
-                              Score Global - prevencion.mc-mutual.com
-                          </div>
-                          <div class="card-body">
-                              <canvas id="scoreGlobalChartPrevencion"></canvas>
-                          </div>
-                          <div class="card-footer small text-muted">Datos de: prevencion.mc-mutual.com</div>
-                      </div>
                   </div>
-          
-                  <!-- Score Global - mejoratuabsentismo.mc-mutual.com -->
-                  <div class="col-md-4">
-                      <div class="card">
-                          <div class="card-header bg-dark text-white">
-                              Score Global - mejoratuabsentismo.mc-mutual.com
-                          </div>
-                          <div class="card-body">
-                              <canvas id="scoreGlobalChartMejora"></canvas>
-                          </div>
-                          <div class="card-footer small text-muted">Datos de: mejoratuabsentismo.mc-mutual.com</div>
-                      </div>
+
+
+               </div>
+
+               <div class="container">
+                  <div class="row mt-5">
+                     <!-- Primera columna con los checkboxes -->
+                     <div class="col-md-4 mb-4">
+                        <div class="card">
+                           <div class="card-body bg-dark text-white">
+                              <h5 class="card-title">URL:</h5>
+                              <!-- Agregamos el dropdown en lugar de checkboxes -->
+                              <select id="targetUrlDropdown" class="form-select">
+                                 <option value="">Ver todas</option>
+                                 <option value="https://www.mc-mutual.com">www.mc-mutual.com</option>
+                                 <option value="https://mejoratuabsentismo.mc-mutual.com">
+                                    mejoratuabsentismo.mc-mutual.com</option>
+                                 <option value="https://prevencion.mc-mutual.com">prevencion.mc-mutual.com</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+
+                     <!-- Segunda columna con los campos de fecha -->
+                     <div class="col-md-4 mb-4">
+                        <div class="card">
+                           <div class="card-body bg-dark text-white">
+                              <h5 class="card-title">Desde:</h5>
+                              <input type="date" id="startDate" class="form-control" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-4 mb-4">
+                        <div class="card">
+                           <div class="card-body bg-dark text-white">
+                              <h5 class="card-title">Hasta:</h5>
+                              <input type="date" id="endDate" class="form-control" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row mb-4">
+                        <div class="col-md-12 text-end">
+                           <button type="button" class="btn btn-secondary" id="resetFilters">Resetear Filtros</button>
+                        </div>
+                     </div>
                   </div>
-          
-                  <!-- Score Global - www.mc-mutual.com -->
-                  <div class="col-md-4">
-                      <div class="card">
-                          <div class="card-header bg-dark text-white">
-                              Score Global - www.mc-mutual.com
-                          </div>
-                          <div class="card-body">
-                              <canvas id="scoreGlobalChartWww"></canvas>
-                          </div>
-                          <div class="card-footer small text-muted">Datos de: www.mc-mutual.com</div>
-                      </div>
-                  </div>
-              </div>
 
-              <script>
-               // Datos para los gráficos
-               var enlacesRotosData = {
-                   labels: ["prevencion.mc-mutual.com", "mejoratuabsentismo.mc-mutual.com", "www.mc-mutual.com"],
-                   datasets: [{
-                       label: "Enlaces Rotos",
-                       backgroundColor: ["#FFC0CB", "#98FB98", "#ADD8E6"],
-                       data: [53, 19, 9]
-                   }]
-               };
-           
-               var tiempoEscaneoData = {
-                   labels: ["prevencion.mc-mutual.com", "mejoratuabsentismo.mc-mutual.com", "www.mc-mutual.com"],
-                   datasets: [{
-                       label: "Tiempo de Escaneo",
-                       backgroundColor: ["#FFC0CB", "#98FB98", "#ADD8E6"],
-                       data: [4*60 + 19 + 56, 8 + 59, 2*60 + 14 + 57]
-                   }]
-               };
-           
-               var totalUrlsData = {
-                   labels: ["prevencion.mc-mutual.com", "mejoratuabsentismo.mc-mutual.com", "www.mc-mutual.com"],
-                   datasets: [{
-                       label: "Total de URLs",
-                       backgroundColor: ["#FFC0CB", "#98FB98", "#ADD8E6"],
-                       data: [784, 172, 1154]
-                   }]
-               };
-           
-               var enlacesRotosIndividualData = {
-                   labels: ["Enlaces Rotos", "Páginas Restantes"],
-                   datasets: [{
-                       data: [53, 784 - 53],
-                       backgroundColor: ["#FFC0CB", "#98FB98"]
-                   }]
-               };
-           
-               var tiempoEscaneoIndividualData = {
-                   labels: ["Tiempo de Escaneo", "Tiempo Restante"],
-                   datasets: [{
-                       data: [4*60 + 19 + 56, (4*60 + 19 + 56) - (4*60 + 19 + 56)],
-                       backgroundColor: ["#FFC0CB", "#98FB98"]
-                   }]
-               };
-           
-               var duracionPromedioData = {
-        labels: ["Duración Promedio por Página"],
-        datasets: [{
-            label: "prevencion.mc-mutual.com",
-            backgroundColor: "#FFC0CB",
-            data: [4*60 + 19 + 56 / 784]
-        }, {
-            label: "mejoratuabsentismo.mc-mutual.com",
-            backgroundColor: "#98FB98",
-            data: [8 + 59 / 172]
-        }, {
-            label: "www.mc-mutual.com",
-            backgroundColor: "#ADD8E6",
-            data: [2*60 + 14 + 57 / 1154]
-        }]
-    };
-
-    var scoreGlobalDataPrevencion = {
-        labels: ["Enlaces Rotos", "Tiempo de Escaneo (minutos)", "Duración Promedio por Página"],
-        datasets: [{
-            label: "prevencion.mc-mutual.com",
-            backgroundColor: "rgba(255,192,203,0.5)",
-            borderColor: "rgba(255,192,203,1)",
-            pointBackgroundColor: "rgba(255,192,203,1)",
-            data: [53, 4 * 60 + 19 + 56, 4 * 60 + 19 + 56 / 784]
-        }]
-    };
-
-    var scoreGlobalDataMejora = {
-        labels: ["Enlaces Rotos", "Tiempo de Escaneo (minutos)", "Duración Promedio por Página"],
-        datasets: [{
-            label: "mejoratuabsentismo.mc-mutual.com",
-            backgroundColor: "rgba(152,251,152,0.5)",
-            borderColor: "rgba(152,251,152,1)",
-            pointBackgroundColor: "rgba(152,251,152,1)",
-            data: [19, 8 + 59, 8 + 59 / 172]
-        }]
-    };
-    var scoreGlobalDataWww = {
-        labels: ["Enlaces Rotos", "Tiempo de Escaneo (minutos)", "Duración Promedio por Página"],
-        datasets: [{
-            label: "www.mc-mutual.com",
-            backgroundColor: "rgba(173,216,230,0.5)",
-            borderColor: "rgba(173,216,230,1)",
-            pointBackgroundColor: "rgba(173,216,230,1)",
-            data: [9, 2 * 60 + 14 + 57, 2 * 60 + 14 + 57 / 1154]
-        }]
-    };
-
-    // Gráficos
-    var enlacesRotosChart = new Chart(document.getElementById('enlacesRotosChart').getContext('2d'), {
-        type: 'bar',
-        data: enlacesRotosData
-    });
-
-    var tiempoEscaneoChart = new Chart(document.getElementById('tiempoEscaneoChart').getContext('2d'), {
-        type: 'bar',
-        data: tiempoEscaneoData
-    });
-
-    var totalUrlsChart = new Chart(document.getElementById('totalUrlsChart').getContext('2d'), {
-        type: 'bar',
-        data: totalUrlsData
-    });
-
-    var enlacesRotosIndividualChart = new Chart(document.getElementById('enlacesRotosIndividualChart').getContext('2d'), {
-        type: 'doughnut',
-        data: enlacesRotosIndividualData
-    });
-
-    var tiempoEscaneoIndividualChart = new Chart(document.getElementById('tiempoEscaneoIndividualChart').getContext('2d'), {
-        type: 'doughnut',
-        data: tiempoEscaneoIndividualData
-    });
-
-    var duracionPromedioChart = new Chart(document.getElementById('duracionPromedioChart').getContext('2d'), {
-        type: 'bar',
-        data: duracionPromedioData
-    });
-  
-    var scoreGlobalChartPrevencion = new Chart(document.getElementById('scoreGlobalChartPrevencion').getContext('2d'), {
-      type: 'radar',
-        data: scoreGlobalDataPrevencion,
-        options: {
-            scale: {
-                ticks: { beginAtZero: true }
-            }
-        }
-    });
-
-    var scoreGlobalChartMejora = new Chart(document.getElementById('scoreGlobalChartMejora').getContext('2d'), {
-        type: 'radar',
-        data: scoreGlobalDataMejora,
-        options: {
-            scale: {
-                ticks: { beginAtZero: true }
-            }
-        }
-    });
-
-    var scoreGlobalChartWww = new Chart(document.getElementById('scoreGlobalChartWww').getContext('2d'), {
-        type: 'radar',
-        data: scoreGlobalDataWww,
-        options: {
-            scale: {
-                ticks: { beginAtZero: true }
-            }
-        }
-    });
-</script>
-
-
-
-
-                       <div class="row mt-5">
-                        <!-- Primera columna con los checkboxes -->
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">URL:</h5>
-                                    <!-- Agregamos el dropdown en lugar de checkboxes -->
-                                    <select id="targetUrlDropdown" class="form-select">
-                                        <option value="">Ver todas</option>
-                                        <option value="https://www.mc-mutual.com">www.mc-mutual.com</option>
-                                        <option value="https://mejoratuabsentismo.mc-mutual.com">mejoratuabsentismo.mc-mutual.com</option>
-                                        <option value="https://prevencion.mc-mutual.com">prevencion.mc-mutual.com</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <!-- Segunda columna con los campos de fecha -->
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Desde:</h5>
-                                    <input type="date" id="startDate" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Hasta:</h5>
-                                    <input type="date" id="endDate" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-md-12 text-end">
-                                <button type="button" class="btn btn-secondary" id="resetFilters">Resetear Filtros</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card mb-4">
+                  <div class="card mb-4">
                      <div class="card-header">
                         <i class="fas fa-table me-1"></i>
                         Enlaces rotos desde el último scan
@@ -538,132 +737,137 @@
                      <div class="card-body">
                         <table id="datatablesSimple" class="display">
                            <thead>
-                                 <tr>
-                                    <th>Fecha</th>
-                                    <th>Origen</th>
-                                    <th>Url rota</th>
-                                    <th>Anchor</th>
-                                    <th>Error</th>
-                                    <th>Acciones</th>
-                                 </tr>
+                              <tr>
+                                 <th>Fecha</th>
+                                 <th>Origen</th>
+                                 <th>Url rota</th>
+                                 <!--  <th>Anchor</th>
+                                    <th>Error</th> -->
+                                 <th>Acciones</th>
+                              </tr>
 
                            </thead>
                            <tfoot>
-                                 <tr>
-                                    <th>Fecha</th>
-                                    <th>Origen</th>
-                                    <th>Url rota</th>
-                                    <th>Anchor</th>
-                                    <th>Error</th>
-                                    <th>Acciones</th>
-                                 </tr>
-                              </tfoot>
-                              <tbody>
-                                 {% for result in scan_results %}
-                                 <tr>
-                                     <td>{{ result.timestamp }}</td>
-                                     <td>{{ result.scanned_url }}</td>
-                                     <td><a href="{{ result.broken_url }}" target="_blank">{{ result.broken_url }}</a></td>
-                                     <td>{{ result.anchor_text }}</td>
-                                     <td>{{ result.error_code }}</td>
-                                     <td>
-                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#infoModal{{ result.id }}">
-                                             <i class="fas fa-plus"></i>
-                                         </button>
-                                     </td>
-                                 </tr>
-                                 <!-- Modal específico para cada fila -->
-                                 <div class="modal fade" id="infoModal{{ result.id }}" tabindex="-1" aria-labelledby="infoModalLabel{{ result.id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                       <div class="modal-content bg-info text-dark">
-                                          <div class="modal-header">
-                                                <h5 class="modal-title" id="infoModalLabel{{ result.id }}">Sugerencias</h5>
-                                                
-                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                          </div>
-                                          <div class="modal-body">
-                                                <p>Anchor: {{ result.anchor_text }}</p>
-                                                <p>Error: {{ result.error_code }}</p>
-                                          </div>
+                              <tr>
+                                 <th>Fecha</th>
+                                 <th>Origen</th>
+                                 <th>Url rota</th>
+                                 <!--  <th>Anchor</th>
+                                    <th>Error</th> -->
+                                 <th>Acciones</th>
+                              </tr>
+                           </tfoot>
+                           <tbody>
+                              {% for result in scan_results %}
+                              <tr>
+                                 <td>{{ result.timestamp }}</td>
+                                 <td>{{ result.scanned_url }}</td>
+                                 <td><a href="{{ result.broken_url }}" target="_blank">{{ result.broken_url }}</a></td>
+                                 <!--  <th>Anchor</th>
+                                    <th>Error</th> -->
+                                 <td>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                       data-bs-target="#infoModal{{ result.id }}">
+                                       <i class="fas fa-plus"></i>
+                                    </button>
+                                 </td>
+                              </tr>
+                              <!-- Modal específico para cada fila -->
+                              <div class="modal fade" id="infoModal{{ result.id }}" tabindex="-1"
+                                 aria-labelledby="infoModalLabel{{ result.id }}" aria-hidden="true">
+                                 <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content bg-info text-dark">
+                                       <div class="modal-header">
+                                          <h5 class="modal-title" id="infoModalLabel{{ result.id }}">Sugerencias link
+                                             roto#{{ result.id }}</h5>
+
+                                          <button type="button" class="btn-close btn-close-white"
+                                             data-bs-dismiss="modal" aria-label="Close"></button>
+                                       </div>
+                                       <div class="modal-body">
+                                          <p>Anchor: {{ result.anchor_text }}</p>
+                                          <p>Error: {{ result.error_code }}</p>
                                        </div>
                                     </div>
+                                 </div>
                               </div>
                               {% endfor %}
-                             </tbody>
+                           </tbody>
                         </table>
+                     </div>
                   </div>
-               </div>
-
-               <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-               <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-               <script src="https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js"></script>
-               <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 
-               <script>
-                  document.addEventListener('DOMContentLoaded', function() {
-                     // Inicializamos DataTables
-                     const dataTable = $('#datatablesSimple').DataTable({
-                        "language": {
-                              "sEmptyTable":     "No hay datos disponibles en la tabla",
-                              "sInfo":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-                              "sInfoEmpty":      "Mostrando 0 a 0 de 0 entradas",
-                              "sInfoFiltered":   "(filtrado de un total de _MAX_ entradas)",
-                              "sInfoPostFix":    "",
-                              "sInfoThousands":  ",",
-                              "sLengthMenu":     "Mostrar _MENU_ entradas",
+                  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+                  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+                  <script src="https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js"></script>
+                  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+
+                  <script>
+                     document.addEventListener('DOMContentLoaded', function () {
+                        // Inicializamos DataTables
+                        const dataTable = $('#datatablesSimple').DataTable({
+                           "language": {
+                              "sEmptyTable": "No hay datos disponibles en la tabla",
+                              "sInfo": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                              "sInfoEmpty": "Mostrando 0 a 0 de 0 entradas",
+                              "sInfoFiltered": "(filtrado de un total de _MAX_ entradas)",
+                              "sInfoPostFix": "",
+                              "sInfoThousands": ",",
+                              "sLengthMenu": "Mostrar _MENU_ entradas",
                               "sLoadingRecords": "Cargando...",
-                              "sProcessing":     "Procesando...",
-                              "sSearch":         "Buscar:",
-                              "sZeroRecords":    "No se encontraron coincidencias",
+                              "sProcessing": "Procesando...",
+                              "sSearch": "Buscar:",
+                              "sZeroRecords": "No se encontraron coincidencias",
                               "oPaginate": {
-                                 "sFirst":    "Primero",
-                                 "sLast":     "Último",
-                                 "sNext":     "Siguiente",
+                                 "sFirst": "Primero",
+                                 "sLast": "Último",
+                                 "sNext": "Siguiente",
                                  "sPrevious": "Anterior"
                               },
                               "oAria": {
-                                 "sSortAscending":  ": Activar para ordenar la columna en orden ascendente",
+                                 "sSortAscending": ": Activar para ordenar la columna en orden ascendente",
                                  "sSortDescending": ": Activar para ordenar la columna en orden descendente"
                               }
-                        },responsive:true,
-                        columns: [
+                           }, responsive: true,
+                           columns: [
                               { type: 'date', format: 'YYYY-MM-DD' },
-                              null, null, null, null,null
-                        ]
-                     });
+                              null, null, null
+                           ]
+                        });
 
-                     // Configuramos el evento de cambio para el dropdown y campos de fecha
-                     $('#targetUrlDropdown, #startDate, #endDate').change(updateFilter);
+                        // Configuramos el evento de cambio para el dropdown y campos de fecha
+                        $('#targetUrlDropdown, #startDate, #endDate').change(updateFilter);
 
-                     // Configuramos el evento de click para el botón de reset
-                     $('#resetFilters').click(function() {
-                              // Limpiamos los valores de los controles y actualizamos el filtro
-                              $('#targetUrlDropdown').val('');
-                              $('#startDate').val('');
-                              $('#endDate').val('');
-                              updateFilter();
-                     });
+                        // Configuramos el evento de click para el botón de reset
+                        $('#resetFilters').click(function () {
+                           // Limpiamos los valores de los controles y actualizamos el filtro
+                           $('#targetUrlDropdown').val('');
+                           $('#startDate').val('');
+                           $('#endDate').val('');
+                           updateFilter();
+                        });
 
-                             // Inicializamos los tooltips de Bootstrap
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        });
+                        // Inicializamos los tooltips de Bootstrap
+                        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                           return new bootstrap.Tooltip(tooltipTriggerEl)
+                        });
 
 
-                     function updateFilter() {
-                        var selectedTarget = $('#targetUrlDropdown').val();
-                        var startDate = $('#startDate').val();
-                        var endDate = $('#endDate').val();
+                        function updateFilter() {
+                           var selectedTarget = $('#targetUrlDropdown').val();
+                           var startDate = $('#startDate').val();
+                           var endDate = $('#endDate').val();
 
-                        // Aplicamos el filtro de URL
-                        dataTable.column(1).search(selectedTarget).draw();
+                           // Aplicamos el filtro de URL
+                           dataTable.column(1).search(selectedTarget).draw();
 
-                        
 
-                        // Filtramos por rango de fechas
-                        if (startDate && endDate) {
+
+                           // Filtramos por rango de fechas
+                           if (startDate && endDate) {
                               dataTable.draw();
                               var columnIndex = 0; // Índice de la columna de fecha
                               var startMoment = moment(startDate, 'YYYY-MM-DD');
@@ -680,35 +884,39 @@
 
                               // Eliminamos la función de filtrado para que no interfiera con futuros cambios
                               $.fn.dataTable.ext.search.pop();
-                        } else {
+                           } else {
                               // No hay rango de fechas, mostramos todas las filas
                               dataTable.draw();
+                           }
                         }
-                     }
-                  });
-               </script>
+                     });
+                  </script>
 
-
-
-                     </div>
-                  </div>
                </div>
-            </main>
-            <footer class="py-4 bg-light mt-auto">
-               <div class="container-fluid px-4">
-                  <div class="d-flex align-items-center justify-content-between small">
-                     <div class="text-muted">Copyright &copy; MC-Mutual 2023</div>
-                     <div>
-                        <a href="#">Aviso Legal</a>
-                        &middot;
-                        <a href="#">Términos &amp; Condiciones</a>
-                     </div>
-                  </div>
-               </div>
-            </footer>
+            </div>
+         </div>
+      </div>   
+   </div>
+   </main>
+   <br clear="all">
+   <footer class="py-4 bg-light mt-auto">
+      <div class="container-fluid px-4">
+         <div class="d-flex align-items-center justify-content-between small">
+            <div class="text-muted">Copyright &copy; MC-Mutual 2023</div>
+            <div>
+               <a href="#">Aviso Legal</a>
+               &middot;
+               <a href="#">Términos &amp; Condiciones</a>
+            </div>
          </div>
       </div>
-   </body>
+   </footer>
+   </div>
+
+
+
+
+
+</body>
+
 </html>
-
-
