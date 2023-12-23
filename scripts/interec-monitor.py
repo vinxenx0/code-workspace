@@ -1,3 +1,13 @@
+# interec-monitor
+# (c) vicente b. lopez plaza
+# vinxenxo@protonmail.com 
+
+
+# pa11y --standard WCAG2AA --reporter csv https://4glsp.com > dominio_wcag2aa_report.csv && pa11y --standard WCAG2AAA --reporter csv https://4glsp.com > dominio_wcag2aaa_report.csv
+# --standard WCAG2AAA 
+
+
+
 import csv
 import requests
 from bs4 import BeautifulSoup
@@ -8,8 +18,14 @@ import string
 from PIL import Image
 from io import BytesIO
 import os
+import json
+import imghdr
+import subprocess
+from collections import Counter
 from lxml import etree
-from spellchecker import SpellChecker
+from urllib.parse import urlparse
+import aspell
+import langid
 
 def extraer_texto_visible(response_text):
     soup = BeautifulSoup(response_text, 'html.parser')
@@ -17,16 +33,35 @@ def extraer_texto_visible(response_text):
     return visible_text
 
 
-def analizar_ortografia(texto, idiomas=['es', 'fr', 'en']):
-    spell = SpellChecker(language=idiomas, distance=1)
+def detectar_idioma(texto):
+    try:
+        idioma, _ = langid.classify(texto)
+        return idioma
+    except Exception as e:
+        print(f"Error al detectar el idioma: {e}")
+        return None
+    
+    
+def analizar_ortografia(texto, idiomas=['es', 'fr', 'en', 'ca']):
+    errores_ortograficos = None  # Inicializa como None en lugar de una lista vacía
 
-    # Eliminar números y símbolos de moneda
-    translator = str.maketrans('', '', string.digits + string.punctuation)
-    texto_limpio = texto.translate(translator)
+    idioma_detectado = detectar_idioma(texto)
+    if idioma_detectado and idioma_detectado in idiomas:
+        try:
+            speller = aspell.Speller('lang', idioma_detectado)
 
-    palabras = [palabra for palabra in texto_limpio.split() if len(palabra) > 3]
-    errores_ortograficos = spell.unknown(palabras)
-    return list(errores_ortograficos)
+            # Eliminar números y símbolos de moneda, así como exclamaciones, interrogaciones y caracteres similares
+            translator = str.maketrans('', '', string.digits + string.punctuation + '¡!¿?')
+            texto_limpio = texto.translate(translator)
+
+            palabras = [palabra for palabra in texto_limpio.split() if len(palabra) > 3]
+
+            errores_ortograficos = [palabra for palabra in palabras if not speller.check(palabra)]
+            
+        except Exception as e:
+            print(f"Error al procesar el idioma {idioma_detectado}: {e}")
+
+    return errores_ortograficos
 
 def extraer_meta_tags(response_text):
     soup = BeautifulSoup(response_text, 'html.parser')
@@ -40,10 +75,12 @@ def analizar_heading_tags(response_text):
     heading_tags_count = {tag: len(soup.find_all(tag)) for tag in heading_tags}
     return heading_tags_count
 
+
 def extraer_informacion_imagenes(response_text, base_url):
     soup = BeautifulSoup(response_text, 'html.parser')
     img_tags = soup.find_all('img')
     info_imagenes = []
+    image_types = []
 
     for img_tag in img_tags:
         src = img_tag.get('src')
@@ -65,26 +102,31 @@ def extraer_informacion_imagenes(response_text, base_url):
             except Exception as e:
                 is_broken = True
 
+            # Get the image type
+            image_type = imghdr.what(None, h=response.content)
+
             info_imagen = {
                 'filename': filename,
                 'size_mb': size_mb,
                 'url': src_url,
                 'alt_text': alt,
-                'broken': is_broken
+                'broken': is_broken,
+                'image_type': image_type
             }
 
             info_imagenes.append(info_imagen)
+            image_types.append(image_type)
         except Exception as e:
             print(f"Error al obtener información de la imagen {src_url}: {str(e)}")
 
-    return info_imagenes
-
+    return info_imagenes, image_types
 
 def contar_alt_vacias(response_text):
     soup = BeautifulSoup(response_text, 'html.parser')
     img_tags = soup.find_all('img', alt='')
 
     return len(img_tags)
+
 def contar_enlaces(response_text):
     soup = BeautifulSoup(response_text, 'html.parser')
     enlaces = soup.find_all('a', href=True)
@@ -188,7 +230,7 @@ def analizar_meta_tags(response_text):
 
         if tag_name in meta_tags_info:
             meta_tags_info[tag_name] = True
-        elif tag_content in meta_tags_info:  # Agregar una comprobación adicional con tag_content
+        elif tag_content in meta_tags_info:
             meta_tags_info[tag_content] = True
 
     return meta_tags_info
@@ -218,6 +260,47 @@ def es_responsive_valid(response_text):
         return viewport_tag is not None
     except Exception as e:
         return False
+
+
+
+def ejecutar_pa11y(url_actual):
+    try:
+        # Ejecuta pa11y y captura la salida directamente
+        command = f"pa11y --standard WCAG2AAA --reporter csv {url_actual}"
+        process = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+        # Imprime la salida estándar y la salida de error de pa11y
+        #print("pa11y stdout:")
+        #print(process.stdout)
+        #print("pa11y stderr:")
+        #print(process.stderr)
+
+        # Verifica si el código de salida es diferente de cero (error)
+        if process.returncode != 0:
+            print(f"pa11y devolvió un código de salida no nulo {process.returncode}")
+            return []  # Devuelve una lista vacía en caso de error
+
+        # Obtiene la salida del comando pa11y (sin la primera línea que es la cabecera)
+        pa11y_results_lines = process.stdout.strip().split('\n')[1:]
+
+        # Reformatea los resultados de pa11y en una lista de objetos
+        pa11y_results_list = []
+        for line in pa11y_results_lines:
+            fields = line.split('","')
+            if len(fields) == 5:
+                pa11y_results_list.append({
+                    "type": fields[0].strip('"'),
+                    "code": fields[1].strip('"'),
+                    "message": fields[2].strip('"'),
+                    "context": fields[3].strip('"'),
+                    "selector": fields[4].strip('"')
+                })
+
+        # Verifica si el resultado de pa11y contiene datos
+        return pa11y_results_list
+    except subprocess.CalledProcessError as e:
+        print(f"Error al ejecutar pa11y para {url_actual}: {e}")
+        return []  # Devuelve una lista vacía en caso de error
 
 
 
@@ -251,14 +334,15 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
 
             if codigo_respuesta == 200 and response.headers['content-type'].startswith('text/html'):
                 if es_html_valido(response.text):
-                    meta_tags_info = extraer_meta_tags(response.text)
+                              
+                    meta_tags_info = extraer_meta_tags(response.text) or {}
                     resultados_pagina['meta_tags'] = meta_tags_info
 
                     heading_tags_count = analizar_heading_tags(response.text)
-                    resultados_pagina['heading_tags'] = heading_tags_count
+                    resultados_pagina['heading_tags'] = heading_tags_count or {}
 
-                    info_imagenes = extraer_informacion_imagenes(response.text, url_actual)
-                    resultados_pagina['imagenes'] = info_imagenes
+                    info_imagenes, image_types = extraer_informacion_imagenes(response.text, url_actual)
+                    resultados_pagina['imagenes'] = info_imagenes or []
                     resultados_pagina['alt_vacias'] = contar_alt_vacias(response.text)
                     resultados_pagina['num_palabras'] = contar_palabras_visibles(response.text)
 
@@ -274,6 +358,8 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
                     resultados_pagina['errores_ortograficos'] = errores_ortograficos
                     resultados_pagina['num_errores_ortograficos'] = len(errores_ortograficos)
 
+                    resultados_pagina['lang'] = detectar_idioma(response.text)
+
                     # Nuevos campos de revisión
                     meta_tags_revision = analizar_meta_tags(response.text)
                     resultados_pagina.update(meta_tags_revision)
@@ -281,7 +367,26 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
                     resultados_pagina['html_valid'] = es_html_valido(response.text)
                     resultados_pagina['content_valid'] = es_contenido_valido(response.text)
                     resultados_pagina['responsive_valid'] = es_responsive_valid(response.text)
-                    
+
+                    # Actualizar los campos a True si las validaciones son exitosas
+                    if resultados_pagina['html_valid']:
+                        resultados_pagina['e_html'] = True
+                    if resultados_pagina['content_valid']:
+                        resultados_pagina['e_body'] = True
+                    if resultados_pagina['responsive_valid']:
+                        resultados_pagina['e_viewport'] = True
+
+                    # Contar las veces que se repiten los diferentes tipos de formato de imagen
+                    image_types_count = Counter(image_types)
+                    resultados_pagina['image_types'] = image_types_count
+
+                    # Ejecutar pa11y y obtener resultados WCAG AAA
+                    pa11y_results_csv = ejecutar_pa11y(url_actual)
+
+
+                    resultados_pagina['wcagaaa'] = {'pa11y_results': pa11y_results_csv}
+                    resultados_pagina['valid_aaa'] = not pa11y_results_csv  # True si no hay recomendaciones, False en caso contrario
+
                     
 
             resultados.append(resultados_pagina)
@@ -303,18 +408,6 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
     return resultados
 
 
-def guardar_en_csv(resultados, nombre_archivo, modo='w'):
-    campos = ['fecha_escaneo', 'dominio', 'codigo_respuesta', 'tiempo_respuesta', 'pagina', 'parent_url',
-              'meta_tags', 'heading_tags', 'imagenes', 'enlaces_totales', 'enlaces_inseguros',
-              'tipos_archivos', 'errores_ortograficos', 'num_errores_ortograficos', 'num_redirecciones',
-              'alt_vacias', 'num_palabras', 'e_title', 'e_head', 'e_body', 'e_html', 'e_robots',
-              'e_description', 'e_keywords', 'e_viewport', 'e_charset', 'html_valid', 'content_valid', 'responsive_valid']
-    with open(nombre_archivo, modo, newline='', encoding='utf-8') as archivo_csv:
-        escritor_csv = csv.DictWriter(archivo_csv, fieldnames=campos)
-        if modo == 'w':
-            escritor_csv.writeheader()
-        escritor_csv.writerows(resultados)
-
 def generar_informe_resumen(resumen, nombre_archivo):
     header_present = os.path.exists(nombre_archivo)
 
@@ -324,33 +417,111 @@ def generar_informe_resumen(resumen, nombre_archivo):
         if not header_present:
             escritor_csv.writerow(['dominio', 'total_paginas', 'duracion_total',
                                    'codigos_respuesta', 'hora_inicio', 'hora_fin', 'fecha',
-                                   'html_valid_count', 'content_valid_count', 'responsive_valid_count'])
+                                   'html_valid_count', 'content_valid_count', 'responsive_valid_count', 'valid_aaaa_pages','idiomas'])  # Agregar 'valid_aaaa_pages' a la lista de encabezados
 
         for dominio, datos in resumen.items():
             codigos_respuesta = datos['codigos_respuesta']
             total_paginas = datos['total_paginas']
             duracion_total = datos['duracion_total']
 
+            idiomas_encontrados = Counter()
+            for pagina in resultados_dominio:
+                lang = pagina.get('lang')
+                if lang:
+                    idiomas_encontrados[lang] += 1
+
             # Sigue sin contarlos
             html_valid_count = 0
             content_valid_count = 0
             responsive_valid_count = 0
+            valid_aaaa_pages = 0  # Contador para páginas con 'valid_aaa' True
 
             for pagina in datos.get('paginas', []):
-                html_valid_count += pagina.get('html_valid', False)
-                content_valid_count += pagina.get('content_valid', False)
-                responsive_valid_count += pagina.get('responsive_valid', False)
+                html_valid_count += bool(pagina.get('html_valid', False))
+                content_valid_count += bool(pagina.get('content_valid', False))
+                responsive_valid_count += bool(pagina.get('responsive_valid', False))
+                valid_aaaa_pages += bool(pagina.get('valid_aaa', False))  # Incrementa el contador si 'valid_aaa' es True
 
             escritor_csv.writerow([dominio, total_paginas, duracion_total,
                                    codigos_respuesta, datos['hora_inicio'], datos['hora_fin'], datos['fecha'],
-                                   html_valid_count, content_valid_count, responsive_valid_count])
+                                   html_valid_count, content_valid_count, responsive_valid_count, valid_aaaa_pages,
+                                   idiomas_encontrados])  # Empaqueta ambos argumentos en una lista
+
+
+
+def guardar_en_csv_y_json(resultados, nombre_archivo_base, modo='w'):
+    campos = ['fecha_escaneo', 'dominio', 'codigo_respuesta', 'tiempo_respuesta', 'pagina', 'parent_url',
+          'meta_tags', 'heading_tags', 'imagenes', 'enlaces_totales', 'enlaces_inseguros',
+          'tipos_archivos', 'errores_ortograficos', 'num_errores_ortograficos', 'num_redirecciones',
+          'alt_vacias', 'num_palabras', 'e_title', 'e_head', 'e_body', 'e_html', 'e_robots',
+          'e_description', 'e_keywords', 'e_viewport', 'e_charset', 'html_valid', 'content_valid', 'responsive_valid',
+          'image_types', 'wcagaaa', 'valid_aaa','lang']  # Agrega 'valid_aaa' a la lista de campos
+
+
+
+    # Archivo CSV
+    with open(f"{nombre_archivo_base}.csv", modo, newline='', encoding='utf-8') as archivo_csv:
+        escritor_csv = csv.DictWriter(archivo_csv, fieldnames=campos)
+        if modo == 'w':
+            escritor_csv.writeheader()
+
+        for resultado in resultados:
+            # Asegúrate de que las claves que no estén presentes en el diccionario tengan un valor por defecto de False
+            resultado.setdefault('meta_tags', False)
+            resultado.setdefault('heading_tags', False)
+            resultado.setdefault('imagenes', False)
+            resultado.setdefault('enlaces_totales', False)
+            resultado.setdefault('enlaces_inseguros', False)
+            resultado.setdefault('tipos_archivos', False)
+            resultado.setdefault('errores_ortograficos', False)
+            resultado.setdefault('num_errores_ortograficos', False)
+            resultado.setdefault('num_redirecciones', False)
+            resultado.setdefault('alt_vacias', False)
+            resultado.setdefault('num_palabras', False)
+            resultado.setdefault('e_title', False)
+            resultado.setdefault('e_head', False)
+            resultado.setdefault('e_body', False)
+            resultado.setdefault('e_html', False)
+            resultado.setdefault('e_robots', False)
+            resultado.setdefault('e_description', False)
+            resultado.setdefault('e_keywords', False)
+            resultado.setdefault('e_viewport', False)
+            resultado.setdefault('e_charset', False)
+            resultado.setdefault('html_valid', False)
+            resultado.setdefault('content_valid', False)
+            resultado.setdefault('responsive_valid', False)
+            resultado.setdefault('wcagaaa', {})
+            resultado.setdefault('image_types', {})  # Asegúrate de que 'image_types' esté presente con un valor por defecto
+            resultado.setdefault('lang', False)
+
+            # Reemplaza los valores None por False
+            resultado = {k: False if v is None else v for k, v in resultado.items()}
+
+            # Agrega el campo 'valid_aaa' y asegúrate de que tenga un valor por defecto de False
+            resultado.setdefault('valid_aaa', False)
+
+            escritor_csv.writerow(resultado)
+
+    # Archivo JSON
+    with open(f"{nombre_archivo_base}.json", modo, encoding='utf-8') as archivo_json:
+        if modo == 'w':
+            json.dump(resultados, archivo_json, ensure_ascii=False, indent=4)
+
+
+    # Archivo JSON
+    with open(f"{nombre_archivo_base}.json", modo, encoding='utf-8') as archivo_json:
+        if modo == 'w':
+            json.dump(resultados, archivo_json, ensure_ascii=False, indent=4)
 
 
 if __name__ == "__main__":
     start_script_time = time.time()
     urls_a_escanear = ["http://zonnox.net"] #,"http://circuitosaljarafe.com"]
     #urls_a_escanear = ["https://4glsp.com"]
-    patrones_exclusion = ["redirect","#"]
+    patrones_exclusion = ["redirect", "#","/documents/", "/estaticos/", "productos","/asset_publisher/"
+            # Agrega tus patrones para el modo rÃ¡pido
+        ]
+
     extensiones_excluidas = [".apk", ".mp4",".avi",".msi",".pdf"]  # Add the file extensions you want to exclude
 
     resumen_escaneo = {}
@@ -371,14 +542,19 @@ if __name__ == "__main__":
             'codigos_respuesta': dict(zip(codigos_respuesta, [codigos_respuesta.count(c) for c in codigos_respuesta])),
             'hora_inicio': hora_inicio,
             'hora_fin': datetime.now().strftime('%H:%M:%S'),
-            'fecha': datetime.now().strftime('%Y-%m-%d')
+            'fecha': datetime.now().strftime('%Y-%m-%d'),
+            'html_valid_count': sum(1 for pagina in resultados_dominio if pagina.get('html_valid')),
+            'content_valid_count': sum(1 for pagina in resultados_dominio if pagina.get('content_valid')),
+            'responsive_valid_count': sum(1 for pagina in resultados_dominio if pagina.get('responsive_valid')),
+            'valid_aaaa_pages': sum(1 for pagina in resultados_dominio if pagina.get('valid_aaa'))
         }
 
-        guardar_en_csv(resultados_dominio, f"{urlparse(url).netloc}_resultados.csv")
+        guardar_en_csv_y_json(resultados_dominio, f"{urlparse(url).netloc}_resultados")
 
     end_script_time = time.time()
     script_duration = end_script_time - start_script_time
 
     print(f'\nDuración total del script: {script_duration} segundos ({script_duration // 3600} horas y {(script_duration % 3600) // 60} minutos)')
+
 
     generar_informe_resumen(resumen_escaneo, 'resumen_escaneo.csv')
