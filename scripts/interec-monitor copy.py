@@ -6,8 +6,6 @@
 # pa11y --standard WCAG2AA --reporter csv https://4glsp.com > dominio_wcag2aa_report.csv && pa11y --standard WCAG2AAA --reporter csv https://4glsp.com > dominio_wcag2aaa_report.csv
 # --standard WCAG2AAA 
 
-
-
 import csv
 import requests
 from bs4 import BeautifulSoup
@@ -23,9 +21,98 @@ import imghdr
 import subprocess
 from collections import Counter
 from lxml import etree
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 import aspell
 import langid
+from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, JSON
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import IntegrityError
+
+
+
+# Definir el modelo de la tabla "resultados"
+Base = declarative_base()
+class Resultado(Base):
+    __tablename__ = 'resultados'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    fecha_escaneo = Column(DateTime, default=datetime.now)
+    dominio = Column(String(255))
+    codigo_respuesta = Column(Integer)
+    tiempo_respuesta = Column(Integer)
+    pagina = Column(String(255))
+    parent_url = Column(String(255))
+    meta_tags = Column(JSON)
+    heading_tags = Column(JSON)
+    imagenes = Column(JSON)
+    enlaces_totales = Column(Integer)
+    enlaces_inseguros = Column(Integer)
+    tipos_archivos = Column(JSON)
+    errores_ortograficos = Column(JSON)
+    num_errores_ortograficos = Column(Integer)
+    num_redirecciones = Column(Integer)
+    alt_vacias = Column(Integer)
+    num_palabras = Column(Integer)
+    e_title = Column(Integer)
+    e_head = Column(Integer)
+    e_body = Column(Integer)
+    e_html = Column(Integer)
+    e_robots = Column(Integer)
+    e_description = Column(Integer)
+    e_keywords = Column(Integer)
+    e_viewport = Column(Integer)
+    e_charset = Column(Integer)
+    html_valid = Column(Integer)
+    content_valid = Column(Integer)
+    responsive_valid = Column(Integer)
+    image_types = Column(JSON)
+    wcagaaa = Column(JSON)
+    valid_aaa = Column(Integer)
+    lang = Column(String(10))
+
+# Definir el modelo de la tabla "sumario"
+class Sumario(Base):
+    __tablename__ = 'sumario'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    dominio = Column(String(255))
+    total_paginas = Column(Integer)
+    duracion_total = Column(Integer)
+    codigos_respuesta = Column(JSON)
+    hora_inicio = Column(String(20))
+    hora_fin = Column(String(20))
+    fecha = Column(String(10))
+    html_valid_count = Column(Integer)
+    content_valid_count = Column(Integer)
+    responsive_valid_count = Column(Integer)
+    valid_aaaa_pages = Column(Integer)
+    idiomas = Column(JSON)
+    
+
+
+# Función para guardar un resultado en la tabla "resultados"
+def guardar_en_resultados(resultado):
+
+    try:
+        session = Session()
+        session.add(resultado)
+        session.commit()
+    except IntegrityError as e:
+        print(f"Error al guardar en 'resultados': {e}")
+        session.rollback()
+    finally:
+        session.close()
+
+# Función para guardar un sumario en la tabla "sumario"
+def guardar_en_sumario(sumario):
+    try:
+        session = Session()
+        session.add(sumario)
+        session.commit()
+    except IntegrityError as e:
+        print(f"Error al guardar en 'sumario': {e}")
+        session.rollback()
+    finally:
+        session.close()
 
 def extraer_texto_visible(response_text):
     soup = BeautifulSoup(response_text, 'html.parser')
@@ -266,7 +353,7 @@ def es_responsive_valid(response_text):
 def ejecutar_pa11y(url_actual):
     try:
         # Ejecuta pa11y y captura la salida directamente
-        command = f"pa11y --standard WCAG2AAA --reporter csv {url_actual}"
+        command = f"pa11y --standard WCAG2AAA  --ignore issue-code-1 --ignore issue-code-2 --reporter csv {url_actual}"
         process = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
         # Imprime la salida estándar y la salida de error de pa11y
@@ -329,7 +416,8 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
                 'tiempo_respuesta': tiempo_respuesta,
                 'pagina': url_actual,
                 'parent_url': parent_url,
-                'num_redirecciones': contar_redirecciones(url_actual)
+                # Python 'tuple' cannot be converted to a MySQL type
+                'num_redirecciones': 0 #contar_redirecciones(url_actual) 
             }
 
             if codigo_respuesta == 200 and response.headers['content-type'].startswith('text/html'):
@@ -417,7 +505,7 @@ def generar_informe_resumen(resumen, nombre_archivo):
         if not header_present:
             escritor_csv.writerow(['dominio', 'total_paginas', 'duracion_total',
                                    'codigos_respuesta', 'hora_inicio', 'hora_fin', 'fecha',
-                                   'html_valid_count', 'content_valid_count', 'responsive_valid_count', 'valid_aaaa_pages','idiomas'])  # Agregar 'valid_aaaa_pages' a la lista de encabezados
+                                   'html_valid_count', 'content_valid_count', 'responsive_valid_count', 'valid_aaaa_pages', 'idiomas'])  # Agregar 'valid_aaaa_pages' a la lista de encabezados
 
         for dominio, datos in resumen.items():
             codigos_respuesta = datos['codigos_respuesta']
@@ -442,10 +530,16 @@ def generar_informe_resumen(resumen, nombre_archivo):
                 responsive_valid_count += bool(pagina.get('responsive_valid', False))
                 valid_aaaa_pages += bool(pagina.get('valid_aaa', False))  # Incrementa el contador si 'valid_aaa' es True
 
+            # Convert Counter to dictionary before writing to CSV
+            idiomas_encontrados_dict = dict(idiomas_encontrados)
+
+            # Imprimir para depuración
+            print(f'Dominio: {dominio}, Idiomas Encontrados: {idiomas_encontrados_dict}')
+
             escritor_csv.writerow([dominio, total_paginas, duracion_total,
                                    codigos_respuesta, datos['hora_inicio'], datos['hora_fin'], datos['fecha'],
                                    html_valid_count, content_valid_count, responsive_valid_count, valid_aaaa_pages,
-                                   idiomas_encontrados])  # Empaqueta ambos argumentos en una lista
+                                   idiomas_encontrados_dict])
 
 
 
@@ -475,7 +569,7 @@ def guardar_en_csv_y_json(resultados, nombre_archivo_base, modo='w'):
             resultado.setdefault('tipos_archivos', False)
             resultado.setdefault('errores_ortograficos', False)
             resultado.setdefault('num_errores_ortograficos', False)
-            resultado.setdefault('num_redirecciones', False)
+            resultado.setdefault('num_redirecciones', '0')
             resultado.setdefault('alt_vacias', False)
             resultado.setdefault('num_palabras', False)
             resultado.setdefault('e_title', False)
@@ -516,14 +610,22 @@ def guardar_en_csv_y_json(resultados, nombre_archivo_base, modo='w'):
 
 if __name__ == "__main__":
     start_script_time = time.time()
-    urls_a_escanear = ["http://zonnox.net"] #,"http://circuitosaljarafe.com"]
-    #urls_a_escanear = ["https://4glsp.com"]
+       
+    urls_a_escanear = ["http://zonnox.net", "https://mc-mutuadeb.zonnox.net"] # "http://circuitosaljarafe.com"]
+    #urls_a_escanear = ["https://4glsp.com"] #,"https://santomera.es"]
+    #urls_a_escanear = ["https://www.mc-mutual.com","htps://mejoratuabsentismo.mc-mutual.com","https://prevencion.mc-mutual.com"]
     patrones_exclusion = ["redirect", "#","/documents/", "/estaticos/", "productos","/asset_publisher/"
             # Agrega tus patrones para el modo rÃ¡pido
         ]
 
     extensiones_excluidas = [".apk", ".mp4",".avi",".msi",".pdf"]  # Add the file extensions you want to exclude
+    
+    # Inicialización de la conexión a la base de datos
+    engine = create_engine('mysql+mysqlconnector://root:dldlt741@81.19.160.10/interec', echo=False)  # Cambia 'echo=True' a 'False' para desactivar el modo verbose
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
 
+    idiomas_por_dominio = {}
     resumen_escaneo = {}
 
     for url in urls_a_escanear:
@@ -536,25 +638,50 @@ if __name__ == "__main__":
         codigos_respuesta = [resultado['codigo_respuesta'] for resultado in resultados_dominio]
         total_paginas = len(resultados_dominio)
 
-        resumen_escaneo[urlparse(url).netloc] = {
-            'total_paginas': total_paginas,
-            'duracion_total': duracion_total,
-            'codigos_respuesta': dict(zip(codigos_respuesta, [codigos_respuesta.count(c) for c in codigos_respuesta])),
-            'hora_inicio': hora_inicio,
-            'hora_fin': datetime.now().strftime('%H:%M:%S'),
-            'fecha': datetime.now().strftime('%Y-%m-%d'),
-            'html_valid_count': sum(1 for pagina in resultados_dominio if pagina.get('html_valid')),
-            'content_valid_count': sum(1 for pagina in resultados_dominio if pagina.get('content_valid')),
-            'responsive_valid_count': sum(1 for pagina in resultados_dominio if pagina.get('responsive_valid')),
-            'valid_aaaa_pages': sum(1 for pagina in resultados_dominio if pagina.get('valid_aaa'))
-        }
+        idiomas_encontrados = Counter()
+        for pagina in resultados_dominio:
+            lang = pagina.get('lang')
+            if lang:
+                idiomas_encontrados[lang] += 1
 
-        guardar_en_csv_y_json(resultados_dominio, f"{urlparse(url).netloc}_resultados")
+        parsed_url = urlparse(url)
+        if parsed_url.netloc:
+            dominio = parsed_url.netloc
+            idiomas_por_dominio[dominio] = Counter(idiomas_encontrados)  # Crear una copia independiente del contador
+
+
+            resumen_escaneo[dominio] = {
+                'dominio': dominio,
+                'total_paginas': total_paginas,
+                'duracion_total': duracion_total,
+                'codigos_respuesta': dict(zip(codigos_respuesta, [codigos_respuesta.count(c) for c in codigos_respuesta])),
+                'hora_inicio': hora_inicio,
+                'hora_fin': datetime.now().strftime('%H:%M:%S'),
+                'fecha': datetime.now().strftime('%Y-%m-%d'),
+                'html_valid_count': sum(1 for pagina in resultados_dominio if pagina.get('html_valid')),
+                'content_valid_count': sum(1 for pagina in resultados_dominio if pagina.get('content_valid')),
+                'responsive_valid_count': sum(1 for pagina in resultados_dominio if pagina.get('responsive_valid')),
+                'valid_aaaa_pages': sum(1 for pagina in resultados_dominio if pagina.get('valid_aaa')),
+                'idiomas': json.dumps(dict(idiomas_encontrados))
+            }
+
+            guardar_en_csv_y_json(resultados_dominio, f"{dominio}_resultados")
+
+            for resultado_pagina in resultados_dominio:
+                resultado = Resultado(**resultado_pagina)
+                guardar_en_resultados(resultado)
+        else:
+            print(f"La URL {url} no se pudo analizar correctamente.")
+
+    for url, resumen in resumen_escaneo.items():
+        sumario = Sumario(**resumen)
+        # Utiliza el diccionario de idiomas específico de cada dominio
+        sumario.idiomas = json.dumps(dict(idiomas_por_dominio[url]))
+        guardar_en_sumario(sumario)
 
     end_script_time = time.time()
     script_duration = end_script_time - start_script_time
 
     print(f'\nDuración total del script: {script_duration} segundos ({script_duration // 3600} horas y {(script_duration % 3600) // 60} minutos)')
-
 
     generar_informe_resumen(resumen_escaneo, 'resumen_escaneo.csv')
