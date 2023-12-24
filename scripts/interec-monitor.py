@@ -631,7 +631,7 @@ if __name__ == "__main__":
     extensiones_excluidas = [".apk", ".mp4",".avi",".msi",".pdf"]  # Add the file extensions you want to exclude
     
     # Inicialización de la conexión a la base de datos
-    engine = create_engine('mysql+mysqlconnector://root:dldlt741@81.19.160.10/interec', echo=False)  # Cambia 'echo=True' a 'False' para desactivar el modo verbose
+    engine = create_engine('mysql+mysqlconnector://', echo=False)  # Cambia 'echo=True' a 'False' para desactivar el modo verbose
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
 
