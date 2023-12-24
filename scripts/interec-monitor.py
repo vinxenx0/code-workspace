@@ -2,10 +2,6 @@
 # (c) vicente b. lopez plaza
 # vinxenxo@protonmail.com 
 
-
-# pa11y --standard WCAG2AA --reporter csv https://4glsp.com > dominio_wcag2aa_report.csv && pa11y --standard WCAG2AAA --reporter csv https://4glsp.com > dominio_wcag2aaa_report.csv
-# --standard WCAG2AAA 
-
 import csv
 import requests
 from bs4 import BeautifulSoup
