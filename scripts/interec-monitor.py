@@ -266,7 +266,7 @@ def es_responsive_valid(response_text):
 def ejecutar_pa11y(url_actual):
     try:
         # Ejecuta pa11y y captura la salida directamente
-        command = f"pa11y --standard WCAG2AAA --reporter csv {url_actual}"
+        command = f"pa11y --standard WCAG2AAA  --ignore issue-code-1 --ignore issue-code-2 --reporter csv {url_actual}"
         process = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
         # Imprime la salida estándar y la salida de error de pa11y
@@ -442,10 +442,14 @@ def generar_informe_resumen(resumen, nombre_archivo):
                 responsive_valid_count += bool(pagina.get('responsive_valid', False))
                 valid_aaaa_pages += bool(pagina.get('valid_aaa', False))  # Incrementa el contador si 'valid_aaa' es True
 
+            # Convert Counter to dictionary before writing to CSV
+            idiomas_encontrados_dict = dict(idiomas_encontrados)
+
             escritor_csv.writerow([dominio, total_paginas, duracion_total,
                                    codigos_respuesta, datos['hora_inicio'], datos['hora_fin'], datos['fecha'],
                                    html_valid_count, content_valid_count, responsive_valid_count, valid_aaaa_pages,
-                                   idiomas_encontrados])  # Empaqueta ambos argumentos en una lista
+                                   idiomas_encontrados_dict])  # Convert Counter to dictionary before writing to CSV
+
 
 
 
@@ -517,7 +521,7 @@ def guardar_en_csv_y_json(resultados, nombre_archivo_base, modo='w'):
 if __name__ == "__main__":
     start_script_time = time.time()
     urls_a_escanear = ["http://zonnox.net"] #,"http://circuitosaljarafe.com"]
-    #urls_a_escanear = ["https://4glsp.com"]
+    #urls_a_escanear = ["https://4glsp.com"] #,"https://santomera.es"]
     patrones_exclusion = ["redirect", "#","/documents/", "/estaticos/", "productos","/asset_publisher/"
             # Agrega tus patrones para el modo rÃ¡pido
         ]
