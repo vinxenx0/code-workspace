@@ -28,6 +28,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, J
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import LargeBinary
 
 
 
@@ -41,7 +42,7 @@ class Resultado(Base):
     codigo_respuesta = Column(Integer)
     tiempo_respuesta = Column(Integer)
     pagina = Column(String(255))
-    parent_url = Column(String(255))
+    parent_url =  Column(String(255))
     meta_tags = Column(JSON)
     heading_tags = Column(JSON)
     imagenes = Column(JSON)
@@ -500,8 +501,6 @@ def generar_informe_resumen(resumen, nombre_archivo):
     header_present = os.path.exists(nombre_archivo)
     
     idiomas_encontrados = Counter()
-    
-    #print(resumen)
   
 
     with open(nombre_archivo, 'a', newline='', encoding='utf-8') as archivo_csv:
@@ -517,15 +516,10 @@ def generar_informe_resumen(resumen, nombre_archivo):
             total_paginas = datos['total_paginas']
             duracion_total = datos['duracion_total']
 
-            
-            idiomas_encontrados = Counter()
-            
             for pagina in resultados_dominio:
                 lang = pagina.get('lang')
                 if lang:
                     idiomas_encontrados[lang] += 1
-
-            print(idiomas_encontrados)
 
             # Sigue sin contarlos
             html_valid_count = 0
@@ -539,13 +533,8 @@ def generar_informe_resumen(resumen, nombre_archivo):
                 responsive_valid_count += bool(pagina.get('responsive_valid', False))
                 valid_aaaa_pages += bool(pagina.get('valid_aaa', False))  # Incrementa el contador si 'valid_aaa' es True
 
-
-           
             # Convert Counter to dictionary before writing to CSV
             idiomas_encontrados_dict = dict(idiomas_encontrados)
-
-
-            #print(idiomas_encontrados_dict)
 
             # Imprimir para depuración
             print(f'Dominio: {dominio}, Idiomas Encontrados: {idiomas_encontrados_dict}')
@@ -555,8 +544,6 @@ def generar_informe_resumen(resumen, nombre_archivo):
                                    html_valid_count, content_valid_count, responsive_valid_count, valid_aaaa_pages,
                                    idiomas_encontrados_dict])
 
-
-# tiene un bug en el csv campo idiomas
 def guardar_en_csv_y_json(resultados, nombre_archivo_base, modo='w'):
     campos = ['fecha_escaneo', 'dominio', 'codigo_respuesta', 'tiempo_respuesta', 'pagina', 'parent_url',
           'meta_tags', 'heading_tags', 'imagenes', 'enlaces_totales', 'enlaces_inseguros',
@@ -625,12 +612,12 @@ def guardar_en_csv_y_json(resultados, nombre_archivo_base, modo='w'):
 if __name__ == "__main__":
     start_script_time = time.time()
        
-    #urls_a_escanear =  ["https://mc-mutuadeb.zonnox.net","http://zonnox.net","https://mc-mutuadeb.zonnox.net"] # "http://circuitosaljarafe.com"]
+    urls_a_escanear = ["http://zonnox.net", "https://mc-mutuadeb.zonnox.net"] #"https://mc-mutuadeb.zonnox.net"] # "http://circuitosaljarafe.com"]
     #urls_a_escanear = ["https://4glsp.com"] #,"https://santomera.es"]
-    urls_a_escanear = ["https://www.mc-mutual.com","htps://mejoratuabsentismo.mc-mutual.com"] #,"https://prevencion.mc-mutual.com"]
-    patrones_exclusion = ["redirect", "#","/documents/", "/estaticos/", "productos","/asset_publisher/"
+    #urls_a_escanear = ["https://www.mc-mutual.com","htps://mejoratuabsentismo.mc-mutual.com","https://prevencion.mc-mutual.com"]
+    patrones_exclusion = ["redirect", "#","/asset_publisher/","/documents/", "/estaticos/", "productos"] #,"/asset_publisher/"
             # Agrega tus patrones para el modo rÃ¡pido
-        ]
+        #]
 
     extensiones_excluidas = [".apk", ".mp4",".avi",".msi",".pdf"]  # Add the file extensions you want to exclude
     
@@ -688,10 +675,15 @@ if __name__ == "__main__":
             }
 
             guardar_en_csv_y_json(resultados_dominio, f"{dominio}_resultados")
-
+            
             for resultado_pagina in resultados_dominio:
+                # Verificar si 'pagina' es texto antes de intentar convertirlo a datos binarios
+                if 'pagina' in resultado_pagina and isinstance(resultado_pagina['pagina'], str):
+                    resultado_pagina['pagina'] = resultado_pagina['pagina'].encode('utf-8')
+
                 resultado = Resultado(**resultado_pagina)
                 guardar_en_resultados(resultado)
+
         else:
             print(f"La URL {url} no se pudo analizar correctamente.")
 
@@ -699,6 +691,7 @@ if __name__ == "__main__":
         sumario = Sumario(**resumen)
         # Utiliza el diccionario de idiomas específico de cada dominio
         sumario.idiomas = str(dict(idiomas_por_dominio[url]))
+        # solo para local 
         guardar_en_sumario(sumario)
 
     end_script_time = time.time()
@@ -707,3 +700,5 @@ if __name__ == "__main__":
     print(f'\nDuración total del script: {script_duration} segundos ({script_duration // 3600} horas y {(script_duration % 3600) // 60} minutos)')
 
     generar_informe_resumen(resumen_escaneo, 'resumen_escaneo.csv')
+    # solo para local 
+    #guardar_en_sumario(sumario)
