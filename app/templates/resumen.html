@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de Datos</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.33/moment-timezone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center mb-4">Evolución de Datos</h1>
+                <canvas id="lineChartCanvas" width="800" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center mb-4">Gráfico de Barras</h1>
+                <canvas id="barChartCanvas" width="800" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center mb-4">Gráfico Radar</h1>
+                <canvas id="radarChartCanvas" width="800" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center mb-4">Gráfico de Burbujas</h1>
+                <canvas id="bubbleChartCanvas" width="800" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center mb-4">Gráfico de Pastel</h1>
+                <canvas id="pieChartCanvas" width="800" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center mb-4">Gráfico de Rosquilla</h1>
+                <canvas id="doughnutChartCanvas" width="800" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+    // Obtener datos del servidor Flask
+    var datosEscaneo = {{ sumario | safe }};
+    var dominios = {{ dominios | safe }};
+
+    // Crear un canvas para cada gráfico
+    var lineChartCanvas = document.getElementById('lineChartCanvas');
+    var barChartCanvas = document.getElementById('barChartCanvas');
+    var doughnutChartCanvas = document.getElementById('doughnutChartCanvas');
+    var bubbleChartCanvas = document.getElementById('bubbleChartCanvas');
+    var pieChartCanvas = document.getElementById('pieChartCanvas');
+    var radarChartCanvas = document.getElementById('radarChartCanvas');
+
+    // Preparar datos para la gráfica
+    var datasets = [];
+
+    // Iterar sobre cada dato de escaneo
+    datosEscaneo.forEach(function (dato, index) {
+        var dataPoints = [];
+
+        // Crear un conjunto de datos para cada propiedad en el objeto dato
+        for (var propiedad in dato) {
+            if (dato.hasOwnProperty(propiedad) && propiedad !== 'fecha' && propiedad !== 'hora_inicio') {
+                var valor = dato[propiedad];
+
+                // Verificar si el valor es un número
+                if (!isNaN(valor)) {
+                    // Crear objeto para cada punto de datos
+                    var dataPoint = {
+                        x: index,  // Usar el índice como valor x (puedes ajustar esto según tus necesidades)
+                        y: valor
+                    };
+
+                    dataPoints.push(dataPoint);
+                }
+            }
+        }
+
+        // Crear el conjunto de datos para el objeto dato actual
+        var dataset = {
+            label: dato.dominio,
+            borderColor: getBorderColor(index),
+            data: dataPoints
+        };
+
+        datasets.push(dataset);
+    });
+
+    // Crear la gráfica de líneas
+    var lineChart = new Chart(lineChartCanvas, {
+        type: 'line',
+        data: {
+            datasets: datasets
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',  // Usar escala lineal para el eje x si el índice es numérico
+                    position: 'bottom'
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Crear la gráfica de barras
+    var barChart = new Chart(barChartCanvas, {
+        type: 'bar',
+        data: {
+            labels: dominios,  // Etiquetas para cada barra
+            datasets: datasets
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'category'  // Usar escala de categoría para el eje x si son etiquetas
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+        var doughnutChart = new Chart(doughnutChartCanvas, {
+            type: 'doughnut',
+            data: {
+                labels: dominios,  // Etiquetas para cada anillo
+                datasets: datasets
+            }
+        });
+
+
+        var pieChart = new Chart(pieChartCanvas, {
+            type: 'pie',
+            data: {
+                labels: dominios,  // Etiquetas para cada sector
+                datasets: datasets
+            }
+        });
+
+        var bubbleChart = new Chart(bubbleChartCanvas, {
+            type: 'bubble',
+            data: {
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        var radarChart = new Chart(radarChartCanvas, {
+            type: 'radar',
+            data: {
+                labels: dominios,  // Etiquetas para cada punto
+                datasets: datasets
+            },
+            options: {
+                scales: {
+                    r: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+
+
+        // Función para obtener colores de borde diferentes para cada dominio
+        function getBorderColor(index) {
+            var colors = ['red', 'blue', 'green'];  // Puedes agregar más colores según sea necesario
+            return colors[index % colors.length];
+        }
+    </script>
+</body>
+</html>

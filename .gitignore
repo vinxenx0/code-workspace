@@ -16,3 +16,6 @@ env
 *.cpython*
 *.csv
 *.json
+*.log
+.priv
+

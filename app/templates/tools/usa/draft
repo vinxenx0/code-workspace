@@ -1,0 +1,60 @@
+        <div class="modal fade" id="infoModal{{ result.id }}" tabindex="-1" aria-labelledby="infoModalLabel{{ result.id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content bg-info text-dark">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="infoModalLabel{{ result.id }}">Sugerencias velocidad{{ result.id }}</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                          
+                                                <div class="modal-body">
+                                                    <div class="suggestion">
+                                                        <div class="label"><b>Imágenes de más de un mega:</b></div>
+                                                        <div class="value">
+                                                            {% if result.images_1MB is iterable %}
+                                                                {% for item in result.images_1MB %}
+                                                                <div class="{{ 'odd' if loop.index is odd else 'even' }}">
+                                
+                                                                    {{ item|safe }}<br>
+                                                                </div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {{ result.images_1MB|safe }}<br>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="suggestion">
+                                                        <div class="label">Todas las imágenes:</div>
+                                                            <div class="value">
+                                                                {% if result.imagenes %}
+                                                                    {% for image in result.imagenes %}
+                                                                        <div class="{{ 'odd' if loop.index is odd else 'even' }}">
+                                                                            <strong>Filename:</strong> {{ image.filename }}<br>
+                                                                            <strong>Size (MB):</strong> {{ image.size_mb }}<br>
+                                                                            <strong>URL:</strong> <a href="{{ image.url }}" target="_blank">{{ image.url }}</a><br>
+                                                                            <strong>Alt Text:</strong> {{ image.alt_text }}<br>
+                                                                            <strong>Broken:</strong> {{ image.broken }}<br>
+                                                                            <strong>Image Type:</strong> {{ image.image_type }}<br><br>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                {% else %}
+                                                                    <div class="{{ 'odd' if loop.index0 is odd else 'even' }}">
+                                                                        No hay imágenes disponibles.<br><br>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                    </div>
+                                                    <div class="suggestion">
+                                                        <div class="label"><b>Tipos de imágenes:</b></div>
+                                                        <div class="value">
+                                                            {% for key, value in result.image_types.items() %}
+                                                            <div class="{{ 'odd' if loop.index is odd else 'even' }}">
+                                
+                                                                {{ key|safe }}: {{ value|safe }}<br>
+                                                            </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>

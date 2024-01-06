@@ -39,6 +39,37 @@
         {% if is_admin() or current_user.role == 'superadmin'  %}
         <div class="sb-sidenav-menu-heading">Herramientas</div>
 
+
+            <a class="nav-link  btn-link btn me-3 {% if request.endpoint == 'enlaces_rotos' %} active {% endif %}" href="{{ url_for('enlaces_rotos') }}">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
+                Enlaces rotos
+            </a>
+
+            <a class="nav-link  {% if request.endpoint == 'velocidad' %} active {% endif %} btn-link btn me-3" href="{{ url_for('velocidad') }}">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
+                Velocidad del sitio
+            </a>
+
+            <a class="nav-link {% if request.endpoint == 'ortografia' %} active {% endif %} btn-link btn me-3" href="{{ url_for('ortografia') }}">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
+                Ortografia
+            </a>
+
+            <a class="nav-link {% if request.endpoint == 'responsive' %} active {% endif %}" href="{{ url_for('responsive') }}">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
+                Validador
+            </a>
+
+            <a class="nav-link {% if request.endpoint == 'analisis_aaa' %} active {% endif %}" href="{{ url_for('analisis_aaa') }}">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
+                Responsive
+            </a>
+        
+            <a class="nav-link {% if request.endpoint == 'usuarios' %} active {% endif %} btn-link btn me-3" href="{{ url_for('usuarios') }}">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
+                Usuarios
+            </a>
+
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRanks" aria-expanded="false" aria-controls="collapseLayouts">
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                 SEO
@@ -56,7 +87,7 @@
                 -->
                 <a class="nav-link {% if request.endpoint == 'seo_backlinks' %} active {% endif %}" href="{{ url_for('seo_backlinks') }}">Backlinks</a>
                 <a class="nav-link {% if request.endpoint == 'seo_indexing' %} active {% endif %}" href="{{ url_for('seo_indexing') }}">Indexación</a>
-                <a class="nav-link {% if request.endpoint == 'seo_speed' %} active {% endif %}" href="{{ url_for('seo_speed') }}">Velocidad</a>
+                <a class="nav-link {% if request.endpoint == 'velocidad' %} active {% endif %}" href="{{ url_for('velocidad') }}">Velocidad</a>
                 </nav>
             </div>
 
@@ -67,12 +98,12 @@
         </a>
         <div class="collapse" id="collapseSEO" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
             <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link {% if request.endpoint == 'usa_broken_links' %} active {% endif %}" href="{{ url_for('usa_broken_links') }}">Enlaces rotos</a>
+                <a class="nav-link {% if request.endpoint == 'enlaces_rotos' %} active {% endif %}" href="{{ url_for('enlaces_rotos') }}">Enlaces rotos</a>
                 <a class="nav-link {% if request.endpoint == 'usa_nav' %} active {% endif %}" href="{{ url_for('usa_nav') }}">Navegación</a>
                 <!--
                     <a class="nav-link {% if request.endpoint == 'usa_form' %} active {% endif %}" href="{{ url_for('usa_form') }}">Formularios</a>
                 -->
-                <a class="nav-link {% if request.endpoint == 'usa_responsive' %} active {% endif %}" href="{{ url_for('usa_responsive') }}">Responsive</a>
+                <a class="nav-link {% if request.endpoint == 'responsive' %} active {% endif %}" href="{{ url_for('responsive') }}">Responsive</a>
                 <a class="nav-link {% if request.endpoint == 'usa_font_colors' %} active {% endif %}" href="{{ url_for('usa_font_colors') }}">Fuentes/Colores</a>
                 <!--
                     <a class="nav-link {% if request.endpoint == 'usa_w3c' %} active {% endif %}" href="{{ url_for('usa_w3c') }}">Estándares w3c</a>
@@ -142,8 +173,6 @@
             </nav>
         </div>
 
-        
-        
         {% endif %}
 
         {% if current_user.role == 'superadmin' %}
@@ -154,7 +183,7 @@
             Configuración
         </a>
 
-        <a class="nav-link btn-link btn me-3" href="{{ url_for('list_users') }}">
+        <a class="nav-link btn-link btn me-3" href="{{ url_for('usuarios') }}">
             <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
             Usuarios
         </a>
