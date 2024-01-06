@@ -937,7 +937,7 @@ if __name__ == "__main__":
                     'tiempo_medio' : None,
                     'pages_err_orto' : 0, # sum(1 for pagina in resultados_dominio if pagina.get('num_errores_ortograficos') >= 1),
                     'pages_alt_vacias' : 0, #sum(1 for pagina in resultados_dominio if pagina.get('alt_vacias') >= 1)
-                    'peso_total_pagina' : 0
+                    'peso_total_paginas' : 0
 
                 }
 
