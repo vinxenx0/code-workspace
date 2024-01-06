@@ -8,8 +8,19 @@
         <title>MC-Mutual - Dashboard</title>
         <meta name="description" content="" />
         
+        
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+          </style>
+
         {% include 'inc/header.html' %}
         
+        <style>
+            html {
+                font-family: 'Raleway', sans-serif;
+            }
+        </style>
+
     </head>
     <body class="sb-nav-fixed">
         {% if current_user.is_authenticated %}

@@ -1,4 +1,4 @@
-<!-- app/templates/index.html -->
+<!-- app/templates/tools/usa/usa_broken_links.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -295,172 +295,171 @@
                   </div>
 
                   <div class="card mb-4">
-                    <div class="card-header">
-                       <i class="fas fa-table me-1"></i>
-                       Enlaces rotos desde el último scan
-                    </div>
-                    <div class="card-body">
-                       <table id="datatablesSimple" class="display">
-                          <thead>
-                             <tr>
-                                <th>Fecha</th>
-                                <th>Origen</th>
-                                <th>Url rota</th>
-                                <th>Acciones</th>
-                             </tr>
+                     <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Enlaces rotos desde el último scan
+                     </div>
+                     <div class="card-body">
+                        <table id="datatablesSimple" class="display">
+                           <thead>
+                              <tr>
+                                 <th>Fecha</th>
+                                 <th>Origen</th>
+                                 <th>Url rota</th>
+                                 <th>Acciones</th>
+                              </tr>
 
-                          </thead>
-                          <tfoot>
-                             <tr>
-                                <th>Fecha</th>
-                                <th>Dominio</th>
-                                <th>Url rota</th>
-                                <th>Acciones</th>
-                             </tr>
-                          </tfoot>
-                          <tbody>
-                             {% for result in resultados %}
-                             <tr>
-                                <td>{{ result.fecha_escaneo }}</td>
-                                <td>{{ result.dominio }}</td>
-                                <td><a href="{{ result.pagina }}" target="_blank">{{ result.pagina }}</a></td>
-                                <td>
-                                   <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal{{ result.id }}">
-                                       <i class="fas fa-plus"></i>
-                                   </button>
-                               </td>
-                             </tr>
-                             <!--
-                             <tr class="collapse" id="headingTagsCollapse{{ result.id }}">
-                                <td colspan="4">
-                                    <pre>{{ result.heading_tags | tojson(indent=2) }}</pre>
+                           </thead>
+                           <tfoot>
+                              <tr>
+                                 <th>Fecha</th>
+                                 <th>Dominio</th>
+                                 <th>Url rota</th>
+                                 <th>Acciones</th>
+                              </tr>
+                           </tfoot>
+                           <tbody>
+                              {% for result in resultados %}
+                              <tr>
+                                 <td>{{ result.fecha_escaneo }}</td>
+                                 <td>{{ result.dominio }}</td>
+                                 <td><a href="{{ result.pagina }}" target="_blank">{{ result.pagina }}</a></td>
+                                 <td>
+                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal{{ result.id }}">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
                                 </td>
-                            </tr>
-                            <tr class="collapse" id="metaTagsCollapse{{ result.id }}">
-                                <td colspan="4">
-                                    <pre>{{ result.meta_tags | tojson(indent=2) }}</pre>
-                                </td>
-                            </tr>
-                            <tr class="collapse" id="imagenesCollapse{{ result.id }}">
-                                <td colspan="4">
-                                    <pre>{{ result.imagenes | tojson(indent=2) }}</pre>
-                                </td>
-                            </tr>
-                            -->
-                            
-                             <div class="modal fade" id="infoModal{{ result.id }}" tabindex="-1"
-                                aria-labelledby="infoModalLabel{{ result.id }}" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                   <div class="modal-content bg-info text-dark">
-                                      <div class="modal-header">
-                                         <h5 class="modal-title" id="infoModalLabel{{ result.id }}">Sugerencias link
-                                            roto#{{ result.id }}</h5>
+                              </tr>
+                              <!--
+                              <tr class="collapse" id="headingTagsCollapse{{ result.id }}">
+                                 <td colspan="4">
+                                     <pre>{{ result.heading_tags | tojson(indent=2) }}</pre>
+                                 </td>
+                             </tr>
+                             <tr class="collapse" id="metaTagsCollapse{{ result.id }}">
+                                 <td colspan="4">
+                                     <pre>{{ result.meta_tags | tojson(indent=2) }}</pre>
+                                 </td>
+                             </tr>
+                             <tr class="collapse" id="imagenesCollapse{{ result.id }}">
+                                 <td colspan="4">
+                                     <pre>{{ result.imagenes | tojson(indent=2) }}</pre>
+                                 </td>
+                             </tr>
+                             -->
+                             
+                              <div class="modal fade" id="infoModal{{ result.id }}" tabindex="-1"
+                                 aria-labelledby="infoModalLabel{{ result.id }}" aria-hidden="true">
+                                 <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content bg-info text-dark">
+                                       <div class="modal-header">
+                                          <h5 class="modal-title" id="infoModalLabel{{ result.id }}">Sugerencias link
+                                             roto#{{ result.id }}</h5>
 
-                                         <button type="button" class="btn-close btn-close-white"
-                                            data-bs-dismiss="modal" aria-label="Close"></button>
-                                      </div>
-                                      <div class="modal-body">
-                                         <pre>{{ result.meta_tags | tojson(indent=2) }}</pre>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div> 
-                             {% endfor %}
-                          </tbody>
-                       </table>
-                    </div>
-                 </div>
-
-
-                 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-                 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-                 <script src="https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js"></script>
-                 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
-
-                 <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                       // Inicializamos DataTables
-                       const dataTable = $('#datatablesSimple').DataTable({
-                          "language": {
-                             "sEmptyTable": "No hay datos disponibles en la tabla",
-                             "sInfo": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-                             "sInfoEmpty": "Mostrando 0 a 0 de 0 entradas",
-                             "sInfoFiltered": "(filtrado de un total de _MAX_ entradas)",
-                             "sInfoPostFix": "",
-                             "sInfoThousands": ",",
-                             "sLengthMenu": "Mostrar _MENU_ entradas",
-                             "sLoadingRecords": "Cargando...",
-                             "sProcessing": "Procesando...",
-                             "sSearch": "Buscar:",
-                             "sZeroRecords": "No se encontraron coincidencias",
-                             "oPaginate": {
-                                "sFirst": "Primero",
-                                "sLast": "Último",
-                                "sNext": "Siguiente",
-                                "sPrevious": "Anterior"
-                             },
-                             "oAria": {
-                                "sSortAscending": ": Activar para ordenar la columna en orden ascendente",
-                                "sSortDescending": ": Activar para ordenar la columna en orden descendente"
-                             }
-                          }, responsive: true,
-                          columns: [
-                             { type: 'date', format: 'YYYY-MM-DD' },
-                             null, null, null
-                          ]
-                       });
-
-                       // Configuramos el evento de cambio para el dropdown y campos de fecha
-                       $('#targetUrlDropdown, #startDate, #endDate').change(updateFilter);
-
-                       // Configuramos el evento de click para el botón de reset
-                       $('#resetFilters').click(function () {
-                          // Limpiamos los valores de los controles y actualizamos el filtro
-                          $('#targetUrlDropdown').val('');
-                          $('#startDate').val('');
-                          $('#endDate').val('');
-                          updateFilter();
-                       });
-
-             
-
-                       function updateFilter() {
-                          var selectedTarget = $('#targetUrlDropdown').val();
-                          var startDate = $('#startDate').val();
-                          var endDate = $('#endDate').val();
-
-                          // Aplicamos el filtro de URL
-                          dataTable.column(1).search(selectedTarget).draw();
+                                          <button type="button" class="btn-close btn-close-white"
+                                             data-bs-dismiss="modal" aria-label="Close"></button>
+                                       </div>
+                                       <div class="modal-body">
+                                          <pre>{{ result.meta_tags | tojson(indent=2) }}</pre>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div> 
+                              {% endfor %}
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
 
 
+                  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+                  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+                  <script src="https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js"></script>
+                  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-                          // Filtramos por rango de fechas
-                          if (startDate && endDate) {
-                             dataTable.draw();
-                             var columnIndex = 0; // Índice de la columna de fecha
-                             var startMoment = moment(startDate, 'YYYY-MM-DD');
-                             var endMoment = moment(endDate, 'YYYY-MM-DD');
 
-                             // Filtramos las filas según el rango de fechas
-                             $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-                                var dateValue = moment(data[columnIndex], 'YYYY-MM-DD');
-                                return dateValue.isBetween(startMoment, endMoment, null, '[]');
-                             });
+                  <script>
+                     document.addEventListener('DOMContentLoaded', function () {
+                        // Inicializamos DataTables
+                        const dataTable = $('#datatablesSimple').DataTable({
+                           "language": {
+                              "sEmptyTable": "No hay datos disponibles en la tabla",
+                              "sInfo": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                              "sInfoEmpty": "Mostrando 0 a 0 de 0 entradas",
+                              "sInfoFiltered": "(filtrado de un total de _MAX_ entradas)",
+                              "sInfoPostFix": "",
+                              "sInfoThousands": ",",
+                              "sLengthMenu": "Mostrar _MENU_ entradas",
+                              "sLoadingRecords": "Cargando...",
+                              "sProcessing": "Procesando...",
+                              "sSearch": "Buscar:",
+                              "sZeroRecords": "No se encontraron coincidencias",
+                              "oPaginate": {
+                                 "sFirst": "Primero",
+                                 "sLast": "Último",
+                                 "sNext": "Siguiente",
+                                 "sPrevious": "Anterior"
+                              },
+                              "oAria": {
+                                 "sSortAscending": ": Activar para ordenar la columna en orden ascendente",
+                                 "sSortDescending": ": Activar para ordenar la columna en orden descendente"
+                              }
+                           }, responsive: true,
+                           columns: [
+                              { type: 'date', format: 'YYYY-MM-DD' },
+                              null, null, null
+                           ]
+                        });
 
-                             // Redibujamos la tabla
-                             dataTable.draw();
+                        // Configuramos el evento de cambio para el dropdown y campos de fecha
+                        $('#targetUrlDropdown, #startDate, #endDate').change(updateFilter);
 
-                             // Eliminamos la función de filtrado para que no interfiera con futuros cambios
-                             $.fn.dataTable.ext.search.pop();
-                          } else {
-                             // No hay rango de fechas, mostramos todas las filas
-                             dataTable.draw();
-                          }
-                       }
-                    });
-                 </script>
+                        // Configuramos el evento de click para el botón de reset
+                        $('#resetFilters').click(function () {
+                           // Limpiamos los valores de los controles y actualizamos el filtro
+                           $('#targetUrlDropdown').val('');
+                           $('#startDate').val('');
+                           $('#endDate').val('');
+                           updateFilter();
+                        });
 
+              
+
+                        function updateFilter() {
+                           var selectedTarget = $('#targetUrlDropdown').val();
+                           var startDate = $('#startDate').val();
+                           var endDate = $('#endDate').val();
+
+                           // Aplicamos el filtro de URL
+                           dataTable.column(1).search(selectedTarget).draw();
+
+
+
+                           // Filtramos por rango de fechas
+                           if (startDate && endDate) {
+                              dataTable.draw();
+                              var columnIndex = 0; // Índice de la columna de fecha
+                              var startMoment = moment(startDate, 'YYYY-MM-DD');
+                              var endMoment = moment(endDate, 'YYYY-MM-DD');
+
+                              // Filtramos las filas según el rango de fechas
+                              $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+                                 var dateValue = moment(data[columnIndex], 'YYYY-MM-DD');
+                                 return dateValue.isBetween(startMoment, endMoment, null, '[]');
+                              });
+
+                              // Redibujamos la tabla
+                              dataTable.draw();
+
+                              // Eliminamos la función de filtrado para que no interfiera con futuros cambios
+                              $.fn.dataTable.ext.search.pop();
+                           } else {
+                              // No hay rango de fechas, mostramos todas las filas
+                              dataTable.draw();
+                           }
+                        }
+                     });
+                  </script>
 
                </div>
             </div>

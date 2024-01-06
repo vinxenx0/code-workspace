@@ -1,0 +1,1132 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        <h1>Resumen</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">últimos informes</li>
+                        </ol>
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">Consejo 1</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">Más Sugerencias</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">Nuevos Avisos</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-success text-white mb-4">
+                                    <div class="card-body">Mejoras</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-danger text-white mb-4">
+                                    <div class="card-body">Errores</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="#">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-area me-1"></i>
+                                        Area Chart Example
+                                    </div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-bar me-1"></i>Horizontal Bar Chart
+                                        <div class="card-body"><canvas id="horizontalBarChart" width="400" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-bar me-1"></i>
+                                        Bar Chart Example
+                                    </div>
+                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                                </div>
+                            </div> -->
+                        </div>
+
+                        <div class="container mt-5">
+                            <h1 class="text-center">Informe SEO</h1>
+                        
+                            <div class="row">
+                                <!-- Organic Traffic Bar Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Trafico Organico</h2>
+                                    <canvas id="organicTrafficChart" width="400" height="200"></canvas>
+                                </div>
+                        
+                                <!-- Keyword Rankings Doughnut Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Keywords</h2>
+                                    <canvas id="keywordRankingsChart" width="200" height="200"></canvas>
+                                </div>
+                            </div>
+                        
+                            <div class="row">
+                                <!-- Backlinks Stacked Bar Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Backlinks</h2>
+                                    <canvas id="backlinksChart" width="400" height="200"></canvas>
+                                </div>
+                        
+                                <!-- Page Load Time Doughnut Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Velocidad</h2>
+                                    <canvas id="pageLoadTimeChart" width="200" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <script>
+                            // Mock SEO data (replace with real data)
+                            var organicTrafficData = {
+                                labels: ['January', 'February', 'March', 'April', 'May'],
+                                datasets: [{
+                                    label: 'Organic Traffic',
+                                    data: [1200, 1500, 2000, 1800, 2500],
+                                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            var keywordRankingsData = {
+                                labels: ['Top 3', 'Top 10', 'Top 20'],
+                                datasets: [{
+                                    data: [30, 40, 30],
+                                    backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+                                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            var backlinksData = {
+                                labels: ['January', 'February', 'March', 'April', 'May'],
+                                datasets: [{
+                                    label: 'Internal',
+                                    data: [50, 60, 70, 80, 90],
+                                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    borderWidth: 1
+                                }, {
+                                    label: 'External',
+                                    data: [30, 40, 50, 60, 70],
+                                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            var pageLoadTimeData = {
+                                labels: ['Mobile', 'Desktop'],
+                                datasets: [{
+                                    data: [3, 2],
+                                    backgroundColor: ['rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'],
+                                    borderColor: ['rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            // Chart configurations
+                            var organicTrafficConfig = {
+                                type: 'bar',
+                                data: organicTrafficData,
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            };
+                        
+                            var keywordRankingsConfig = {
+                                type: 'doughnut',
+                                data: keywordRankingsData
+                            };
+                        
+                            var backlinksConfig = {
+                                type: 'bar',
+                                data: backlinksData,
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        },
+                                        x: {
+                                            stacked: true
+                                        }
+                                    }
+                                }
+                            };
+                        
+                            var pageLoadTimeConfig = {
+                                type: 'doughnut',
+                                data: pageLoadTimeData
+                            };
+                        
+                            // Create charts
+                            var ctxOrganicTraffic = document.getElementById('organicTrafficChart').getContext('2d');
+                            var organicTrafficChart = new Chart(ctxOrganicTraffic, organicTrafficConfig);
+                        
+                            var ctxKeywordRankings = document.getElementById('keywordRankingsChart').getContext('2d');
+                            var keywordRankingsChart = new Chart(ctxKeywordRankings, keywordRankingsConfig);
+                        
+                            var ctxBacklinks = document.getElementById('backlinksChart').getContext('2d');
+                            var backlinksChart = new Chart(ctxBacklinks, backlinksConfig);
+                        
+                            var ctxPageLoadTime = document.getElementById('pageLoadTimeChart').getContext('2d');
+                            var pageLoadTimeChart = new Chart(ctxPageLoadTime, pageLoadTimeConfig);
+                        </script>
+
+                        <div class="container mt-5">
+                            <h1 class="text-center">Accessibilidad</h1>
+
+                            <div class="row">
+                                <!-- Overall Accessibility Score Doughnut Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Score</h2>
+                                    <canvas id="overallAccessibilityChart" width="200" height="200"></canvas>
+                                </div>
+
+                                <!-- Page Titles KPI -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Titles</h2>
+                                    <div class="text-center">
+                                        <h3 class="display-4">85%</h3>
+                                        <p class="lead">Compliance</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!-- Alt Text KPI -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Texto Alternativo</h2>
+                                    <div class="text-center">
+                                        <h3 class="display-4">92%</h3>
+                                        <p class="lead"></p>
+                                    </div>
+                                </div>
+
+                                <!-- Keyboard Navigation KPI -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Navegación Alternativa</h2>
+                                    <div class="text-center">
+                                        <h3 class="display-4">98%</h3>
+                                        <p class="lead"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            // Mock accessibility data (replace with real data)
+                            var overallAccessibilityData = {
+                                labels: ['Compliant', 'Non-Compliant'],
+                                datasets: [{
+                                    data: [85, 15],
+                                    backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+                                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+
+                            // Chart configurations
+                            var overallAccessibilityConfig = {
+                                type: 'doughnut',
+                                data: overallAccessibilityData
+                            };
+
+                            // Create charts
+                            var ctxOverallAccessibility = document.getElementById('overallAccessibilityChart').getContext('2d');
+                            var overallAccessibilityChart = new Chart(ctxOverallAccessibility, overallAccessibilityConfig);
+                        </script>
+
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-bar me-1"></i>Bar Chart
+                                        <div class="card-body"><canvas id="barChart" width="400" height="200"></canvas></div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-bar me-1"></i>Horizontal Bar Chart
+                                        <div class="card-body"><canvas id="horizontalBarChart" width="400" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="container mt-5">
+                            <h1 class="text-center">Usabilidad Dashboard</h1>
+                        
+                            <div class="row">
+                                <!-- Overall Satisfaction Score Doughnut Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Score</h2>
+                                    <canvas id="overallSatisfactionChart" width="200" height="200"></canvas>
+                                </div>
+                        
+                                <!-- Page Load Time KPI -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Tiempo de Carga</h2>
+                                    <div class="text-center">
+                                        <h3 class="display-4">2.5s</h3>
+                                        <p class="lead">media</p>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="row">
+                                <!-- Mobile Responsiveness KPI -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Mobile Responsive</h2>
+                                    <div class="text-center">
+                                        <h3 class="display-4">96%</h3>
+                                        <p class="lead"></p>
+                                    </div>
+                                </div>
+                        
+                                <!-- Bounce Rate KPI -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Bounces</h2>
+                                    <div class="text-center">
+                                        <h3 class="display-4">20%</h3>
+                                        <p class="lead">media</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <script>
+                            // Mock usability data (replace with real data)
+                            var overallSatisfactionData = {
+                                labels: ['Satisfied', 'Not Satisfied'],
+                                datasets: [{
+                                    data: [75, 25],
+                                    backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+                                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            // Chart configurations
+                            var overallSatisfactionConfig = {
+                                type: 'doughnut',
+                                data: overallSatisfactionData
+                            };
+                        
+                            // Create charts
+                            var ctxOverallSatisfaction = document.getElementById('overallSatisfactionChart').getContext('2d');
+                            var overallSatisfactionChart = new Chart(ctxOverallSatisfaction, overallSatisfactionConfig);
+                        </script>
+                        
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-bar me-1"></i>Stacked Bar Chart
+                                        <div class="card-body"><canvas id="stackedBarChart" width="400" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-bar me-1"></i>Doughnut Chart 1
+                                        <div class="card-body"><canvas id="doughnutChart1" width="200" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        
+                        <div class="container mt-5">
+                            <h1 class="text-center">Revisión Ortográfica</h1>
+                        
+                            <div class="row">
+                                <!-- Overall Spelling Accuracy Doughnut Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Promedio</h2>
+                                    <canvas id="overallSpellingAccuracyChart" width="200" height="200"></canvas>
+                                </div>
+                        
+                                <!-- Spelling Errors Bar Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Faltas</h2>
+                                    <canvas id="spellingErrorsChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        
+                            <div class="row">
+                                <!-- Spelling Accuracy by Language Doughnut Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Score por Idiomas</h2>
+                                    <canvas id="spellingAccuracyByLanguageChart" width="200" height="200"></canvas>
+                                </div>
+                        
+                                <!-- Spelling Errors by Language Bar Chart -->
+                                <div class="col-md-6 my-4">
+                                    <h2 class="text-center">Faltas por Idioma/h2>
+                                    <canvas id="spellingErrorsByLanguageChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <script>
+                            // Mock spelling check data (replace with real data)
+                            var overallSpellingAccuracyData = {
+                                labels: ['Correct', 'Incorrect'],
+                                datasets: [{
+                                    data: [95, 5],
+                                    backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+                                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            var spellingErrorsData = {
+                                labels: ['Spanish', 'English', 'Catalan'],
+                                datasets: [{
+                                    label: 'Spelling Errors',
+                                    data: [20, 15, 10],
+                                    backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+                                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            var spellingAccuracyByLanguageData = {
+                                labels: ['Spanish', 'English', 'Catalan'],
+                                datasets: [{
+                                    data: [92, 98, 95],
+                                    backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+                                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            var spellingErrorsByLanguageData = {
+                                labels: ['Spanish', 'English', 'Catalan'],
+                                datasets: [{
+                                    label: 'Spelling Errors',
+                                    data: [10, 8, 5],
+                                    backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+                                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+                                    borderWidth: 1
+                                }]
+                            };
+                        
+                            // Chart configurations
+                            var overallSpellingAccuracyConfig = {
+                                type: 'doughnut',
+                                data: overallSpellingAccuracyData
+                            };
+                        
+                            var spellingErrorsConfig = {
+                                type: 'bar',
+                                data: spellingErrorsData,
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            };
+                        
+                            var spellingAccuracyByLanguageConfig = {
+                                type: 'doughnut',
+                                data: spellingAccuracyByLanguageData
+                            };
+                        
+                            var spellingErrorsByLanguageConfig = {
+                                type: 'bar',
+                                data: spellingErrorsByLanguageData,
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            };
+                        
+                            // Create charts
+                            var ctxOverallSpellingAccuracy = document.getElementById('overallSpellingAccuracyChart').getContext('2d');
+                            var overallSpellingAccuracyChart = new Chart(ctxOverallSpellingAccuracy, overallSpellingAccuracyConfig);
+                        
+                            var ctxSpellingErrors = document.getElementById('spellingErrorsChart').getContext('2d');
+                            var spellingErrorsChart = new Chart(ctxSpellingErrors, spellingErrorsConfig);
+                        
+                            var ctxSpellingAccuracyByLanguage = document.getElementById('spellingAccuracyByLanguageChart').getContext('2d');
+                            var spellingAccuracyByLanguageChart = new Chart(ctxSpellingAccuracyByLanguage, spellingAccuracyByLanguageConfig);
+                        
+                            var ctxSpellingErrorsByLanguage = document.getElementById('spellingErrorsByLanguageChart').getContext('2d');
+                            var spellingErrorsByLanguageChart = new Chart(ctxSpellingErrorsByLanguage, spellingErrorsByLanguageConfig);
+                        </script>
+                        
+
+
+                    <div class="row">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                DataTable Example
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Position</th>
+                                            <th>Office</th>
+                                            <th>Age</th>
+                                            <th>Start date</th>
+                                            <th>Salary</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Position</th>
+                                            <th>Office</th>
+                                            <th>Age</th>
+                                            <th>Start date</th>
+                                            <th>Salary</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr>
+                                            <td>Tiger Nixon</td>
+                                            <td>System Architect</td>
+                                            <td>Edinburgh</td>
+                                            <td>61</td>
+                                            <td>2011/04/25</td>
+                                            <td>$320,800</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Garrett Winters</td>
+                                            <td>Accountant</td>
+                                            <td>Tokyo</td>
+                                            <td>63</td>
+                                            <td>2011/07/25</td>
+                                            <td>$170,750</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ashton Cox</td>
+                                            <td>Junior Technical Author</td>
+                                            <td>San Francisco</td>
+                                            <td>66</td>
+                                            <td>2009/01/12</td>
+                                            <td>$86,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cedric Kelly</td>
+                                            <td>Senior Javascript Developer</td>
+                                            <td>Edinburgh</td>
+                                            <td>22</td>
+                                            <td>2012/03/29</td>
+                                            <td>$433,060</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Airi Satou</td>
+                                            <td>Accountant</td>
+                                            <td>Tokyo</td>
+                                            <td>33</td>
+                                            <td>2008/11/28</td>
+                                            <td>$162,700</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Brielle Williamson</td>
+                                            <td>Integration Specialist</td>
+                                            <td>New York</td>
+                                            <td>61</td>
+                                            <td>2012/12/02</td>
+                                            <td>$372,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Herrod Chandler</td>
+                                            <td>Sales Assistant</td>
+                                            <td>San Francisco</td>
+                                            <td>59</td>
+                                            <td>2012/08/06</td>
+                                            <td>$137,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Rhona Davidson</td>
+                                            <td>Integration Specialist</td>
+                                            <td>Tokyo</td>
+                                            <td>55</td>
+                                            <td>2010/10/14</td>
+                                            <td>$327,900</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Colleen Hurst</td>
+                                            <td>Javascript Developer</td>
+                                            <td>San Francisco</td>
+                                            <td>39</td>
+                                            <td>2009/09/15</td>
+                                            <td>$205,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sonya Frost</td>
+                                            <td>Software Engineer</td>
+                                            <td>Edinburgh</td>
+                                            <td>23</td>
+                                            <td>2008/12/13</td>
+                                            <td>$103,600</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jena Gaines</td>
+                                            <td>Office Manager</td>
+                                            <td>London</td>
+                                            <td>30</td>
+                                            <td>2008/12/19</td>
+                                            <td>$90,560</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Quinn Flynn</td>
+                                            <td>Support Lead</td>
+                                            <td>Edinburgh</td>
+                                            <td>22</td>
+                                            <td>2013/03/03</td>
+                                            <td>$342,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Charde Marshall</td>
+                                            <td>Regional Director</td>
+                                            <td>San Francisco</td>
+                                            <td>36</td>
+                                            <td>2008/10/16</td>
+                                            <td>$470,600</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Haley Kennedy</td>
+                                            <td>Senior Marketing Designer</td>
+                                            <td>London</td>
+                                            <td>43</td>
+                                            <td>2012/12/18</td>
+                                            <td>$313,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tatyana Fitzpatrick</td>
+                                            <td>Regional Director</td>
+                                            <td>London</td>
+                                            <td>19</td>
+                                            <td>2010/03/17</td>
+                                            <td>$385,750</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Michael Silva</td>
+                                            <td>Marketing Designer</td>
+                                            <td>London</td>
+                                            <td>66</td>
+                                            <td>2012/11/27</td>
+                                            <td>$198,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Paul Byrd</td>
+                                            <td>Chief Financial Officer (CFO)</td>
+                                            <td>New York</td>
+                                            <td>64</td>
+                                            <td>2010/06/09</td>
+                                            <td>$725,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gloria Little</td>
+                                            <td>Systems Administrator</td>
+                                            <td>New York</td>
+                                            <td>59</td>
+                                            <td>2009/04/10</td>
+                                            <td>$237,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bradley Greer</td>
+                                            <td>Software Engineer</td>
+                                            <td>London</td>
+                                            <td>41</td>
+                                            <td>2012/10/13</td>
+                                            <td>$132,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dai Rios</td>
+                                            <td>Personnel Lead</td>
+                                            <td>Edinburgh</td>
+                                            <td>35</td>
+                                            <td>2012/09/26</td>
+                                            <td>$217,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jenette Caldwell</td>
+                                            <td>Development Lead</td>
+                                            <td>New York</td>
+                                            <td>30</td>
+                                            <td>2011/09/03</td>
+                                            <td>$345,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Yuri Berry</td>
+                                            <td>Chief Marketing Officer (CMO)</td>
+                                            <td>New York</td>
+                                            <td>40</td>
+                                            <td>2009/06/25</td>
+                                            <td>$675,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Caesar Vance</td>
+                                            <td>Pre-Sales Support</td>
+                                            <td>New York</td>
+                                            <td>21</td>
+                                            <td>2011/12/12</td>
+                                            <td>$106,450</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Doris Wilder</td>
+                                            <td>Sales Assistant</td>
+                                            <td>Sidney</td>
+                                            <td>23</td>
+                                            <td>2010/09/20</td>
+                                            <td>$85,600</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Angelica Ramos</td>
+                                            <td>Chief Executive Officer (CEO)</td>
+                                            <td>London</td>
+                                            <td>47</td>
+                                            <td>2009/10/09</td>
+                                            <td>$1,200,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gavin Joyce</td>
+                                            <td>Developer</td>
+                                            <td>Edinburgh</td>
+                                            <td>42</td>
+                                            <td>2010/12/22</td>
+                                            <td>$92,575</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jennifer Chang</td>
+                                            <td>Regional Director</td>
+                                            <td>Singapore</td>
+                                            <td>28</td>
+                                            <td>2010/11/14</td>
+                                            <td>$357,650</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Brenden Wagner</td>
+                                            <td>Software Engineer</td>
+                                            <td>San Francisco</td>
+                                            <td>28</td>
+                                            <td>2011/06/07</td>
+                                            <td>$206,850</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fiona Green</td>
+                                            <td>Chief Operating Officer (COO)</td>
+                                            <td>San Francisco</td>
+                                            <td>48</td>
+                                            <td>2010/03/11</td>
+                                            <td>$850,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Shou Itou</td>
+                                            <td>Regional Marketing</td>
+                                            <td>Tokyo</td>
+                                            <td>20</td>
+                                            <td>2011/08/14</td>
+                                            <td>$163,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Michelle House</td>
+                                            <td>Integration Specialist</td>
+                                            <td>Sidney</td>
+                                            <td>37</td>
+                                            <td>2011/06/02</td>
+                                            <td>$95,400</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Suki Burks</td>
+                                            <td>Developer</td>
+                                            <td>London</td>
+                                            <td>53</td>
+                                            <td>2009/10/22</td>
+                                            <td>$114,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Prescott Bartlett</td>
+                                            <td>Technical Author</td>
+                                            <td>London</td>
+                                            <td>27</td>
+                                            <td>2011/05/07</td>
+                                            <td>$145,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gavin Cortez</td>
+                                            <td>Team Leader</td>
+                                            <td>San Francisco</td>
+                                            <td>22</td>
+                                            <td>2008/10/26</td>
+                                            <td>$235,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Martena Mccray</td>
+                                            <td>Post-Sales support</td>
+                                            <td>Edinburgh</td>
+                                            <td>46</td>
+                                            <td>2011/03/09</td>
+                                            <td>$324,050</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Unity Butler</td>
+                                            <td>Marketing Designer</td>
+                                            <td>San Francisco</td>
+                                            <td>47</td>
+                                            <td>2009/12/09</td>
+                                            <td>$85,675</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Howard Hatfield</td>
+                                            <td>Office Manager</td>
+                                            <td>San Francisco</td>
+                                            <td>51</td>
+                                            <td>2008/12/16</td>
+                                            <td>$164,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hope Fuentes</td>
+                                            <td>Secretary</td>
+                                            <td>San Francisco</td>
+                                            <td>41</td>
+                                            <td>2010/02/12</td>
+                                            <td>$109,850</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Vivian Harrell</td>
+                                            <td>Financial Controller</td>
+                                            <td>San Francisco</td>
+                                            <td>62</td>
+                                            <td>2009/02/14</td>
+                                            <td>$452,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Timothy Mooney</td>
+                                            <td>Office Manager</td>
+                                            <td>London</td>
+                                            <td>37</td>
+                                            <td>2008/12/11</td>
+                                            <td>$136,200</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jackson Bradshaw</td>
+                                            <td>Director</td>
+                                            <td>New York</td>
+                                            <td>65</td>
+                                            <td>2008/09/26</td>
+                                            <td>$645,750</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Olivia Liang</td>
+                                            <td>Support Engineer</td>
+                                            <td>Singapore</td>
+                                            <td>64</td>
+                                            <td>2011/02/03</td>
+                                            <td>$234,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bruno Nash</td>
+                                            <td>Software Engineer</td>
+                                            <td>London</td>
+                                            <td>38</td>
+                                            <td>2011/05/03</td>
+                                            <td>$163,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sakura Yamamoto</td>
+                                            <td>Support Engineer</td>
+                                            <td>Tokyo</td>
+                                            <td>37</td>
+                                            <td>2009/08/19</td>
+                                            <td>$139,575</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Thor Walton</td>
+                                            <td>Developer</td>
+                                            <td>New York</td>
+                                            <td>61</td>
+                                            <td>2013/08/11</td>
+                                            <td>$98,540</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Finn Camacho</td>
+                                            <td>Support Engineer</td>
+                                            <td>San Francisco</td>
+                                            <td>47</td>
+                                            <td>2009/07/07</td>
+                                            <td>$87,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Serge Baldwin</td>
+                                            <td>Data Coordinator</td>
+                                            <td>Singapore</td>
+                                            <td>64</td>
+                                            <td>2012/04/09</td>
+                                            <td>$138,575</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Zenaida Frank</td>
+                                            <td>Software Engineer</td>
+                                            <td>New York</td>
+                                            <td>63</td>
+                                            <td>2010/01/04</td>
+                                            <td>$125,250</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Zorita Serrano</td>
+                                            <td>Software Engineer</td>
+                                            <td>San Francisco</td>
+                                            <td>56</td>
+                                            <td>2012/06/01</td>
+                                            <td>$115,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jennifer Acosta</td>
+                                            <td>Junior Javascript Developer</td>
+                                            <td>Edinburgh</td>
+                                            <td>43</td>
+                                            <td>2013/02/01</td>
+                                            <td>$75,650</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cara Stevens</td>
+                                            <td>Sales Assistant</td>
+                                            <td>New York</td>
+                                            <td>46</td>
+                                            <td>2011/12/06</td>
+                                            <td>$145,600</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hermione Butler</td>
+                                            <td>Regional Director</td>
+                                            <td>London</td>
+                                            <td>47</td>
+                                            <td>2011/03/21</td>
+                                            <td>$356,250</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lael Greer</td>
+                                            <td>Systems Administrator</td>
+                                            <td>London</td>
+                                            <td>21</td>
+                                            <td>2009/02/27</td>
+                                            <td>$103,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jonas Alexander</td>
+                                            <td>Developer</td>
+                                            <td>San Francisco</td>
+                                            <td>30</td>
+                                            <td>2010/07/14</td>
+                                            <td>$86,500</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Shad Decker</td>
+                                            <td>Regional Director</td>
+                                            <td>Edinburgh</td>
+                                            <td>51</td>
+                                            <td>2008/11/13</td>
+                                            <td>$183,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Michael Bruce</td>
+                                            <td>Javascript Developer</td>
+                                            <td>Singapore</td>
+                                            <td>29</td>
+                                            <td>2011/06/27</td>
+                                            <td>$183,000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Donna Snider</td>
+                                            <td>Customer Support</td>
+                                            <td>New York</td>
+                                            <td>27</td>
+                                            <td>2011/01/25</td>
+                                            <td>$112,000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+   
+    
+      
+
+<script>
+    // Sample data for different types of charts
+    var barChartData = {
+        labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'],
+        datasets: [{
+            label: 'Dataset 1',
+            data: [12, 19, 3, 5, 2],
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Chart configurations
+    var barConfig = {
+        type: 'bar',
+        data: barChartData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // Create bar chart
+    var ctxBar = document.getElementById('barChart').getContext('2d');
+    var barChart = new Chart(ctxBar, barConfig);
+</script>
+
+<script>
+    // Sample data for different types of charts
+    var horizontalBarChartData = {
+        labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4'],
+        datasets: [{
+            label: 'Dataset 1',
+            data: [12, 19, 3, 5, 2],
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Chart configurations
+    var horizontalBarConfig = {
+        type: 'horizontalBar',
+        data: horizontalBarChartData,
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // Create horizontal bar chart
+    var ctxHorizontalBar = document.getElementById('horizontalBarChart').getContext('2d');
+    var horizontalBarChart = new Chart(ctxHorizontalBar, horizontalBarConfig);
+</script>
+
+<script>
+    // Sample data for different types of charts
+    var stackedBarChartData = {
+        labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'],
+        datasets: [{
+            label: 'Dataset 1',
+            data: [12, 19, 3, 5, 2],
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }, {
+            label: 'Dataset 2',
+            data: [8, 12, 6, 8, 4],
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Chart configurations
+    var stackedBarConfig = {
+        type: 'bar',
+        data: stackedBarChartData,
+        options: {
+            scales: {
+                x: {
+                    stacked: true
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        }
+    };
+
+    // Create stacked bar chart
+    var ctxStackedBar = document.getElementById('stackedBarChart').getContext('2d');
+    var stackedBarChart = new Chart(ctxStackedBar, stackedBarConfig);
+</script>
+
+<script>
+    // Sample data for different types of charts
+    var doughnutChartData1 = {
+        labels: ['Category A', 'Category B', 'Category C'],
+        datasets: [{
+            data: [30, 40, 30],
+            backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'],
+            borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
+            borderWidth: 1
+        }]
+    };
+
+    // Chart configurations
+    var doughnutConfig1 = {
+        type: 'doughnut',
+        data: doughnutChartData1
+    };
+
+    // Create doughnut chart 1
+    var ctxDoughnut1 = document.getElementById('doughnutChart1').getContext('2d');
+    var doughnutChart1 = new Chart(ctxDoughnut1, doughnutConfig1);
+</script>
+
+      
+{% endblock %}

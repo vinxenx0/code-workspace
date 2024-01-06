@@ -5,10 +5,11 @@ from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, current_user, logout_user, login_required
 from app import app, db, bcrypt
 from app.models.user_model import User
+from app.models.database import Resultado, Sumario
 from app.views.user_view import UserProfileForm, LoginForm
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import or_
 from flask_babel import g, _
-from app.models.suggestions_model import Suggestion
 from flask import render_template, send_file
 import tempfile
 from weasyprint import HTML
@@ -84,18 +85,28 @@ def logout():
 @app.route('/')
 @login_required
 def index():
-    return render_template('index.html')
+    # IDs de escaneo específicos
+    ids_escaneo_especificos = [
+        '4b99956ba942f7986ccc2e5c992c3a2a111385bfdbbfa2223818c6a8d9e28510',
+        '28fdda4e810a36d66972b9c5ab0153694caf82aabd7f5b0633c90a30e20222dd',
+        '5b485f2d386e81e56d67e6f1663d7d965f69985e11d771e56b0caf6f5ecb0849'
+    ]  # Reemplaza con los IDs específicos que se proporcionarán
+
+    # Consulta para obtener todas las filas correspondientes de la tabla Sumario
+    sumarios = (
+        db.session.query(Sumario)
+        .filter(Sumario.id_escaneo.in_(ids_escaneo_especificos))
+        .all()
+    )
+
+    # Envía los resultados al template
+    return render_template('index.html', resumen=sumarios)
 
 
-@app.route('/suggestions')
+
+@app.route('/usuarios')
 @login_required
-def list_suggestions():
-    suggestions = Suggestion.query.all()
-    return render_template('user/suggestions.html', suggestions=suggestions)
-
-@app.route('/list_users')
-@login_required
-def list_users():
+def usuarios():
     #if current_user.role not in ['admin', 'superadmin']:
     #    flash('Permission Denied. You do not have access to this page.', 'danger')
     #    return redirect(url_for('home'))

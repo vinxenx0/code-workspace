@@ -1,0 +1,777 @@
+<!-- app/templates/seo/velocidad.html -->
+{% macro get_intervalo_color_class(intervalo) %}
+    {% if intervalo == '60 a 90 segundos' %}
+        intervalo-color-rojo
+    {% elif intervalo == '30 a 60 segundos' %}
+        intervalo-color-rojo
+    {% elif intervalo == '15 a 30 segundos' %}
+        intervalo-color-rojo
+    {% endif %}
+{% endmacro %}
+{% set dominios_ordenados = ["www.mc-mutual.com", "mejoratuabsentismo.mc-mutual.com", "prevencion.mc-mutual.com"] %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+   <title>MC-Mutual - Dashboard</title>
+   <meta name="description" content="" />
+
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"></script>
+
+   <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/styles.css') }}" />
+
+   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+   <script src="{{ url_for('static', filename='dist/js/scripts.js') }}"></script>
+   <link rel="stylesheet" href="{{ url_for('static', filename='custom/colors.css') }}" />
+   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+   <!-- Gauge.js -->
+   <script src="https://cdn.jsdelivr.net/npm/progressbar.js@1.0.1/dist/progressbar.min.js"></script>
+
+   <style>
+      /* Agrega un límite de ancho al campo de la columna "Página" */
+      #datatablesSimple td {
+          max-width: 33%; /* Ajusta el valor según sea necesario */
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+      }
+      
+
+   </style>
+   <style>
+
+        .odd {
+            background-color: #f0f0f0; /* Color para índices impares */
+        }
+
+        .even {
+            background-color: #e0e0e0; /* Color para índices pares */
+        }
+
+        .intervalo-color-verde {
+            background-color: #94c412; /* Verde */
+            color: #fff; /* Texto blanco */
+         }
+
+         .intervalo-color-rojo {
+            background-color:red; /* Amarillo */
+            color: white; /* Texto oscuro */
+         }
+
+   </style>
+   <style>
+
+
+    .tiempo-celda {
+       width: 10%;
+       color: white;
+       font-weight: bold;
+       text-align: center;
+       padding: 5px;
+       border-radius: 5px;
+       height: 20px !important; /* Puedes ajustar el valor según tus necesidades */
+       overflow: hidden; /* Para ocultar cualquier contenido que pueda desbordar */
+
+    }
+ 
+    .tiempo-verde {
+       background: linear-gradient(90deg, #28a745 0%, #28a745 100%);
+    }
+ 
+    .tiempo-amarillo {
+       background: linear-gradient(90deg, #ffc107 0%, #ffc107 100%);
+    }
+ 
+    .tiempo-rojo {
+       background: linear-gradient(90deg, #dc3545 0%, #dc3545 100%);
+    }
+ </style>
+ 
+
+
+
+   <script>
+      // Recuperar el estado del collapse del localStorage para cada elemento colapsable
+      document.addEventListener('DOMContentLoaded', function () {
+         var collapseStates = JSON.parse(localStorage.getItem('collapseStates')) || {};
+
+         // Iterar sobre cada collapse y aplicar el estado correspondiente
+         Object.keys(collapseStates).forEach(function (collapseId) {
+            if (collapseStates[collapseId]) {
+               $('#' + collapseId).addClass('show');
+            }
+         });
+
+         // Manejar eventos del collapse para actualizar el localStorage
+         $('.collapse').on('show.bs.collapse', function () {
+            var collapseId = $(this).attr('id');
+            collapseStates[collapseId] = true;
+            localStorage.setItem('collapseStates', JSON.stringify(collapseStates));
+         });
+
+         $('.collapse').on('hide.bs.collapse', function () {
+            var collapseId = $(this).attr('id');
+            collapseStates[collapseId] = false;
+            localStorage.setItem('collapseStates', JSON.stringify(collapseStates));
+         });
+      });
+   </script>
+>
+</head>
+
+<body class="sb-nav-fixed">
+   {% if current_user.is_authenticated %}
+   <!-- Info Bar -->
+   <nav class="sb-topnav navbar navbar-expand navbar-light bg-light">
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-3" href="/">
+         <img src="{{ url_for('static', filename='images/logo_MC.png') }}" alt="MC Mutua" />
+      </a>
+      <!-- Sidebar Toggle-->
+      <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+            class="fas fa-bars"></i></button>
+      <!-- Navbar-->
+      <div class="container-fluid">
+         <div class="d-flex justify-content-between align-items-center w-100">
+            <!-- Navbar Search
+                  <div class="me-auto">
+                      <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                          <div class="input-group">
+                              <input class="form-control" type="text" placeholder="buscar..." aria-label="buscar..." aria-describedby="btnNavbarSearch" />
+                              <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                          </div>
+                      </form>
+                  </div> -->
+            <!-- PDF 
+                  <div class="d-flex">
+                      <div class="pdf-btn me-3">
+                        <form action="#" method="post">
+                             <button type="submit" class="btn btn-primary">Generar PDF</button>
+                        </form>
+                      </div>
+                  </div>
+                  -->
+         </div>
+      </div>
+      <div class="d-flex">
+         <div class="pdf-btn me-3">
+            <a href="{{ url_for('generate_pdf') }}" class="btn btn-info" target="_blank">PDF</a>
+         </div>
+         <!--
+               <div class="pdf-btn me-3">
+                   <form action="#" method="post">
+                        <button type="submit" class="btn btn-primary">EMAIL</button>
+                   </form>
+               </div>
+               <div class="pdf-btn me-3">
+                   <form action="#" method="post">
+                        <button type="submit" class="btn btn-primary">CSV</button>
+                   </form>
+               </div>
+               -->
+      </div>
+      <!--
+            <ul class="navbar-nav d-none d-md-inline-block ms-auto me-0">
+                <li>
+                    <a class="nav-item" href="{{ url_for('logout') }}">{{ current_user.username }}(<strong>Salir</strong>)</a>
+                </li>
+            </ul>
+            -->
+      <a class="nav-item" href="{{ url_for('logout') }}"><strong>Salir</strong></a>
+   </nav>
+   {% endif %}
+   <div id="layoutSidenav">
+      {% if current_user.is_authenticated %}
+      <div id="layoutSidenav_nav">
+         <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+            {% include 'inc/nav.html' %}
+         </nav>
+      </div>
+      {% endif %}
+      <div id="layoutSidenav_content">
+         <main>
+            <div class="container-fluid px-4">
+               <!-- <div>
+                     <ol class="breadcrumb mb-4">
+                         <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                         <li class="breadcrumb-item active">estoy aqui</li>
+                     </ol>
+                     </div>
+                     -->
+               <div class="_card mt-5">
+                  <div class="card-body">
+                     <div>
+                        <p class="text-center">
+                           <!-- alert box -->
+                           {% with messages = get_flashed_messages(with_categories=true) %}
+                           {% if messages %}
+                           {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                           {{ message }}
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+                        </p>
+                     </div>
+                  </div>
+               </div>
+               <h1 class="mt-4">Tiempos de respuesta</h1>
+               <!--
+               <div class="card control-card mb-4">
+                  <div class="card-body">
+                      <div class="mb-3 status-section">
+                        <div>
+                           <i class="fas fa-info-circle status-icon text-primary"></i>
+                           <span class="status-text">Estado: <strong>Activo</strong></span>
+                        </div>
+                        <div>
+                           <i class="fas fa-history status-icon text-success"></i>
+                           <span class="status-text">Ultima ejecución: <strong>{{ first_end_time }}</strong></span>
+                        </div>
+                     </div>
+                     <div class="control-buttons">
+                        <button class="btn btn-primary" type="button"><i class="fas fa-play"></i> Start</button>
+                        <button class="btn btn-warning" type="button"><i class="fas fa-pause"></i> Pause</button>
+                        <button class="btn btn-danger" type="button"><i class="fas fa-stop"></i> Stop</button>
+                     </div>
+                  </div>
+               </div>
+               -->
+               <ol class="breadcrumb mb-4">
+                  <li class="breadcrumb-item active">Velocidad de respuesta</li>
+               </ol>
+
+               <div class="row">
+                  <!-- Overall Satisfaction Score Doughnut Chart -->
+                  <div class="col-md-6 my-4">
+                     <h2 class="text-center">Score</h2>
+                     <div class="text-center">
+                        <h3 class="display-4 text-success font-weight-bolder">96.16%</h3>
+                        <p class="lead">enlaces buenos</p>
+                     </div>
+                  </div>
+
+                  <!-- Page Load Time KPI -->
+                  <div class="col-md-6 my-4">
+                     <h2 class="text-center">Tiempo de Respuesta</h2>
+                     <div class="text-center">
+                        <h3 class="display-4 text-danger font-weight-bolder">9.03m</h3>
+                        <p class="lead">media / página</p>
+                     </div>
+                  </div>
+               </div>
+
+
+
+               <div class="row mt-4">
+                  <!-- Gráfico de barras para comparativa entre dominios -->
+                  <div class="col-md-6">
+                      <h2 class="text-center">Comparativa entre Dominios</h2>
+                      <canvas id="barChartComparativa" width="800" height="400"></canvas>
+                  </div>
+              </div>
+
+              <div class="row mt-4">
+               <!-- Gráfico de barras para detalles por dominio -->
+               <div class="col-md-6">
+                   <h2 class="text-center">Detalles por Dominio</h2>
+                   <canvas id="barChartDetalles" width="800" height="400"></canvas>
+               </div>
+           </div>
+
+            <script>
+               // Obtener datos del servidor Flask
+               var detalles = {{ graficos | safe }};
+
+               // Crear un objeto para almacenar los datos de detalles por dominio
+               var datosDetalles = {
+                  dominios: ["www.mc-mutual.com", "mejoratuabsentismo.mc-mutual.com", "prevencion.mc-mutual.com"],
+                  datos: []
+               };
+
+               // Iterar sobre las propiedades del objeto detalles
+               for (var escaneoId in detalles) {
+                  if (detalles.hasOwnProperty(escaneoId)) {
+                     var detalleEscaneo = detalles[escaneoId];
+
+                     // Iterar sobre cada dominio en el escaneo actual
+                     detalleEscaneo.forEach(function (datosDominio) {
+                        var dominio = datosDominio[0];
+
+                        // Agregar el dominio a la lista si aún no está presente
+                        if (datosDetalles.dominios.indexOf(dominio) === -1) {
+                           datosDetalles.dominios.push(dominio);
+                        }
+
+                        // Iterar sobre los datos de intervalo y agregarlos a datosDetalles
+                        var intervalo = datosDominio[1];
+                        var count = datosDominio[2];
+
+                        // Buscar el índice del dominio en datosDetalles.dominios
+                        var dominioIndex = datosDetalles.dominios.indexOf(dominio);
+
+                        // Agregar datos a datosDetalles.datos
+                        if (!datosDetalles.datos[intervalo]) {
+                           datosDetalles.datos[intervalo] = Array(dominios.length).fill(0);
+                        }
+                        datosDetalles.datos[intervalo][dominioIndex] = count;
+                     });
+                  }
+               }
+
+               // Configuración del gráfico de barras para detalles por dominio
+               var ctxDetalles = document.getElementById('barChartDetalles').getContext('2d');
+               var barChartDetalles = new Chart(ctxDetalles, {
+                  type: 'bar',
+                  data: {
+                     labels: datosDetalles.dominios,
+                     datasets: Object.keys(datosDetalles.datos).map(function (intervalo) {
+                        return {
+                           label: intervalo,
+                           data: datosDetalles.datos[intervalo],
+                           backgroundColor: getRandomColor(),
+                           borderColor: getRandomColor(),
+                           borderWidth: 1
+                        };
+                     })
+                  },
+                  options: {
+                     scales: {
+                        x: {
+                           type: 'category',
+                           position: 'bottom'
+                        },
+                        y: {
+                           beginAtZero: true
+                        }
+                     }
+                  }
+               });
+
+               // Función para obtener colores aleatorios
+               function getRandomColor() {
+                  var letters = '0123456789ABCDEF';
+                  var color = '#';
+                  for (var i = 0; i < 6; i++) {
+                     color += letters[Math.floor(Math.random() * 16)];
+                  }
+                  return color;
+               }
+           </script>
+
+              <script>
+
+                  // Obtener datos del servidor Flask
+                  var datosEscaneo = {{ sumario | safe }};
+                  var dominios = ["www.mc-mutual.com", "mejoratuabsentismo.mc-mutual.com", "prevencion.mc-mutual.com"];
+
+                  // Crear un objeto para almacenar los datos de tiempo medio por dominio
+                  var datosComparativos = {
+                  dominios: dominios,
+                  datos: []
+                  };
+
+                  // Iterar sobre cada objeto en datosEscaneo
+                  datosEscaneo.forEach(function (objetoEscaneo) {
+                  // Obtener el dominio y el tiempo_medio del objeto actual
+                  var dominio = objetoEscaneo.dominio;
+                  var tiempoMedio = objetoEscaneo.tiempo_medio || 0; // Si no hay tiempo_medio, establecer a 0
+
+                  // Agregar los datos al objeto datosComparativos
+                  datosComparativos.datos.push({
+                     dominio: dominio,
+                     tiempo_medio: tiempoMedio
+                  });
+                  });
+
+                  // Configuración del gráfico de barras comparativo
+                  var ctxComparativa = document.getElementById('barChartComparativa').getContext('2d');
+                  var barChartComparativa = new Chart(ctxComparativa, {
+                  type: 'bar',
+                  data: {
+                     labels: datosComparativos.dominios,
+                     datasets: [{
+                        label: 'Tiempo Medio de Carga',
+                        data: datosComparativos.datos.map(function (item) {
+                        return item.tiempo_medio;
+                        }),
+                        backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 206, 86, 0.5)'
+                        ],
+                        borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                     }]
+                  },
+                  options: {
+                     scales: {
+                        x: {
+                        type: 'category', // Cambiado de 'linear' a 'category'
+                        position: 'bottom' // Agregado para establecer la posición del eje x
+                        },
+                        y: {
+                        beginAtZero: true
+                        }
+                     }
+                  }
+                  });
+
+
+              </script>
+             
+
+               <div class="row">
+                     <!-- Itera sobre los sumarios -->
+                     
+
+                     {% for dominio in dominios_ordenados %}
+                        {% for stat in resumen if stat.dominio == dominio %}
+                        <div class="col-md-4">
+                            <div class="card {% if stat.tiempo_medio is not none and stat.tiempo_medio < 1 %} bg-success {% elif stat.tiempo_medio < 3 %} bg-warning {% else %} bg-danger {% endif %} text-white mb-4">
+                                <div class="card-body">
+                                    <h4 class="card-title font-weight-bolder text-white">{{ stat.dominio }}</h4>
+                                    <h5 class="card-title font-weight-bolder text-white">{{ stat.tiempo_medio }} seg</h5>
+                                    <p class="card-text">
+                                        <strong>Fecha:</strong> {{ stat.fecha }}<br>
+                                        <strong>Páginas analizadas:</strong> {{ stat.total_paginas }}<br />
+                                        <strong>Páginas img pesadas</strong> {{ stat.pages_img_1mb}}<br />
+                                        
+                                        <strong>Duración:</strong> {{ stat.duracion_total }}<br>
+                                    </p>
+                                </div>
+
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" data-bs-toggle="collapse"
+                                        href="#collapse-{{stat.id_escaneo}}" role="button" aria-expanded="false"
+                                        aria-controls="collapse-{{stat.id_escaneo}}">Ver Sugerencias</a>
+                                    <div class="text-white"><h3 class="text-white"><i class="fas fa-lightbulb" data-bs-toggle="collapse"
+                                        href="#collapse-{{stat.id_escaneo}}" role="button" aria-expanded="false"
+                                        aria-controls="collapse-{{stat.id_escaneo}}"></i></h3></div>
+                                </div>
+                                <div class="collapse" id="collapse-{{stat.id_escaneo}}">
+                                    <div class="card card-body">
+                                        <!-- Agrega aquí la tabla para los resultados de cargas por segundos -->
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Intervalo de carga</th>
+                                                    <th>Cantidad</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                             {% for dominio, intervalo, count in detalles[stat.id_escaneo] %}
+                                                   <tr class="{{ get_intervalo_color_class(intervalo) }}">
+                                                      <td>{{ intervalo }}</td>
+                                                      <td>{{ count }}</td>
+                                                   </tr>
+                                             {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <!-- Fin de la tabla de cargas por segundos -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                     {% endfor %}
+                </div>
+
+               <div class="container">
+                  <div class="row mt-5">
+                     <!-- Primera columna con los checkboxes -->
+                     <div class="col-md-4 mb-4">
+                        <div class="card">
+                           <div class="card-body bg-white text-dark>
+                              <h5 class="card-title">URL:</h5>
+                              <!-- Agregamos el dropdown en lugar de checkboxes -->
+                              <select id="targetUrlDropdown" class="form-select">
+                                 <option value="">Ver todas</option>
+                                 <option value="www.mc-mutual.com">www.mc-mutual.com</option>
+                                 <option value="mejoratuabsentismo.mc-mutual.com">
+                                    mejoratuabsentismo.mc-mutual.com</option>
+                                 <option value="prevencion.mc-mutual.com">prevencion.mc-mutual.com</option>
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+
+                     <!-- Segunda columna con los campos de fecha -->
+                     <div class="col-md-4 mb-4">
+                        <div class="card">
+                           <div class="card-body bg-white text-dark">
+                              <h5 class="card-title">Desde:</h5>
+                              <input type="date" id="startDate" class="form-control" />
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-4 mb-4">
+                        <div class="card">
+                           <div class="card-body bg-white text-dark">
+                              <h5 class="card-title">Hasta:</h5>
+                              <input type="date" id="endDate" class="form-control" />
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row mb-4">
+                        <div class="col-md-12 text-end">
+                           <button type="button" class="btn btn-secondary" id="resetFilters">Resetear Filtros</button>
+                        </div>
+                     </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="card mb-4">
+                    <div class="card-header">
+                       <i class="fas fa-table me-1"></i>
+                       Velocidad del sitio
+                    </div>
+                    <div class="card-body">
+                        
+                         <table id="datatablesSimple" class="display">
+                            <thead>
+                               <tr>
+                                  <th>fecha</th>
+                                  <th>web</th>
+                                  <td>peso</td>
+                                  <th>dirección</th>
+                                  <th>segundos</th>
+                                  <th><i class="fas fa-lightbulb"></i></th>
+                                  <th>lengua</th>
+                               </tr>
+                            </thead>
+                            <tfoot>
+                               <tr>
+                                  <th>fecha</th>
+                                  <th>web</th>
+                                  <td>peso</td>
+                                  <th>dirección</th>
+                                  <th>segundos</th>
+                                  <th><i class="fas fa-lightbulb"></i></th>
+                                  <th>lengua</th>
+                               </tr>
+                            </tfoot>
+                            <tbody>
+                               {% for result in resultados %}
+                                    <tr>
+                                        <td>{{ result.fecha_escaneo }}</td>
+                                        <td>{{ result.dominio }}</td>
+                                        <td>{{ result.id }}</td>
+                                        <td><a href="{{ result.pagina }}" alt="{{ result.pagina }}" target="_blank">{{ result.pagina }}</a></td>
+                                        <td class="tiempo-celda {% if result.tiempo_medio is not none and result.tiempo_respuesta <= 5 %} tiempo-verde {% elif result.tiempo_respuesta <= 15 %} tiempo-amarillo {% else %} tiempo-rojo {% endif %}">
+                                            {{ result.tiempo_respuesta }}
+                                        </td>
+                                        <td>
+                                            {% if result.tiempo_respuesta > 5 %}
+                                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal{{ result.id }}">
+                                                <i class="fas fa-plus"></i>
+                                                </button>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <small>{{ result.lang }}</small>
+                                        </td>
+                                    </tr>
+                                    {% if result.tiempo_respuesta > 5 %}
+                                    <div class="modal fade" id="infoModal{{ result.id }}" tabindex="-1" aria-labelledby="infoModalLabel{{ result.id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content bg-info text-dark">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="infoModalLabel{{ result.id }}">Sugerencias velocidad{{ result.id }}</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                          
+                                                <div class="modal-body">
+                                                    <div class="suggestion">
+                                                        <div class="label"><b>Imágenes de más de un mega:</b></div>
+                                                        <div class="value">
+                                                            {% if result.images_1MB is iterable %}
+                                                                {% for item in result.images_1MB %}
+                                                                <div class="{{ 'odd' if loop.index is odd else 'even' }}">
+                                
+                                                                    {{ item|safe }}<br>
+                                                                </div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {{ result.images_1MB|safe }}<br>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="suggestion">
+                                                        <div class="label">Todas las imágenes:</div>
+                                                            <div class="value">
+                                                                {% if result.imagenes %}
+                                                                    {% for image in result.imagenes %}
+                                                                        <div class="{{ 'odd' if loop.index is odd else 'even' }}">
+                                                                           <a href="{{ image.url }}" alt="{{ image.url }}" target="_blank">{{ image.filename }}</a><br>
+                                                                            <strong>Size (Kb):</strong> {{ image.size_mb * 1000 }}<br>
+                        
+                                                                            <strong>Image Type:</strong> {{ image.image_type }}<br><br>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                {% else %}
+                                                                    <div class="{{ 'odd' if loop.index0 is odd else 'even' }}">
+                                                                        No hay imágenes disponibles.<br><br>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                    </div>
+                                                    <div class="suggestion">
+                                                        <div class="label"><b>Tipos de imágenes:</b></div>
+                                                        <div class="value">
+                                                            {% for key, value in result.image_types.items() %}
+                                                            <div class="{{ 'odd' if loop.index is odd else 'even' }}">
+                                
+                                                                {{ key|safe }}: {{ value|safe }}<br>
+                                                            </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {% endif %}
+                               {% endfor %}
+                            </tbody>
+                         </table>
+                         
+                    </div>
+                 </div>
+
+
+                 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+                 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+                 <script src="https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js"></script>
+                 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+
+                 <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                       // Inicializamos DataTables
+                       const dataTable = $('#datatablesSimple').DataTable({
+                          "language": {
+                             "sEmptyTable": "No hay datos disponibles en la tabla",
+                             "sInfo": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                             "sInfoEmpty": "Mostrando 0 a 0 de 0 entradas",
+                             "sInfoFiltered": "(filtrado de un total de _MAX_ entradas)",
+                             "sInfoPostFix": "",
+                             "sInfoThousands": ",",
+                             "sLengthMenu": "Mostrar _MENU_ entradas",
+                             "sLoadingRecords": "Cargando...",
+                             "sProcessing": "Procesando...",
+                             "sSearch": "Buscar:",
+                             "sZeroRecords": "No se encontraron coincidencias",
+                             "oPaginate": {
+                                "sFirst": "Primero",
+                                "sLast": "Último",
+                                "sNext": "Siguiente",
+                                "sPrevious": "Anterior"
+                             },
+                             "oAria": {
+                                "sSortAscending": ": Activar para ordenar la columna en orden ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna en orden descendente"
+                             }
+                          }, responsive: true,
+                          columns: [
+                             { type: 'date', format: 'YYYY-MM-DD' },
+                             null, null, null, null, null, null
+                          ],
+                          colReorder: {
+                                realtime: false // Opcional: ajusta a true si quieres redimensionamiento en tiempo real
+                            }
+                       });
+
+                       // Configuramos el evento de cambio para el dropdown y campos de fecha
+                       $('#targetUrlDropdown, #startDate, #endDate').change(updateFilter);
+
+                       // Configuramos el evento de click para el botón de reset
+                       $('#resetFilters').click(function () {
+                          // Limpiamos los valores de los controles y actualizamos el filtro
+                          $('#targetUrlDropdown').val('');
+                          $('#startDate').val('');
+                          $('#endDate').val('');
+                          updateFilter();
+                       });
+
+             
+
+                       function updateFilter() {
+                          var selectedTarget = $('#targetUrlDropdown').val();
+                          var startDate = $('#startDate').val();
+                          var endDate = $('#endDate').val();
+
+                          // Aplicamos el filtro de URL
+                          dataTable.column(1).search(selectedTarget).draw();
+
+
+
+                          // Filtramos por rango de fechas
+                          if (startDate && endDate) {
+                             dataTable.draw();
+                             var columnIndex = 0; // Índice de la columna de fecha
+                             var startMoment = moment(startDate, 'YYYY-MM-DD');
+                             var endMoment = moment(endDate, 'YYYY-MM-DD');
+
+                             // Filtramos las filas según el rango de fechas
+                             $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+                                var dateValue = moment(data[columnIndex], 'YYYY-MM-DD');
+                                return dateValue.isBetween(startMoment, endMoment, null, '[]');
+                             });
+
+                             // Redibujamos la tabla
+                             dataTable.draw();
+
+                             // Eliminamos la función de filtrado para que no interfiera con futuros cambios
+                             $.fn.dataTable.ext.search.pop();
+                          } else {
+                             // No hay rango de fechas, mostramos todas las filas
+                             dataTable.draw();
+                          }
+                       }
+                    });
+                 </script>
+
+
+               </div>
+            </div>
+         </div>
+      </div>   
+   </div>
+   </main>
+   <br clear="all">
+   <footer class="py-4 bg-light mt-auto">
+      <div class="container-fluid px-4">
+         <div class="d-flex align-items-center justify-content-between small">
+            <div class="text-muted">Copyright &copy; MC-Mutual 2023</div>
+            <div>
+               <a href="#">Aviso Legal</a>
+               &middot;
+               <a href="#">Términos &amp; Condiciones</a>
+            </div>
+         </div>
+      </div>
+   </footer>
+   </div>
+
+
+
+
+
+</body>
+
+</html>

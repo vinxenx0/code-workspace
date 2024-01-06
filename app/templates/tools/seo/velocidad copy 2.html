@@ -1,4 +1,4 @@
-<!-- app/templates/index.html -->
+<!-- app/templates/seo/velocidad.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,13 +26,56 @@
 
    <style>
       /* Agrega un límite de ancho al campo de la columna "Página" */
-      #resultadosTable td:nth-child(3) {
-          max-width: 150px; /* Ajusta el valor según sea necesario */
+      #datatablesSimple td {
+          max-width: 33%; /* Ajusta el valor según sea necesario */
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
       }
+      
+
    </style>
+   <style>
+
+        .odd {
+            background-color: #f0f0f0; /* Color para índices impares */
+        }
+
+        .even {
+            background-color: #e0e0e0; /* Color para índices pares */
+        }
+
+
+   </style>
+   <style>
+
+
+    .tiempo-celda {
+       width: 10%;
+       color: white;
+       font-weight: bold;
+       text-align: center;
+       padding: 5px;
+       border-radius: 5px;
+       height: 20px !important; /* Puedes ajustar el valor según tus necesidades */
+       overflow: hidden; /* Para ocultar cualquier contenido que pueda desbordar */
+
+    }
+ 
+    .tiempo-verde {
+       background: linear-gradient(90deg, #28a745 0%, #28a745 100%);
+    }
+ 
+    .tiempo-amarillo {
+       background: linear-gradient(90deg, #ffc107 0%, #ffc107 100%);
+    }
+ 
+    .tiempo-rojo {
+       background: linear-gradient(90deg, #dc3545 0%, #dc3545 100%);
+    }
+ </style>
+ 
+
 
 
    <script>
@@ -61,27 +104,7 @@
          });
       });
    </script>
-   <style>
-      /* Estilo para las tarjetas de ScanResults */
-      .scan-result-card {
-         background-color: #e9ecef;
-         /* Color de fondo gris claro */
-         border: 1px solid #ced4da;
-         /* Borde gris */
-         margin-bottom: 20px;
-         /* Margen inferior */
-      }
-
-      /* Estilo para las tarjetas de DomainStats */
-      .domain-stat-card {
-         background-color: #d4edda;
-         /* Color de fondo verde claro */
-         border: 1px solid #c3e6cb;
-         /* Borde verde */
-         margin-bottom: 20px;
-         /* Margen inferior */
-      }
-   </style>
+>
 </head>
 
 <body class="sb-nav-fixed">
@@ -181,7 +204,7 @@
                      </div>
                   </div>
                </div>
-               <h1 class="mt-4">Enlaces rotos</h1>
+               <h1 class="mt-4">Tiempos de respuesta</h1>
                <!--
                <div class="card control-card mb-4">
                   <div class="card-body">
@@ -204,7 +227,7 @@
                </div>
                -->
                <ol class="breadcrumb mb-4">
-                  <li class="breadcrumb-item active">Busca enlaces rotos en el sitio</li>
+                  <li class="breadcrumb-item active">Velocidad de respuesta</li>
                </ol>
                <div class="row">
                   <!-- Overall Satisfaction Score Doughnut Chart -->
@@ -225,37 +248,64 @@
                      </div>
                   </div>
                </div>
-               <div class="row">
-                  <!-- Itera sobre los últimos resultados de DomainStats -->
-                  {% for stat in resumen %}
-                  <div class="col-md-4">
-                     <div class="card domain-stat-card">
-                        <div class="card-body">
-                           <h5 class="card-title font-weight-bolder text-success">{{ stat.dominio }}</h5>
-                           <p class="card-text">
-                              <strong>Ultimo scan:</strong> {{ stat.fecha }}<br>
-                              <strong>Estado:</strong>{{ stat.id_escaneo }}<br>
-                              <strong>Páginas:</strong> {{ stat.total_paginas }}<br />
-                              <strong>Rotas:</strong> <span class="text-danger font-weight-bolder"><strong>{{
-                                    stat.total_404 }}</strong></span><br />
-                              <strong>Inicio:</strong> {{ stat.hora_inicio }}<br>
-                              <strong>Fin:</strong> {{ stat.hora_fin }}<br>
-                              <strong>Duración:</strong> {{ stat.duracion_total }}<br>
 
-                              <!-- Agrega otros campos según sea necesario -->
-                           </p>
+               <div class="row">
+                    <!-- Itera sobre los sumarios -->
+                    {% for stat in resumen %}
+                        <div class="col-md-4">
+                            <div class="card {% if stat.tiempo_medio < 1 %} bg-success {% elif stat.tiempo_medio < 5 %} bg-warning {% else %} bg-danger {% endif %} text-white mb-4">
+                                <div class="card-body">
+                                    <h4 class="card-title font-weight-bolder text-white">{{ stat.dominio }}</h4>
+                                    <h5 class="card-title font-weight-bolder text-white">{{ stat.tiempo_medio }} seg</h5>
+                                    <p class="card-text">
+                                        <strong>Fecha:</strong> {{ stat.fecha }}<br>
+                                        <strong>Páginas analizadas:</strong> {{ stat.total_paginas }}<br />
+                                        <strong>Páginas img pesadas</strong> {{ stat.pages_img_1mb}}<br />
+                                        
+                                        <strong>Duración:</strong> {{ stat.duracion_total }}<br>
+                                    </p>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" data-bs-toggle="collapse"
+                                        href="#collapse-{{stat.id_escaneo}}" role="button" aria-expanded="false"
+                                        aria-controls="collapse-{{stat.id_escaneo}}">Ver Sugerencias</a>
+                                    <div class="text-white"><h3 class="text-white"><i class="fas fa-lightbulb" data-bs-toggle="collapse"
+                                        href="#collapse-{{stat.id_escaneo}}" role="button" aria-expanded="false"
+                                        aria-controls="collapse-{{stat.id_escaneo}}"></i></h3></div>
+                                </div>
+                                <div class="collapse" id="collapse-{{stat.id_escaneo}}">
+                                    <div class="card card-body">
+                                        <!-- Agrega aquí la tabla para los resultados de cargas por segundos -->
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Intervalo de carga</th>
+                                                    <th>Cantidad</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for dominio, intervalo, count in detalles[stat.id_escaneo] %}
+                                                    <tr>
+                                                        <td>{{ intervalo }}</td>
+                                                        <td>{{ count }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <!-- Fin de la tabla de cargas por segundos -->
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                     </div>
-                  </div>
-                  {% endfor %}
-               </div>
+                    {% endfor %}
+                </div>
 
                <div class="container">
                   <div class="row mt-5">
                      <!-- Primera columna con los checkboxes -->
                      <div class="col-md-4 mb-4">
                         <div class="card">
-                           <div class="card-body bg-dark text-white">
+                           <div class="card-body bg-white text-dark>
                               <h5 class="card-title">URL:</h5>
                               <!-- Agregamos el dropdown en lugar de checkboxes -->
                               <select id="targetUrlDropdown" class="form-select">
@@ -272,7 +322,7 @@
                      <!-- Segunda columna con los campos de fecha -->
                      <div class="col-md-4 mb-4">
                         <div class="card">
-                           <div class="card-body bg-dark text-white">
+                           <div class="card-body bg-white text-dark">
                               <h5 class="card-title">Desde:</h5>
                               <input type="date" id="startDate" class="form-control" />
                            </div>
@@ -281,7 +331,7 @@
 
                      <div class="col-md-4 mb-4">
                         <div class="card">
-                           <div class="card-body bg-dark text-white">
+                           <div class="card-body bg-white text-dark">
                               <h5 class="card-title">Hasta:</h5>
                               <input type="date" id="endDate" class="form-control" />
                            </div>
@@ -293,81 +343,120 @@
                         </div>
                      </div>
                   </div>
-
+                </div>
+                <div class="row">
                   <div class="card mb-4">
                     <div class="card-header">
                        <i class="fas fa-table me-1"></i>
-                       Enlaces rotos desde el último scan
+                       Velocidad del sitio
                     </div>
                     <div class="card-body">
-                       <table id="datatablesSimple" class="display">
-                          <thead>
-                             <tr>
-                                <th>Fecha</th>
-                                <th>Origen</th>
-                                <th>Url rota</th>
-                                <th>Acciones</th>
-                             </tr>
-
-                          </thead>
-                          <tfoot>
-                             <tr>
-                                <th>Fecha</th>
-                                <th>Dominio</th>
-                                <th>Url rota</th>
-                                <th>Acciones</th>
-                             </tr>
-                          </tfoot>
-                          <tbody>
-                             {% for result in resultados %}
-                             <tr>
-                                <td>{{ result.fecha_escaneo }}</td>
-                                <td>{{ result.dominio }}</td>
-                                <td><a href="{{ result.pagina }}" target="_blank">{{ result.pagina }}</a></td>
-                                <td>
-                                   <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal{{ result.id }}">
-                                       <i class="fas fa-plus"></i>
-                                   </button>
-                               </td>
-                             </tr>
-                             <!--
-                             <tr class="collapse" id="headingTagsCollapse{{ result.id }}">
-                                <td colspan="4">
-                                    <pre>{{ result.heading_tags | tojson(indent=2) }}</pre>
-                                </td>
-                            </tr>
-                            <tr class="collapse" id="metaTagsCollapse{{ result.id }}">
-                                <td colspan="4">
-                                    <pre>{{ result.meta_tags | tojson(indent=2) }}</pre>
-                                </td>
-                            </tr>
-                            <tr class="collapse" id="imagenesCollapse{{ result.id }}">
-                                <td colspan="4">
-                                    <pre>{{ result.imagenes | tojson(indent=2) }}</pre>
-                                </td>
-                            </tr>
-                            -->
-                            
-                             <div class="modal fade" id="infoModal{{ result.id }}" tabindex="-1"
-                                aria-labelledby="infoModalLabel{{ result.id }}" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                   <div class="modal-content bg-info text-dark">
-                                      <div class="modal-header">
-                                         <h5 class="modal-title" id="infoModalLabel{{ result.id }}">Sugerencias link
-                                            roto#{{ result.id }}</h5>
-
-                                         <button type="button" class="btn-close btn-close-white"
-                                            data-bs-dismiss="modal" aria-label="Close"></button>
-                                      </div>
-                                      <div class="modal-body">
-                                         <pre>{{ result.meta_tags | tojson(indent=2) }}</pre>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div> 
-                             {% endfor %}
-                          </tbody>
-                       </table>
+                        
+                         <table id="datatablesSimple" class="display">
+                            <thead>
+                               <tr>
+                                  <th>fecha</th>
+                                  <th>web</th>
+                                  <td>peso</td>
+                                  <th>dirección</th>
+                                  <th>segundos</th>
+                                  <th><i class="fas fa-lightbulb"></i></th>
+                                  <th>lengua</th>
+                               </tr>
+                            </thead>
+                            <tfoot>
+                               <tr>
+                                  <th>fecha</th>
+                                  <th>web</th>
+                                  <td>peso</td>
+                                  <th>dirección</th>
+                                  <th>segundos</th>
+                                  <th><i class="fas fa-lightbulb"></i></th>
+                                  <th>lengua</th>
+                               </tr>
+                            </tfoot>
+                            <tbody>
+                               {% for result in resultados %}
+                                    <tr>
+                                        <td>{{ result.fecha_escaneo }}</td>
+                                        <td>{{ result.dominio }}</td>
+                                        <td>{{ result.id }}</td>
+                                        <td><a href="{{ result.pagina }}" alt="{{ result.pagina }}" target="_blank">{{ result.pagina }}</a></td>
+                                        <td class="tiempo-celda {% if result.tiempo_respuesta <= 5 %} tiempo-verde {% elif result.tiempo_respuesta <= 15 %} tiempo-amarillo {% else %} tiempo-rojo {% endif %}">
+                                            {{ result.tiempo_respuesta }}
+                                        </td>
+                                        <td>
+                                            {% if result.tiempo_respuesta > 5 %}
+                                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal{{ result.id }}">
+                                                <i class="fas fa-plus"></i>
+                                                </button>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <small>{{ result.lang }}</small>
+                                        </td>
+                                    </tr>
+                                    {% if result.tiempo_respuesta > 5 %}
+                                    <div class="modal fade" id="infoModal{{ result.id }}" tabindex="-1" aria-labelledby="infoModalLabel{{ result.id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content bg-info text-dark">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="infoModalLabel{{ result.id }}">Sugerencias velocidad{{ result.id }}</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                          
+                                                <div class="modal-body">
+                                                    <div class="suggestion">
+                                                        <div class="label"><b>Imágenes de más de un mega:</b></div>
+                                                        <div class="value">
+                                                            {% if result.images_1MB is iterable %}
+                                                                {% for item in result.images_1MB %}
+                                                                <div class="{{ 'odd' if loop.index is odd else 'even' }}">
+                                
+                                                                    {{ item|safe }}<br>
+                                                                </div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {{ result.images_1MB|safe }}<br>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="suggestion">
+                                                        <div class="label"><b>Todas las imágenes:</b></div>
+                                                        <div class="value">
+                                                            {% if result.images_1MB is iterable %}
+                                                                {% for item in result.imagenes %}
+                                                                <div class="{{ 'odd' if loop.index is odd else 'even' }}">
+                                
+                                                                    {{ item|safe }}<br>
+                                                                </div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                {{ result.imagenes|safe }}<br>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="suggestion">
+                                                        <div class="label"><b>Tipos de imágenes:</b></div>
+                                                        <div class="value">
+                                                            {% for key, value in result.image_types.items() %}
+                                                            <div class="{{ 'odd' if loop.index is odd else 'even' }}">
+                                
+                                                                {{ key|safe }}: {{ value|safe }}<br>
+                                                            </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {% endif %}
+                               {% endfor %}
+                            </tbody>
+                         </table>
+                         
                     </div>
                  </div>
 
@@ -407,8 +496,11 @@
                           }, responsive: true,
                           columns: [
                              { type: 'date', format: 'YYYY-MM-DD' },
-                             null, null, null
-                          ]
+                             null, null, null, null, null, null
+                          ],
+                          colReorder: {
+                                realtime: false // Opcional: ajusta a true si quieres redimensionamiento en tiempo real
+                            }
                        });
 
                        // Configuramos el evento de cambio para el dropdown y campos de fecha
