@@ -43,6 +43,13 @@
           white-space: nowrap;
       }
       
+      .fa-circle-exclamation {
+         color: red;
+        }
+
+        .fa-check {
+         color:green;
+        }
 
    </style>
    <style>
@@ -261,7 +268,7 @@
 
                <div class="row">
                      <!-- Itera sobre los sumarios -->
-                     {% set dominios_ordenados = ["www.mc-mutual.com", "mejoratuabsentismo.mc-mutual.com", "prevencion.mc-mutual.com"] %}
+                     {% set dominios_ordenados = ["www.mc-mutual.com", "mejoratuabsentismo.mc-mutual.com", "zonnox.net","prevencion.mc-mutual.com"] %}
 
                      {% for dominio in dominios_ordenados %}
                         {% for stat in resumen if stat.dominio == dominio %}
@@ -275,7 +282,8 @@
                                         <strong>Páginas analizadas:</strong> {{ stat.total_paginas }}<br />
                                         <strong>Páginas validas AAAA</strong> {{ stat.valid_aaaa_pages }}<br />
                                         
-                                        <strong>Duración:</strong> {{ stat.duracion_total }}<br>
+                                        <strong>Duración:</strong> {{ stat.duracion_total // 3600 }} horas y {{ (stat.duracion_total % 3600) // 60 }} minutos
+
                                     </p>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
@@ -370,47 +378,54 @@
                             <thead>
                                <tr>
                                   <th>fecha</th>
-                                  <th>web</th>
                                   <th>dirección</th>
-                                  <th>segundos</th>
+                                  
+                                  <th>viewport</th>
+                                  <th>responsive</th>
+                                  <th>aaaa</th>
+                                  <th>html</th>
+                                  <th>avisos</th>
                                   <th><i class="fas fa-lightbulb"></i></th>
-                                  <th>lengua</th>
                                </tr>
                             </thead>
                             <tfoot>
                                <tr>
                                   <th>fecha</th>
-                                  <th>web</th>
                                   <th>dirección</th>
-                                  <th>segundos</th>
+                                  
+                                  <th>viewport</th>
+                                  <th>responsive</th>
+                                  <th>aaaa</th>
+                                  <th>html</th>
+                                  <th>avisos</th>
                                   <th><i class="fas fa-lightbulb"></i></th>
-                                  <th>lengua</th>
+
                                </tr>
                             </tfoot>
                             <tbody>
                                {% for result in resultados %}
                                     <tr>
                                         <td>{{ result.fecha_escaneo }}</td>
-                                        <td>{{ result.dominio }}</td>
                                         <td><a href="{{ result.pagina }}" alt="{{ result.pagina }}" target="_blank">{{ result.pagina }}</a></td>
-                                        <td>
-                                           {{ result.tiempo_respuesta }}
-                                        </td>
-                                        <td>
+                                        <td>{% if result.e_viewport != 1 or result.e_viewport is none %}<i class="fa-solid fa-lg fa-circle-exclamation"></i>{% else %}<i class="fa-solid fa-lg  fa-check"></i>{% endif %}</td>
+                                        <td>{% if result.response_valid != 1 or result.response_valid is none %}<i class="fa-solid fa-lg  fa-circle-exclamation"></i>{% else %}<i class="fa-solid  fa-lg fa-check"></i>{% endif %}</td>
+                                        <td>{% if result.valid_aaa != 1 or result.valid_aaa is none %}<i class="fa-solid fa-lg  fa-circle-exclamation"></i>{% else %}<i class="fa-solid fa-lg  fa-check"></i>{% endif %}</td>
+                                        <td>{% if result.html_valid != 1 or result.html_valid is none %}<i class="fa-solid fa-lg  fa-circle-exclamation"></i>{% else %}<i class="fa-solid fa-lg  fa-check"></i>{% endif %}</td>
+                                        <td>{{ result.wcagaaa|length }}</td>
+                                       
+                                         <td>
                                              <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal{{ result.id }}">
                                                 <i class="fas fa-plus"></i>
                                              </button>
                                          
                                         </td>
-                                        <td>
-                                            <small>{{ result.lang }}</small>
-                                        </td>
+                                       
                                     </tr>
                                     
                                     <div class="modal fade" id="infoModal{{ result.id }}" tabindex="-1"
                                     aria-labelledby="infoModalLabel{{ result.id }}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
-                                       <div class="modal-content bg-info text-dark">
+                                       <div class="modal-content bg-white text-dark">
                                           <div class="modal-header">
                                              <h5 class="modal-title" id="infoModalLabel{{ result.id }}">Sugerencias #{{ result.id }}</h5>
 
@@ -424,27 +439,12 @@
                                                 {% if result.wcagaaa %}
 
                                                    {% for consejo in result.wcagaaa %}
-                                                       <div class="{{ 'odd' if loop.index is odd else 'even' }}">
-                                                           {% set consejo_dict = consejo | tojson | fromjson %}
-                                                           {% if consejo_dict is defined and consejo_dict is mapping %}
-
-                                                               {% if consejo_dict.get('pa11y_results') %}
-
-                                                                  {% for pa11y_result in consejo_dict.pa11y_results %}
-                                                                     <strong>type:</strong> {{ pa11y_result['type'] }}<br>
-                                                                     <strong>code:</strong> {{ pa11y_result['code'] }}<br>
-                                                                     <strong>message:</strong> {{ pa11y_result['message'] }}<br>
-                                                                     <strong>context:</strong> {{ pa11y_result['context'] }}<br>
-                                                                     <strong>selector:</strong> {{ pa11y_result['selector'] }}<br>
-
-                                                                  {% endfor %}
-                                                               {% endif %}
-                                                           {% else %}
-                                                               <div class="{{ 'odd' if loop.index0 is odd else 'even' }}">
-                                                                   No hay resultados de pa11y disponibles.<br><br>
-                                                               </div>
-                                                           {% endif %}
-                                                           
+                                                       <div class="{{ 'odd' if loop.index is odd else 'even' }}">                                                       
+                                                         <strong>type:</strong> {{ consejo.type }}<br>
+                                                         <strong>code:</strong> {{ consejo.code }}<br>
+                                                         <strong>message:</strong> {{ consejo.message }}<br>
+                                                         <strong>context:</strong> {{ consejo.context  }}<br>
+                                                         <strong>selector:</strong> {{ consejo.selector }}<br>
                                                        </div>
                                                    {% endfor %}
                                                {% else %}
@@ -503,7 +503,7 @@
                           }, responsive: true,
                           columns: [
                              { type: 'date', format: 'YYYY-MM-DD' },
-                             null, null, null, null, null
+                             null, null, null, null, null, null, null
                           ],
                           colReorder: {
                                 realtime: false // Opcional: ajusta a true si quieres redimensionamiento en tiempo real
