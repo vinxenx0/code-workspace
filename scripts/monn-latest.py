@@ -600,6 +600,9 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
                     resultados.append(resultados_pagina)
                     continue  # Si es un PDF, no analizar y pasar a la siguiente URL
 
+                
+                resultados_pagina['is_pdf'] = 0 # otros
+                
                 if response.headers['content-type'].startswith('text/html'):
                     if es_html_valido(response.text):
            
@@ -684,7 +687,7 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
                         resultados_pagina['valid_aaa'] = not pa11y_results_csv  # True si no hay recomendaciones, False en caso contrario
                         
                         resultados_pagina['is_pdf'] = 2 # es un html
-                    resultados_pagina['is_pdf'] = 0 # otros
+                
 
             resultados.append(resultados_pagina)
 
@@ -744,7 +747,7 @@ def generar_informe_resumen(resumen, nombre_archivo):
             id_escaneo = datos['id_escaneo']
             #paginas_inseguras = sum(pagina.get('enlaces_inseguros', 0) > 0 for pagina in datos.get('paginas', []))
             total_404 = sum(pagina.get('codigo_respuesta', 0) == 404 for pagina in datos.get('paginas', []))
-            tiempo_medio = (sum(pagina.get('codigo_respuesta', 0) == 200 for pagina in datos.get('paginas', []))) / (total_paginas)
+            tiempo_medio = (sum(pagina.get('tiempo_respuesta', 0) for pagina in datos.get('paginas', []))) / (total_paginas)
             pages_err_orto = 0
             pages_alt_vacias = 0
             peso_total_paginas = 0
@@ -813,7 +816,8 @@ def generar_informe_resumen(resumen, nombre_archivo):
                                    html_valid_count, content_valid_count, responsive_valid_count, valid_aaaa_pages,
                                    idiomas_encontrados_dict, paginas_inseguras, total_404, total_enlaces_inseguros,
                                    pages_title_long, pages_title_short, pages_title_dup, pages_desc_long,
-                                   pages_desc_short, pages_h1_dup, pages_img_1mb, id_escaneo,tiempo_medio, pages_err_orto, pages_alt_vacias,peso_total_paginas])  # Actualizado con nuevos campos
+                                   pages_desc_short, pages_h1_dup, pages_img_1mb, id_escaneo,tiempo_medio, pages_err_orto, 
+                                   pages_alt_vacias,peso_total_paginas, pdf_count, html_count, others_count])  # Actualizado con nuevos campos
 
 
 def guardar_en_csv_y_json(resultados, nombre_archivo_base, modo='w'):
@@ -863,15 +867,14 @@ def guardar_en_csv_y_json(resultados, nombre_archivo_base, modo='w'):
             resultado.setdefault('wcagaaa', {})
             resultado.setdefault('image_types', {})  # AsegÃºrate de que 'image_types' estÃ© presente con un valor por defecto
             resultado.setdefault('lang', False)
-            #resultado.setdefault('images_1MB', 0)
+            resultado.setdefault('images_1MB', 0)
             resultado.setdefault('is_pdf',-1)
-            
+            resultado.setdefault('valid_aaa', False)         
 
             # Reemplaza los valores None por False
             resultado = {k: False if v is None else v for k, v in resultado.items()}
             
-            # Agrega el campo 'valid_aaa' y asegÃºrate de que tenga un valor por defecto de False
-            resultado.setdefault('valid_aaa', False)
+
 
             escritor_csv.writerow(resultado)
 
