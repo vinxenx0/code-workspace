@@ -18,4 +18,6 @@ env
 *.json
 *.log
 .priv
-
+config.py
+logs
+results

@@ -41,7 +41,7 @@ class Resultado(Base):
     fecha_escaneo = Column(DateTime, default=datetime.now)
     dominio = Column(String(255))
     codigo_respuesta = Column(Integer)
-    tiempo_respuesta = Column(Float) #Column(Integer)
+    tiempo_respuesta = Column(Integer)
     pagina = Column(String(1383))
     parent_url = Column(String(1383))
     meta_tags = Column(JSON)
@@ -81,7 +81,6 @@ class Resultado(Base):
     html_copy = Column(Text)
     id_escaneo = Column(String(255), nullable=False)
     peso_total_pagina = Column(Integer)
-    is_pdf = Column(Integer)
 
 
 # Definir el modelo de la tabla "sumario"
@@ -89,7 +88,7 @@ class Sumario(Base):
     __tablename__ = 'sumario'
     id = Column(Integer, primary_key=True, autoincrement=True)
     dominio = Column(String(255))
-    total_paginas = Column(Float)
+    total_paginas = Column(Integer)
     duracion_total = Column(Integer)
     codigos_respuesta = Column(JSON)
     hora_inicio = Column(String(20))
@@ -116,10 +115,6 @@ class Sumario(Base):
     pages_err_orto = Column(Integer)
     pages_alt_vacias = Column(Integer)
     peso_total_paginas = Column(Integer)
-    pdf_count = Column(Integer)
-    html_count = Column(Integer)
-    others_count = Column(Integer)
-    
 
 def guardar_en_resultados(session, resultado):
 
@@ -547,9 +542,6 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
     dominio_base = urlparse(url_dominio).netloc
     urls_por_escanear = [(url_dominio, None)]
     urls_escaneadas = set()
-    
-    pdf_count = 0  # Contador para el total de PDFs rastreados
-
 
     while urls_por_escanear:
         url_actual, parent_url = urls_por_escanear.pop()
@@ -586,105 +578,94 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
                 'images_1MB': False,  # Nuevo campo
                 'id_escaneo': id_escaneo,
                 'tipos_archivos': False,
-                'peso_total_pagina': 0,
-                'is_pdf': -1  # Nuevo campo para indicar si la página es un PDF
-       
+                'peso_total_pagina': 0
+             
             }
 
-            if codigo_respuesta == 200:
-                 #if codigo_respuesta == 200 and response.headers['content-type'].startswith('text/html'):
-            #    if es_html_valido(response.text):
-                if '%pdf%' in url_actual.lower():  # Comprobar si la URL contiene '%pdf%'
-                    resultados_pagina['is_pdf'] = 1
-                    pdf_count += 1
-                    resultados.append(resultados_pagina)
-                    continue  # Si es un PDF, no analizar y pasar a la siguiente URL
+            if codigo_respuesta == 200 and response.headers['content-type'].startswith('text/html'):
+                if es_html_valido(response.text):
 
-                if response.headers['content-type'].startswith('text/html'):
-                    if es_html_valido(response.text):
-           
-                        resultados_pagina['enlaces_totales'] = 0  # Inicializar en 0
-                        resultados_pagina['enlaces_inseguros'] = 0  # Inicializar en 0
-                                
+                    resultados_pagina['enlaces_totales'] = 0  # Inicializar en 0
+                    resultados_pagina['enlaces_inseguros'] = 0  # Inicializar en 0
+                              
 
-                        meta_tags_info = extraer_meta_tags(response.text) or {}
-                        resultados_pagina['meta_tags'] = meta_tags_info
+                    meta_tags_info = extraer_meta_tags(response.text) or {}
+                    resultados_pagina['meta_tags'] = meta_tags_info
 
-                        meta_tags_revision = analizar_meta_tags(response.text)
-                        resultados_pagina.update(meta_tags_revision)
+                    meta_tags_revision = analizar_meta_tags(response.text)
+                    resultados_pagina.update(meta_tags_revision)
 
-                        if meta_tags_revision['title_long']:
-                            resultados_pagina['title_long'] = meta_tags_revision['title_long']
-                        if meta_tags_revision['title_short']:
-                            resultados_pagina['title_short'] = meta_tags_revision['title_short']
-                        if meta_tags_revision['title_duplicate']:
-                            resultados_pagina['title_duplicate'] = meta_tags_revision['title_duplicate']
-                        if meta_tags_revision['desc_long']:
-                            resultados_pagina['desc_long'] = meta_tags_revision['desc_long']
-                        if meta_tags_revision['desc_short']:
-                            resultados_pagina['desc_short'] = meta_tags_revision['desc_short']
+                    if meta_tags_revision['title_long']:
+                        resultados_pagina['title_long'] = meta_tags_revision['title_long']
+                    if meta_tags_revision['title_short']:
+                        resultados_pagina['title_short'] = meta_tags_revision['title_short']
+                    if meta_tags_revision['title_duplicate']:
+                        resultados_pagina['title_duplicate'] = meta_tags_revision['title_duplicate']
+                    if meta_tags_revision['desc_long']:
+                        resultados_pagina['desc_long'] = meta_tags_revision['desc_long']
+                    if meta_tags_revision['desc_short']:
+                        resultados_pagina['desc_short'] = meta_tags_revision['desc_short']
 
 
-                        heading_tags_count, h1_duplicate = analizar_heading_tags(response.text) #,h1_duplicate
-                        resultados_pagina['heading_tags'] = heading_tags_count or {}
-                        resultados_pagina['h1_duplicate'] = h1_duplicate
+                    heading_tags_count, h1_duplicate = analizar_heading_tags(response.text) #,h1_duplicate
+                    resultados_pagina['heading_tags'] = heading_tags_count or {}
+                    resultados_pagina['h1_duplicate'] = h1_duplicate
 
-                        info_imagenes, image_types, images_1MB = extraer_informacion_imagenes(response.text, url_actual) #images_1MB
-                        resultados_pagina['imagenes'] = info_imagenes or []
-                        resultados_pagina['alt_vacias'] = contar_alt_vacias(response.text)
-                        resultados_pagina['num_palabras'] = contar_palabras_visibles(response.text)
+                    info_imagenes, image_types, images_1MB = extraer_informacion_imagenes(response.text, url_actual) #images_1MB
+                    resultados_pagina['imagenes'] = info_imagenes or []
+                    resultados_pagina['alt_vacias'] = contar_alt_vacias(response.text)
+                    resultados_pagina['num_palabras'] = contar_palabras_visibles(response.text)
 
-                        enlaces_totales, enlaces_inseguros = contar_enlaces(response.text)
-                        resultados_pagina['enlaces_totales'] = enlaces_totales
-                        resultados_pagina['enlaces_inseguros'] = enlaces_inseguros
+                    enlaces_totales, enlaces_inseguros = contar_enlaces(response.text)
+                    resultados_pagina['enlaces_totales'] = enlaces_totales
+                    resultados_pagina['enlaces_inseguros'] = enlaces_inseguros
 
-                        resultados_pagina['images_1MB'] = images_1MB
+                    resultados_pagina['images_1MB'] = images_1MB
+
+                  
+                    tipos_archivos = contar_tipos_archivos(response.text)
+                    resultados_pagina['tipos_archivos'] = tipos_archivos
+                    resultados_pagina['peso_total_pagina'] = tipos_archivos.get('peso_total', 0)
+
+
+                    texto_visible = extraer_texto_visible(response.text)
+                    errores_ortograficos = analizar_ortografia(texto_visible)
+                    resultados_pagina['errores_ortograficos'] = errores_ortograficos
+                    resultados_pagina['num_errores_ortograficos'] = len(errores_ortograficos)
+
+                    resultados_pagina['lang'] = detectar_idioma(response.text)
+
+                    # Nuevos campos de revisiÃ³n
+                    meta_tags_revision = analizar_meta_tags(response.text)
+                    resultados_pagina.update(meta_tags_revision)
+
+                    resultados_pagina['html_valid'] = es_html_valido(response.text)
+                    resultados_pagina['content_valid'] = es_contenido_valido(response.text)
+                    resultados_pagina['responsive_valid'] = es_responsive_valid(response.text)
+
+                    # Actualizar los campos a True si las validaciones son exitosas
+                    if resultados_pagina['html_valid']:
+                        resultados_pagina['e_html'] = True
+                    if resultados_pagina['content_valid']:
+                        resultados_pagina['e_body'] = True
+                    if resultados_pagina['responsive_valid']:
+                        resultados_pagina['e_viewport'] = True
+
+                    # Contar las veces que se repiten los diferentes tipos de formato de imagen
+                    image_types_count = Counter(image_types)
+                    resultados_pagina['image_types'] = image_types_count
+
+                    # Ejecutar pa11y y obtener resultados WCAG AAA
+                    pa11y_results_csv = ejecutar_pa11y(url_actual)
+
+                    # Antes de la inserción en la base de datos
+                    resultados_pagina['wcagaaa'] = pa11y_results_csv
+                    #resultados_pagina['wcagaaa'] = {'pa11y_results': pa11y_results_csv}
+                    #resultados_pagina['wcagaaa']['pa11y_results'] = list(pa11y_results_csv)
+                    #resultados_pagina['wcagaaa'] = {'pa11y_results': pa11y_results_csv}
+                    resultados_pagina['valid_aaa'] = not pa11y_results_csv  # True si no hay recomendaciones, False en caso contrario
 
                     
-                        tipos_archivos = contar_tipos_archivos(response.text)
-                        resultados_pagina['tipos_archivos'] = tipos_archivos
-                        resultados_pagina['peso_total_pagina'] = tipos_archivos.get('peso_total', 0)
-
-
-                        texto_visible = extraer_texto_visible(response.text)
-                        errores_ortograficos = analizar_ortografia(texto_visible)
-                        resultados_pagina['errores_ortograficos'] = errores_ortograficos
-                        resultados_pagina['num_errores_ortograficos'] = len(errores_ortograficos)
-
-                        resultados_pagina['lang'] = detectar_idioma(response.text)
-
-                        # Nuevos campos de revisiÃ³n
-                        meta_tags_revision = analizar_meta_tags(response.text)
-                        resultados_pagina.update(meta_tags_revision)
-
-                        resultados_pagina['html_valid'] = es_html_valido(response.text)
-                        resultados_pagina['content_valid'] = es_contenido_valido(response.text)
-                        resultados_pagina['responsive_valid'] = es_responsive_valid(response.text)
-
-                        # Actualizar los campos a True si las validaciones son exitosas
-                        if resultados_pagina['html_valid']:
-                            resultados_pagina['e_html'] = True
-                        if resultados_pagina['content_valid']:
-                            resultados_pagina['e_body'] = True
-                        if resultados_pagina['responsive_valid']:
-                            resultados_pagina['e_viewport'] = True
-
-                        # Contar las veces que se repiten los diferentes tipos de formato de imagen
-                        image_types_count = Counter(image_types)
-                        resultados_pagina['image_types'] = image_types_count
-
-                        # Ejecutar pa11y y obtener resultados WCAG AAA
-                        pa11y_results_csv = ejecutar_pa11y(url_actual)
-
-                        # Antes de la inserción en la base de datos
-                        resultados_pagina['wcagaaa'] = pa11y_results_csv
-                        #resultados_pagina['wcagaaa'] = {'pa11y_results': pa11y_results_csv}
-                        #resultados_pagina['wcagaaa']['pa11y_results'] = list(pa11y_results_csv)
-                        #resultados_pagina['wcagaaa'] = {'pa11y_results': pa11y_results_csv}
-                        resultados_pagina['valid_aaa'] = not pa11y_results_csv  # True si no hay recomendaciones, False en caso contrario
-                        
-                        resultados_pagina['is_pdf'] = 2 # es un html
-                    resultados_pagina['is_pdf'] = 0 # otros
 
             resultados.append(resultados_pagina)
 
@@ -702,7 +683,6 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
             print(f"Error al escanear {url_actual}: {str(e)}")
 
         urls_escaneadas.add(url_actual)
-    
 
     return resultados
 
@@ -726,8 +706,7 @@ def generar_informe_resumen(resumen, nombre_archivo):
                                    'html_valid_count', 'content_valid_count', 'responsive_valid_count',
                                    'valid_aaaa_pages', 'idiomas', 'paginas_inseguras', 'total_404','total_enlaces_inseguros',
                                    'pages_title_long', 'pages_title_short', 'pages_title_dup', 'pages_desc_long',
-                                   'pages_desc_short', 'pages_h1_dup', 'pages_img_1mb','id_escaneo',
-                                   'tiempo_medio','pages_err_orto','pages_alt_vacias','peso_total_paginas','pdf_count','html_count','others_count'])  # Agregar nuevos campos
+                                   'pages_desc_short', 'pages_h1_dup', 'pages_img_1mb','id_escaneo','tiempo_medio','pages_err_orto','pages_alt_vacias','peso_total_paginas'])  # Agregar nuevos campos
 
         for dominio, datos in resumen.items():
             #print(f'Dominio: {dominio}, Datos: {datos}')
@@ -748,25 +727,12 @@ def generar_informe_resumen(resumen, nombre_archivo):
             pages_err_orto = 0
             pages_alt_vacias = 0
             peso_total_paginas = 0
-            pdf_count = 0
-            html_count = 0
-            others_count = 0
             
             #for pagina in datos.get('paginas', []):
             #print(resultados_dominio)
             for pagina in resultados_dominio :
                 total_enlaces_inseguros += pagina.get('enlaces_inseguros')
                 peso_total_paginas += pagina.get('peso_total_pagina')
-                
-                if pagina.get('is_pdf') == 1:
-                        pdf_count += 1
-                
-                if pagina.get('is_pdf') == 2:
-                        html_count += 1
-                
-                if pagina.get('is_pdf') == 0:
-                        others_count += 1
-                
                 
                 if pagina.get('alt_vacias') >= 1:
                         pages_alt_vacias += 1
@@ -823,7 +789,7 @@ def guardar_en_csv_y_json(resultados, nombre_archivo_base, modo='w'):
               'alt_vacias', 'num_palabras', 'e_title', 'e_head', 'e_body', 'e_html', 'e_robots',
               'e_description', 'e_keywords', 'e_viewport', 'e_charset', 'html_valid', 'content_valid', 'responsive_valid',
               'image_types', 'wcagaaa', 'valid_aaa', 'lang', 'title_long', 'title_short', 'title_duplicate', 'desc_long', 
-              'desc_short', 'h1_duplicate', 'images_1MB','id_escaneo','alt_vacias','peso_total_pagina','is_pdf']
+              'desc_short', 'h1_duplicate', 'images_1MB','id_escaneo','alt_vacias','peso_total_pagina']
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     nombre_archivo = f"{timestamp}-{nombre_archivo_base}"
@@ -864,7 +830,6 @@ def guardar_en_csv_y_json(resultados, nombre_archivo_base, modo='w'):
             resultado.setdefault('image_types', {})  # AsegÃºrate de que 'image_types' estÃ© presente con un valor por defecto
             resultado.setdefault('lang', False)
             #resultado.setdefault('images_1MB', 0)
-            resultado.setdefault('is_pdf',-1)
             
 
             # Reemplaza los valores None por False
@@ -972,10 +937,7 @@ if __name__ == "__main__":
                     'tiempo_medio' : None,
                     'pages_err_orto' : 0, # sum(1 for pagina in resultados_dominio if pagina.get('num_errores_ortograficos') >= 1),
                     'pages_alt_vacias' : 0, #sum(1 for pagina in resultados_dominio if pagina.get('alt_vacias') >= 1)
-                    'peso_total_paginas' : 0,
-                    'pdf_count' : -1,
-                    'html_count' :-1,
-                    'others_count' :-1
+                    'peso_total_paginas' : 0
 
                 }
 
@@ -1039,36 +1001,7 @@ if __name__ == "__main__":
                 tiempo_total = sum(resultado.tiempo_respuesta for resultado in resultados_tiempo_respuesta)
                 tiempo_medio = tiempo_total / len(resultados_tiempo_respuesta) if len(resultados_tiempo_respuesta) > 0 else 0
                     
-                 # Seleccionar los registros de la tabla que cumplen las condiciones
-                resultados_pdf = session.query(Resultado).filter(
-                    Resultado.dominio == dominio,
-                    Resultado.is_pdf == 1,
-                    Resultado.id_escaneo == most_recent_id_escaneo
-                    #Resultado.fecha_escaneo == most_recent_date
-                ).all() 
-                
-                pdf_count = len(resultados_pdf)
 
-                 # Seleccionar los registros de la tabla que cumplen las condiciones
-                resultados_html = session.query(Resultado).filter(
-                    Resultado.dominio == dominio,
-                    Resultado.is_pdf == 2,
-                    Resultado.id_escaneo == most_recent_id_escaneo
-                    #Resultado.fecha_escaneo == most_recent_date
-                ).all() 
-
-                html_count = len(resultados_html)
-                
-                # Seleccionar los registros de la tabla que cumplen las condiciones
-                resultados_others = session.query(Resultado).filter(
-                    Resultado.dominio == dominio,
-                    Resultado.is_pdf == 0,
-                    Resultado.id_escaneo == most_recent_id_escaneo
-                    #Resultado.fecha_escaneo == most_recent_date
-                ).all() 
-
-                others_count = len(resultados_others)
-                
                 # Obtener el objeto Sumario existente desde la base de datos
                 sumario_existente = session.query(Sumario).filter_by(id_escaneo=resumen['id_escaneo']).first()
 
@@ -1077,10 +1010,6 @@ if __name__ == "__main__":
                     # Actualizar los campos necesarios
                     sumario_existente.total_404 = total_404
                     sumario_existente.tiempo_medio = tiempo_medio  # Nueva columna "tiempo_medio"
-                    sumario_existente.pdf_count = pdf_count
-                    sumario_existente.html_count = html_count
-                    sumario_existente.others_count = others_count
-            
                     # Confirmar los cambios en la base de datos
                     session.commit()
                 else:
