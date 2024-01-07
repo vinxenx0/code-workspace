@@ -49,9 +49,11 @@ class Resultado(db.Model):
     desc_short = Column(String(1383))
     h1_duplicate = Column(Integer)
     images_1MB = Column(Integer)
-    html_copy = Column(LargeBinary)
+    html_copy = Column(Text)
+    html_copy_dos = Column(Text)
     id_escaneo = Column(String(255), nullable=False)
     peso_total_pagina = Column(Integer)
+    is_pdf = Column(Integer)
 
 
 # Definir el modelo de la tabla "sumario"
@@ -85,3 +87,7 @@ class Sumario(db.Model):
     tiempo_medio = Column(Float)
     pages_err_orto = Column(Integer)
     peso_total_paginas = Column(Integer)
+    pdf_count = Column(Integer)
+    html_count = Column(Integer)
+    others_count = Column(Integer)
+    

@@ -1,4 +1,9 @@
 <!-- app/templates/tools/usa/enlaces_rotos.html -->
+{% macro get_intervalo_color_class(intervalo) %}
+    {% if intervalo == 'Enlaces inseguros' %}
+        intervalo-color-rojo
+    {% endif %}
+{% endmacro %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,6 +47,21 @@
           text-overflow: ellipsis;
           white-space: nowrap;
       }
+
+      .intervalo-color-violeta {
+            font-weight: bold;
+            color: violet; /* Texto blanco */
+         }
+
+         .intervalo-color-amarillo {
+         
+            color: orange; /* Texto oscuro */
+         }
+
+         .intervalo-color-rojo {
+           
+            color: red /* Texto oscuro */
+         }
    </style>
 
 
@@ -242,17 +262,17 @@
                {% for dominio in dominios_ordenados %}
                   {% for stat in resumen if stat.dominio == dominio %}
                   <div class="col-md-4">
-                     <div class="card {% if (stat.total_404*100/stat.total_paginas) < 5 %} bg-success {% elif (stat.total_404*100/stat.total_paginas) < 25 %} bg-warning {% else %} bg-danger {% endif %} text-white mb-4">
+                     <div class="card {% if (stat.total_404*100/stat.total_paginas) < 1 %} bg-success {% elif (stat.total_404*100/stat.total_paginas) < 5 %} bg-warning {% else %} bg-danger {% endif %} text-white mb-4">
                         <div class="card-body">
                            <h4 class="card-title font-weight-bolder text-white">{{ stat.dominio }}</h4>
-                           <h5 class="card-title font-weight-bolder text-white">{{ "%.2f"|format(stat.total_404 * 100 / stat.total_paginas) }} %</h5>
+                           <h4 class="card-title font-weight-bolder text-white">{{ "%.2f"|format(stat.total_404 * 100 / stat.total_paginas) }} %</h4>
                                     
                            <p class="card-text">
                               <strong>Ultimo scan:</strong> {{ stat.fecha }}<br>
-                              <strong>Estado:</strong>{{ stat.id_escaneo }}<br>
                               <strong>Páginas:</strong> {{ stat.total_paginas }}<br />
                               <strong>Rotas:</strong> <span class="text-danger font-weight-bolder"><strong>{{ stat.total_404 }}</strong></span><br />
-                              <strong>Duración:</strong> {{ stat.duracion_total }}<br>
+                              <strong>Duración:</strong> {{ stat.duracion_total // 3600 }} horas y {{ (stat.duracion_total % 3600) // 60 }} minutos
+
 
                               <!-- Agrega otros campos según sea necesario -->
                            </p>
@@ -271,20 +291,38 @@
                                <table class="table">
                                    <thead>
                                        <tr>
-                                           <th>Intervalo de carga</th>
+                                           <th>Codigo respuesta</th>
                                            <th>Cantidad</th>
                                        </tr>
                                    </thead>
                                    <tbody>
-                                       {% for dominio, intervalo, count in detalles[stat.id_escaneo] %}
-                                           <tr>
-                                               <td>{{ intervalo }}</td>
-                                               <td>{{ count }}</td>
-                                           </tr>
-                                       {% endfor %}
-                                   </tbody>
+                                    {% for dominio, intervalo, count in detalles[stat.id_escaneo] %}
+                                          <tr class="{{ get_intervalo_color_class(count) }}">
+                                             <td>{{ intervalo }}</td>
+                                             <td>{{ count }}</td>
+                                          </tr>
+                                    {% endfor %}
+                                   </tbody>>
                                </table>
                                <!-- Fin de la tabla de cargas por segundos -->
+                               <!-- Agrega aquí la tabla para los resultados de cargas por segundos 
+                               <table class="table">
+                                 <thead>
+                                     <tr>
+                                         <th>tipo enlace</th>
+                                         <th>Cantidad</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                  {% for dominio, intervalo, count in detalles_dos[stat.id_escaneo] %}
+                                        <tr class="{{ get_intervalo_color_class(intervalo) }}">
+                                           <td>{{ intervalo }}</td>
+                                           <td>{{ count }}</td>
+                                        </tr>
+                                  {% endfor %}
+                                 </tbody>>
+                               </table>
+                               -->
                            </div>
                        </div>
                      </div>
@@ -294,8 +332,8 @@
                {% endfor %}
                </div>
 
-               <div class="container">
-                  <div class="row mt-5">
+               
+                  <div class="row">
                      <!-- Primera columna con los checkboxes -->
                      <div class="col-md-4 mb-4">
                         <div class="card">
@@ -347,68 +385,37 @@
                         <table id="datatablesSimple" class="display">
                            <thead>
                               <tr>
-                                 <th>Fecha</th>
-                                 <th>Origen</th>
-                                 <th>Url rota</th>
-                                 <th>Acciones</th>
+                                 <th>fecha</th>
+                                 <th>origen</th>
+                                 <th>url rota</th>
+                                 <th>tiempo</th>
+                                
+                               
                               </tr>
 
                            </thead>
                            <tfoot>
                               <tr>
                                  <th>Fecha</th>
-                                 <th>Dominio</th>
+                                 <th>origen</th>
                                  <th>Url rota</th>
-                                 <th>Acciones</th>
+                                 <th>tiempo</th>
+                                
+                             
                               </tr>
                            </tfoot>
                            <tbody>
                               {% for result in resultados %}
                               <tr>
                                  <td>{{ result.fecha_escaneo }}</td>
-                                 <td>{{ result.dominio }}</td>
-                                 <td><a href="{{ result.pagina }}" target="_blank">{{ result.pagina }}</a></td>
-                                 <td>
-                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal{{ result.id }}">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
+                                 <td><a href="{{ result.parent_url }}" target="_blank">{{ result.parent_url }}</a></td>
+                                 <td><a style="color:red;" href="{{ result.pagina }}" target="_blank">{{ result.pagina }}</a></td>
+                                 <td class="tiempo-celda {% if result.tiempo_medio is not none and result.tiempo_respuesta <= 5 %} tiempo-verde {% elif result.tiempo_respuesta <= 15 %} tiempo-amarillo {% else %} tiempo-rojo {% endif %}">
+                                    {{ result.tiempo_respuesta }}
                                 </td>
+                                 
                               </tr>
-                              <!--
-                              <tr class="collapse" id="headingTagsCollapse{{ result.id }}">
-                                 <td colspan="4">
-                                     <pre>{{ result.heading_tags | tojson(indent=2) }}</pre>
-                                 </td>
-                             </tr>
-                             <tr class="collapse" id="metaTagsCollapse{{ result.id }}">
-                                 <td colspan="4">
-                                     <pre>{{ result.meta_tags | tojson(indent=2) }}</pre>
-                                 </td>
-                             </tr>
-                             <tr class="collapse" id="imagenesCollapse{{ result.id }}">
-                                 <td colspan="4">
-                                     <pre>{{ result.imagenes | tojson(indent=2) }}</pre>
-                                 </td>
-                             </tr>
-                             -->
-                             
-                              <div class="modal fade" id="infoModal{{ result.id }}" tabindex="-1"
-                                 aria-labelledby="infoModalLabel{{ result.id }}" aria-hidden="true">
-                                 <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content bg-info text-dark">
-                                       <div class="modal-header">
-                                          <h5 class="modal-title" id="infoModalLabel{{ result.id }}">Sugerencias link
-                                             roto#{{ result.id }}</h5>
 
-                                          <button type="button" class="btn-close btn-close-white"
-                                             data-bs-dismiss="modal" aria-label="Close"></button>
-                                       </div>
-                                       <div class="modal-body">
-                                          <pre>{{ result.meta_tags | tojson(indent=2) }}</pre>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div> 
                               {% endfor %}
                            </tbody>
                         </table>
@@ -505,7 +512,7 @@
                      });
                   </script>
 
-               </div>
+            
             </div>
          </div>
       </div>   

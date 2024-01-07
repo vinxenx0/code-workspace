@@ -55,16 +55,18 @@
                 Ortografia
             </a>
 
-            <a class="nav-link {% if request.endpoint == 'responsive' %} active {% endif %}" href="{{ url_for('responsive') }}">
-                <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
-                Validador
-            </a>
-
+            
             <a class="nav-link {% if request.endpoint == 'analisis_aaa' %} active {% endif %}" href="{{ url_for('analisis_aaa') }}">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
+                WCAG-AAA 
+            </a>
+        
+            <a class="nav-link {% if request.endpoint == 'responsive' %} active {% endif %}" href="{{ url_for('responsive') }}">
                 <div class="sb-nav-link-icon"><i class="fa-solid fa-wrench"></i></div>
                 Responsive
             </a>
-        
+
+
             <a class="nav-link {% if request.endpoint == 'usuarios' %} active {% endif %} btn-link btn me-3" href="{{ url_for('usuarios') }}">
                 <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
                 Usuarios
@@ -118,7 +120,7 @@
         </a>
         <div class="collapse" id="collapseAcce" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
             <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link {% if request.endpoint == 'acc_validators' %} active {% endif %}" href="{{ url_for('acc_validators') }}">Validadores</a>
+                <a class="nav-link {% if request.endpoint == 'analisis_aaa' %} active {% endif %}" href="{{ url_for('analisis_aaa') }}">WCAG-AAA</a>
                 <a class="nav-link {% if request.endpoint == 'acc_images' %} active {% endif %}" href="{{ url_for('acc_images') }}">Imágenes</a>
                 <!-- 
                 <a class="nav-link {% if request.endpoint == 'acc_sintax' %} active {% endif %}" href="{{ url_for('acc_sintax') }}">Sintaxis</a>

@@ -79,6 +79,7 @@ class Resultado(Base):
     h1_duplicate = Column(Integer)
     images_1MB = Column(Integer)
     html_copy = Column(Text)
+    html_copy_dos = Column(Text)
     id_escaneo = Column(String(255), nullable=False)
     peso_total_pagina = Column(Integer)
     is_pdf = Column(Integer)
@@ -563,7 +564,6 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
             continue
 
         try:
-            print(f"Escanenado: {url_actual}")
             response = requests.get(url_actual, timeout=180)
             tiempo_respuesta = response.elapsed.total_seconds()
             codigo_respuesta = response.status_code
@@ -594,14 +594,20 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
             if codigo_respuesta == 200:
                  #if codigo_respuesta == 200 and response.headers['content-type'].startswith('text/html'):
             #    if es_html_valido(response.text):
-                if '%pdf%' in url_actual.lower():  # Comprobar si la URL contiene '%pdf%'
+                if 'pdf' in url_actual.lower():  # Comprobar si la URL contiene '%pdf%'
                     resultados_pagina['is_pdf'] = 1
                     pdf_count += 1
                     resultados.append(resultados_pagina)
                     continue  # Si es un PDF, no analizar y pasar a la siguiente URL
 
+                
+                resultados_pagina['is_pdf'] = 0 # otros
+                
                 if response.headers['content-type'].startswith('text/html'):
                     if es_html_valido(response.text):
+                        
+                        print(f"Escanenado: {url_actual}")
+            
            
                         resultados_pagina['enlaces_totales'] = 0  # Inicializar en 0
                         resultados_pagina['enlaces_inseguros'] = 0  # Inicializar en 0
@@ -684,7 +690,7 @@ def escanear_dominio(url_dominio, exclusiones=[], extensiones_excluidas=[]):
                         resultados_pagina['valid_aaa'] = not pa11y_results_csv  # True si no hay recomendaciones, False en caso contrario
                         
                         resultados_pagina['is_pdf'] = 2 # es un html
-                    resultados_pagina['is_pdf'] = 0 # otros
+                
 
             resultados.append(resultados_pagina)
 
@@ -744,7 +750,7 @@ def generar_informe_resumen(resumen, nombre_archivo):
             id_escaneo = datos['id_escaneo']
             #paginas_inseguras = sum(pagina.get('enlaces_inseguros', 0) > 0 for pagina in datos.get('paginas', []))
             total_404 = sum(pagina.get('codigo_respuesta', 0) == 404 for pagina in datos.get('paginas', []))
-            tiempo_medio = (sum(pagina.get('codigo_respuesta', 0) == 200 for pagina in datos.get('paginas', []))) / (total_paginas)
+            tiempo_medio = (sum(pagina.get('tiempo_respuesta', 0) for pagina in datos.get('paginas', []))) / (total_paginas)
             pages_err_orto = 0
             pages_alt_vacias = 0
             peso_total_paginas = 0
@@ -813,7 +819,8 @@ def generar_informe_resumen(resumen, nombre_archivo):
                                    html_valid_count, content_valid_count, responsive_valid_count, valid_aaaa_pages,
                                    idiomas_encontrados_dict, paginas_inseguras, total_404, total_enlaces_inseguros,
                                    pages_title_long, pages_title_short, pages_title_dup, pages_desc_long,
-                                   pages_desc_short, pages_h1_dup, pages_img_1mb, id_escaneo,tiempo_medio, pages_err_orto, pages_alt_vacias,peso_total_paginas])  # Actualizado con nuevos campos
+                                   pages_desc_short, pages_h1_dup, pages_img_1mb, id_escaneo,tiempo_medio, pages_err_orto, 
+                                   pages_alt_vacias,peso_total_paginas, pdf_count, html_count, others_count])  # Actualizado con nuevos campos
 
 
 def guardar_en_csv_y_json(resultados, nombre_archivo_base, modo='w'):
@@ -863,15 +870,14 @@ def guardar_en_csv_y_json(resultados, nombre_archivo_base, modo='w'):
             resultado.setdefault('wcagaaa', {})
             resultado.setdefault('image_types', {})  # AsegÃºrate de que 'image_types' estÃ© presente con un valor por defecto
             resultado.setdefault('lang', False)
-            #resultado.setdefault('images_1MB', 0)
+            resultado.setdefault('images_1MB', 0)
             resultado.setdefault('is_pdf',-1)
-            
+            resultado.setdefault('valid_aaa', False)         
 
             # Reemplaza los valores None por False
             resultado = {k: False if v is None else v for k, v in resultado.items()}
             
-            # Agrega el campo 'valid_aaa' y asegÃºrate de que tenga un valor por defecto de False
-            resultado.setdefault('valid_aaa', False)
+
 
             escritor_csv.writerow(resultado)
 
@@ -892,11 +898,11 @@ if __name__ == "__main__":
 
     start_script_time = time.time()
 
-    urls_a_escanear = ["http://zonnox.net"] #,"https://mc-mutuadeb.zonnox.net"] #,"http://hispalis.net","http://circuitosaljarafe.com"]#,"https://4glsp.com"]
+    #urls_a_escanear = ["http://zonnox.net"]#,"https://mc-mutuadeb.zonnox.net","http://hispalis.net","http://circuitosaljarafe.com","https://4glsp.com"]
     #urls_a_escanear += ["https://4glsp.com"] #,"https://santomera.es"]
-    #urls_a_escanear = ["https://www.mc-mutual.com","https://mejoratuabsentismo.mc-mutual.com"] #,"https://prevencion.mc-mutual.com"]
+    urls_a_escanear = ["https://www.mc-mutual.com","https://mejoratuabsentismo.mc-mutual.com"] #,"https://prevencion.mc-mutual.com"]
     #urls_a_escanear += ["https://prevencion.mc-mutual.com"]
-    patrones_exclusion = ['#','redirect','tel:'] #,"/asset_publisher/","/documents/", "/estaticos/", "productos","tel:"] #,"/asset_publisher/"
+    patrones_exclusion = ['#','redirect'] #,'tel:'] #,"/asset_publisher/","/documents/", "/estaticos/", "productos","tel:"] #,"/asset_publisher/"
             # Agrega tus patrones para el modo rÃƒÂ¡pido
         #]
 
@@ -1068,25 +1074,7 @@ if __name__ == "__main__":
                 ).all() 
 
                 others_count = len(resultados_others)
-                
-                # Obtener el objeto Sumario existente desde la base de datos
-                sumario_existente = session.query(Sumario).filter_by(id_escaneo=resumen['id_escaneo']).first()
-
-                # Verificar si se encontró un Sumario existente
-                if sumario_existente:
-                    # Actualizar los campos necesarios
-                    sumario_existente.total_404 = total_404
-                    sumario_existente.tiempo_medio = tiempo_medio  # Nueva columna "tiempo_medio"
-                    sumario_existente.pdf_count = pdf_count
-                    sumario_existente.html_count = html_count
-                    sumario_existente.others_count = others_count
-            
-                    # Confirmar los cambios en la base de datos
-                    session.commit()
-                else:
-                    # Manejar el caso en que no se encontró el Sumario existente (puede imprimir un mensaje o lanzar una excepción según tus necesidades)
-                    print(f"¡No se encontró un Sumario existente para el id_escaneo {resumen['id_escaneo']}!")
-
+                            
                 # Obtener el id_escaneo más reciente para el dominio
                 most_recent_id_escaneo = resumen['id_escaneo']
 
@@ -1100,13 +1088,9 @@ if __name__ == "__main__":
                         Resultado.num_errores_ortograficos > 0,
                         Resultado.id_escaneo == most_recent_id_escaneo
                     ).all()
-                    
-                    resumen['pages_err_orto'] = len(resultados_errores_ortograficos)
 
                     print(f"Páginas con errores ortográficos para el dominio {dominio} en el último escaneo: {len(resultados_errores_ortograficos)}")
-                    
-                    
-
+               
                     # Procesar los resultados
                     for resultado in resultados_errores_ortograficos:
                         # Descargar la página
@@ -1114,7 +1098,7 @@ if __name__ == "__main__":
                         response = requests.get(resultado.pagina)
                         if response.status_code == 200:
                             # Parsear el HTML y buscar palabras de errores ortográficos
-                            soup = BeautifulSoup(response.text, 'html.parser')
+                            soup = [] #BeautifulSoup(response.text, 'html.parser')
                             for palabra in resultado.errores_ortograficos:
                                 # Modificar el HTML
                                 for tag in soup.find_all(string=palabra):
@@ -1122,12 +1106,38 @@ if __name__ == "__main__":
                                     tag.wrap(new_tag)
 
                             # Guardar el HTML modificado en el campo html_copy
-                            resultado.html_copy = str(soup).encode('utf-8')
+                            tmp = str(soup).encode('utf-8')
+                            # Calcular la mitad del contenido
+                            half_length = len(tmp) // 2
+                            # Dividir el contenido en dos partes
+                            resultado.html_copy = tmp[:half_length]
+                            resultado.html_copy_dos = tmp[half_length:]
 
                             # Confirmar los cambios en la base de datos
-                            session.commit()
+                            # session.commit()
                 else:
                     print(f"No hay registros en el sumario para el dominio {dominio}.")
+                    
+                # Obtener el objeto Sumario existente desde la base de datos
+                sumario_existente = session.query(Sumario).filter_by(id_escaneo=resumen['id_escaneo']).first()
+
+                # Verificar si se encontró un Sumario existente
+                if sumario_existente:
+                    # Actualizar los campos necesarios
+                    sumario_existente.total_404 = total_404
+                    sumario_existente.tiempo_medio = tiempo_medio  # Nueva columna "tiempo_medio"
+                    sumario_existente.pdf_count = pdf_count
+                    sumario_existente.html_count = html_count
+                    sumario_existente.others_count = others_count
+                    sumario_existente.pages_err_orto = len(resultados_errores_ortograficos)
+            
+                    # Confirmar los cambios en la base de datos
+                    session.commit()
+                else:
+                    # Manejar el caso en que no se encontró el Sumario existente (puede imprimir un mensaje o lanzar una excepción según tus necesidades)
+                    print(f"¡No se encontró un Sumario existente para el id_escaneo {resumen['id_escaneo']}!")
+         
+
            
 
     end_script_time = time.time()

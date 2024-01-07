@@ -9,9 +9,10 @@ SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://root:dldlt741@81.19.160.10/int
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-IDS_ESCANEO = ['4b99956ba942f7986ccc2e5c992c3a2a111385bfdbbfa2223818c6a8d9e28510',
-        '41038960d6084d0e2ba5416c0c2a52777cc40e119b7c69fb0aeaa4b8231cd2e0',
-        '5b485f2d386e81e56d67e6f1663d7d965f69985e11d771e56b0caf6f5ecb0849'
+IDS_ESCANEO = ['29f2a2bdfff2730fcdd8a5e6e6885b7f0d2445f7b9cacca3aa813fc074c5ccdd',
+        '2f47060f663cdd0bc988faf1825d23181f31f5d54aaff94a5f637ef21d33b1aa',
+        #'d8876252d72462e4de9333d0d5a1884a21f9e0be63bf88f992950646cdb0ed33'
+        '600ce9cb0f56f949d30bf6004076a2aa541f22b5ae6c2381137bc2937733a506'
            ]  # Reemplaza con los IDs específicos que se proporcionarán
 
 SECRET_KEY = 'your_secret_key_here'

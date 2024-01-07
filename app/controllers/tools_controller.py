@@ -106,20 +106,69 @@ def velocidad():
         .filter(
             Resultado.id_escaneo.in_(ids_escaneo_especificos),
             Resultado.codigo_respuesta == 200,
-            Resultado.tiempo_respuesta > 3,
+            Resultado.tiempo_respuesta >= 1,
             Resultado.tiempo_respuesta.isnot(None),  # Filtrar resultados con tiempo_respuesta no nulo
             Resultado.tiempo_respuesta != '',
             Resultado.tiempo_respuesta.isnot(False) #,  # Filtrar resultados con tiempo_respuesta False
             #Resultado.tiempo_respuesta.isnot(None) 
             #~func.isnan(Resultado.tiempo_respuesta),  # Filtrar resultados que no sean números (nan)
         )    
-        .filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
-        .filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
+        #.filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
+        #.filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
         #.filter(Resultado.lang.in_(['es','ca','en','fr']))
         .all()
     )
     # Consulta para obtener la información de carga agrupada por segundos
     cargas_por_segundos = {}
+    cargas_por_segundos_dos = {}
+    resultados_agrupados = {}
+    
+    resultados_por_escaneo = (
+        db.session.query(
+            Resultado.id_escaneo,
+            Resultado.dominio,
+            #Resultado.codigo_respuesta == 404,
+            case(
+               # (Resultado.codigo_respuesta == 200, 'Correctos'),
+               # (Resultado.codigo_respuesta == 404, 'Rotos'),
+               # (Resultado.codigo_respuesta == 500, 'Error del servidor'),
+               # (Resultado.codigo_respuesta == 503, '503'),
+                (Resultado.pagina.like('%#%'), 'No existe internos'),
+                (Resultado.pagina.like('%redirect=%'), 'Redirección errónea'),
+                (Resultado.pagina.like('%?%'), 'Dinamicos'),
+                (Resultado.pagina.like('%pdf%'), 'Enlace a un documento'),
+                (Resultado.pagina.like('%estaticos%'), 'Archivo estatico falta'),
+                (Resultado.pagina.like('%assets%'), 'Asset de la wb falta'),
+                (Resultado.pagina.like('%extranet%'), 'Roto en extranet'),
+                (Resultado.pagina.like('%intranet%'), 'Roto en intranet'),
+                (Resultado.pagina.like('%visor%'), 'intranet'),
+                else_='otro tipo'  # Puedes cambiar 'Otra etiqueta' por lo que desees
+            ).label('intervalo_carga'),
+            func.count().label('count')
+        )
+        .filter(
+            Resultado.id_escaneo.in_(ids_escaneo_especificos),
+            Resultado.codigo_respuesta == 200,
+            Resultado.tiempo_respuesta >= 1
+        )         
+        #.filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
+        #.filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
+        .group_by(Resultado.id_escaneo, 'intervalo_carga', Resultado.dominio)
+        .all()
+    )
+
+    # Procesamos los resultados para estructurarlos en un diccionario
+    for resultado in resultados_por_escaneo:
+        id_escaneo = resultado.id_escaneo
+        dominio = resultado.dominio
+        intervalo_carga = resultado.intervalo_carga
+        count = resultado.count
+
+        if id_escaneo not in resultados_agrupados:
+            resultados_agrupados[id_escaneo] = []
+
+        resultados_agrupados[id_escaneo].append((dominio, intervalo_carga, count))
+
 
     # Utilizamos una sola consulta para mejorar la eficiencia
     resultados_por_escaneo = (
@@ -134,18 +183,18 @@ def velocidad():
                 ((Resultado.tiempo_respuesta > 15) & (Resultado.tiempo_respuesta <= 30), '15 a 30 segundos'),
                 ((Resultado.tiempo_respuesta > 30) & (Resultado.tiempo_respuesta <= 60), '30 a 60 segundos'),
                 ((Resultado.tiempo_respuesta > 60) & (Resultado.tiempo_respuesta <= 90), '60 a 90 segundos'),
-                (Resultado.tiempo_respuesta > 90, 'Más de 90 segundos')
+                ((Resultado.tiempo_respuesta > 90) & (Resultado.tiempo_respuesta <= 180), '90 a 180 segundos'),
+                else_='Tiempo desconocido'
             ).label('intervalo_carga'),
             func.count().label('count')
         )
         .filter(
             Resultado.id_escaneo.in_(ids_escaneo_especificos),
             Resultado.codigo_respuesta == 200
-
         ) 
             
-        .filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
-        .filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
+        #.filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
+        #.filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
         .group_by(Resultado.id_escaneo, 'intervalo_carga', Resultado.dominio)
         .all()
     )
@@ -162,6 +211,47 @@ def velocidad():
 
         cargas_por_segundos[id_escaneo].append((dominio, intervalo_carga, count))
 
+    
+     # Utilizamos una sola consulta para mejorar la eficiencia
+    resultados_por_escaneo = (
+        db.session.query(
+            Resultado.id_escaneo,
+            Resultado.dominio,
+            case(
+                (Resultado.is_pdf == 1, 'Documentos, pdf, assets, estaticos'),
+                (Resultado.is_pdf == 2, 'Paginas web, html'),
+                (Resultado.is_pdf == 0, 'Desconocido'),
+                (Resultado.is_pdf == -1, 'Excluido'),
+                else_='Otros'
+            ).label('intervalo_carga'),
+            func.count().label('count')
+        )
+        .filter(
+            Resultado.id_escaneo.in_(ids_escaneo_especificos),
+            Resultado.codigo_respuesta == 200,
+            Resultado.tiempo_respuesta >= 1
+
+        ) 
+            
+        #.filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
+        #.filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
+        .group_by(Resultado.id_escaneo, 'intervalo_carga', Resultado.dominio)
+        .all()
+    )
+
+    # Procesamos los resultados para estructurarlos en un diccionario
+    for resultado in resultados_por_escaneo:
+        id_escaneo = resultado.id_escaneo
+        dominio = resultado.dominio
+        intervalo_carga = resultado.intervalo_carga
+        count = resultado.count
+
+        if id_escaneo not in cargas_por_segundos_dos:
+            cargas_por_segundos_dos[id_escaneo] = []
+
+        cargas_por_segundos_dos[id_escaneo].append((dominio, intervalo_carga, count))
+
+    
     
     # Consulta para obtener los sumarios correspondientes a las IDs de escaneo propuestas
     sumarios = (
@@ -180,7 +270,7 @@ def velocidad():
 
 
     # Enviamos los resultados al template
-    return render_template('tools/seo/velocidad.html', resultados=paginas_velocidad, detalles=cargas_por_segundos, graficos=json.dumps(cargas_por_segundos), resumen=sumarios, sumario = json.dumps(sumarios_dict))
+    return render_template('tools/seo/velocidad.html', resultados=paginas_velocidad, detalles_tres=resultados_agrupados, detalles_dos = cargas_por_segundos_dos, detalles=cargas_por_segundos, graficos=json.dumps(cargas_por_segundos), resumen=sumarios, sumario = json.dumps(sumarios_dict))
 
 
 
@@ -203,9 +293,94 @@ def enlaces_rotos():
         .filter(Resultado.codigo_respuesta == 404)
         .filter(Resultado.id_escaneo.in_(ids_escaneo_especificos))
         .filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
-        #.filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
+        .filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
         .all()
     )
+    
+      # Consulta para obtener la información de carga agrupada por segundos
+    resultados_agrupados = {}
+    resultados_agrupados_dos = {}
+
+    resultados_por_escaneo = (
+        db.session.query(
+            Resultado.id_escaneo,
+            Resultado.dominio,
+            #Resultado.codigo_respuesta == 404,
+            case(
+               # (Resultado.codigo_respuesta == 200, 'Correctos'),
+               # (Resultado.codigo_respuesta == 404, 'Rotos'),
+               # (Resultado.codigo_respuesta == 500, 'Error del servidor'),
+               # (Resultado.codigo_respuesta == 503, '503'),
+                (Resultado.pagina.like('%#%'), 'No existe internos'),
+                (Resultado.pagina.like('%redirect=%'), 'Redirección errónea'),
+                (Resultado.pagina.like('%?%'), 'Dinamicos'),
+                (Resultado.pagina.like('%pdf%'), 'Enlace a un documento'),
+                (Resultado.pagina.like('%estaticos%'), 'Archivo estatico falta'),
+                (Resultado.pagina.like('%assets%'), 'Asset de la wb falta'),
+                (Resultado.pagina.like('%extranet%'), 'Roto en extranet'),
+                (Resultado.pagina.like('%intranet%'), 'Roto en intranet'),
+                (Resultado.pagina.like('%visor%'), 'intranet'),
+                else_='enlace roto'  # Puedes cambiar 'Otra etiqueta' por lo que desees
+            ).label('intervalo_carga'),
+            func.count().label('count')
+        )
+        .filter(
+            Resultado.id_escaneo.in_(ids_escaneo_especificos),
+            Resultado.codigo_respuesta == 404
+        )         
+        #.filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
+        #.filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
+        .group_by(Resultado.id_escaneo, 'intervalo_carga', Resultado.dominio)
+        .all()
+    )
+
+    # Procesamos los resultados para estructurarlos en un diccionario
+    for resultado in resultados_por_escaneo:
+        id_escaneo = resultado.id_escaneo
+        dominio = resultado.dominio
+        intervalo_carga = resultado.intervalo_carga
+        count = resultado.count
+
+        if id_escaneo not in resultados_agrupados:
+            resultados_agrupados[id_escaneo] = []
+
+        resultados_agrupados[id_escaneo].append((dominio, intervalo_carga, count))
+
+
+     # Utilizamos una sola consulta para mejorar la eficiencia
+    resultados_por_escaneo = (
+        db.session.query(
+            Resultado.id_escaneo,
+            Resultado.dominio,
+            case(
+                (Resultado.enlaces_inseguros >= 1, 'Enlaces inseguros'),
+                else_='Otros'
+            ).label('intervalo_carga'),
+            func.count().label('count')
+        )
+        .filter(
+            Resultado.id_escaneo.in_(ids_escaneo_especificos),
+            Resultado.codigo_respuesta == 404
+        ) 
+            
+        #.filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
+        #.filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
+        .group_by(Resultado.id_escaneo, 'intervalo_carga', Resultado.dominio)
+        .all()
+    )
+
+    # Procesamos los resultados para estructurarlos en un diccionario
+    for resultado in resultados_por_escaneo:
+        id_escaneo = resultado.id_escaneo
+        dominio = resultado.dominio
+        intervalo_carga = resultado.intervalo_carga
+        count = resultado.count
+
+        if id_escaneo not in resultados_agrupados_dos:
+            resultados_agrupados_dos[id_escaneo] = []
+
+        resultados_agrupados_dos[id_escaneo].append((dominio, intervalo_carga, count))
+    
 
     # Consulta para obtener las filas correspondientes de la tabla Sumario
     sumarios = (
@@ -215,7 +390,7 @@ def enlaces_rotos():
     )
 
     # Envía los resultados al template
-    return render_template('tools/usa/enlaces_rotos.html', resultados=results, resumen=sumarios, detalles = [])
+    return render_template('tools/usa/enlaces_rotos.html', resultados=results, resumen=sumarios, detalles = resultados_agrupados, detalles_dos = resultados_agrupados_dos)
 
 
 @app.route('/usabilidad/broken-links')
@@ -351,9 +526,10 @@ def analisis_aaa():
     # Consulta para obtener las páginas de la tabla Resultados con código de respuesta 200 y tiempo de respuesta mayor que 0
     paginas_wcagaaa = (
             db.session.query(
-            Resultado.fecha_escaneo, Resultado.dominio, Resultado.pagina, Resultado.lang,
+            Resultado.fecha_escaneo, Resultado.dominio, Resultado.pagina, Resultado.lang,Resultado.tiempo_respuesta,Resultado.lang, 
             # Aplicar json.loads a la columna Resultado.wcagaaa
-            literal_column("JSON_UNQUOTE(JSON_EXTRACT(resultados.wcagaaa, '$.pa11y_results'))").label('wcagaaa'),
+            #literal_column("JSON_UNQUOTE(JSON_EXTRACT(resultados.wcagaaa, '$.pa11y_results'))").label('wcagaaa'),
+            Resultado.wcagaaa,
             Resultado.html_valid, Resultado.responsive_valid, Resultado.id,
             Resultado.valid_aaa, Resultado.meta_tags #is_pdf
         )
@@ -374,6 +550,8 @@ def analisis_aaa():
         .filter(~Resultado.pagina.like('%pdf%'))  # Excluir URLs que contengan '#'
         .filter(~Resultado.pagina.like('%/asset_publisher/%'))  # Excluir URLs que contengan '#'
         .filter(~Resultado.pagina.like('%/document_library/%'))  # Excluir URLs que contengan '#'
+        .filter(~Resultado.pagina.like('%estaticos%'))  # Excluir URLs que contengan '#'
+        #.filter(~Resultado.pagina.like('%/document_library/%'))  # Excluir URLs que contengan '#'
         .filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
         #.filter(Resultado.lang.in_(['es','ca','en','fr']))
         .all()
@@ -388,16 +566,19 @@ def analisis_aaa():
             Resultado.id_escaneo,
             Resultado.dominio,
             case(
-                (Resultado.valid_aaa == 1, 'Pasan AAA'),
-                (Resultado.valid_aaa != 1, 'No pasan AAA'),
-                else_='Otros motivos'  # Puedes cambiar 'Otra etiqueta' por lo que desees
+                 (Resultado.is_pdf == 1, 'assets · docs · pdf · estaticos'),
+                (Resultado.is_pdf == 2, 'paginas web html'),
+                (Resultado.is_pdf == -1, 'error'),
+                else_='otros formatos'  # Puedes cambiar 'Otra etiqueta' por lo que desees
                 
             ).label('intervalo_carga'),
             func.count().label('count')
         )
         .filter(
             Resultado.id_escaneo.in_(ids_escaneo_especificos),
-            Resultado.codigo_respuesta == 200
+            Resultado.codigo_respuesta == 200,
+            Resultado.valid_aaa == 0
+            
         )         
         .filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
         .filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
@@ -506,21 +687,68 @@ def ortografia():
             #Resultado.tiempo_respuesta > 0,
             #Resultado.tiempo_respuesta.isnot(None),  # Filtrar resultados con tiempo_respuesta no nulo
             #Resultado.wcagaaa != [] or Resultado.wcagaaa != {} or Resultado.wcagaaa != {"pa11y_results": []} 
-            Resultado.html_copy.isnot(None), #,  # Filtrar resultados con tiempo_respuesta False
+            #Resultado.html_copy.isnot(None), #,  # Filtrar resultados con tiempo_respuesta False
             Resultado.errores_ortograficos != 'false'
             #~func.isnan(Resultado.tiempo_respuesta),  # Filtrar resultados que no sean números (nan)
         )    
         .filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
-        .filter(~Resultado.pagina.like('%pdf%'))  # Excluir URLs que contengan '#'
-        .filter(~Resultado.pagina.like('%?%'))  # Excluir URLs que contengan '#'
-        .filter(~Resultado.pagina.like('%/asset_publisher/%'))  # Excluir URLs que contengan '#'
-        .filter(~Resultado.pagina.like('%/document_library/%'))  # Excluir URLs que contengan '#'
-        .filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
+        #.filter(~Resultado.pagina.like('%pdf%'))  # Excluir URLs que contengan '#'
+        #.filter(~Resultado.pagina.like('%?%'))  # Excluir URLs que contengan '#'
+        #.filter(~Resultado.pagina.like('%/asset_publisher/%'))  # Excluir URLs que contengan '#'
+        #.filter(~Resultado.pagina.like('%/document_library/%'))  # Excluir URLs que contengan '#'
+        #.filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
         #.filter(Resultado.lang.in_(['es','ca','en','fr']))
         .all()
     )
     # Consulta para obtener la información de carga agrupada por segundos
     resultados_agrupados = {}
+    
+    resultados_agrupados_dos = {}
+    
+    resultados_por_escaneo = (
+        db.session.query(
+            Resultado.id_escaneo,
+            Resultado.dominio,
+            #Resultado.codigo_respuesta == 404,
+            case(
+               # (Resultado.codigo_respuesta == 200, 'Correctos'),
+               # (Resultado.codigo_respuesta == 404, 'Rotos'),
+               # (Resultado.codigo_respuesta == 500, 'Error del servidor'),
+               # (Resultado.codigo_respuesta == 503, '503'),
+                (Resultado.pagina.like('%#%'), 'No existe internos'),
+                (Resultado.pagina.like('%redirect=%'), 'pagina redireccionada'),
+                (Resultado.pagina.like('%?%'), 'pagina dinamica'),
+                (Resultado.pagina.like('%pdf%'), 'documento'),
+                (Resultado.pagina.like('%estaticos%'), 'estatico'),
+                (Resultado.pagina.like('%assets%'), 'asset'),
+                (Resultado.pagina.like('%extranet%'), 'extranet'),
+                (Resultado.pagina.like('%intranet%'), 'intranet'),
+                (Resultado.pagina.like('%visor%'), 'visor'),
+                else_='otros'  # Puedes cambiar 'Otra etiqueta' por lo que desees
+            ).label('intervalo_carga'),
+            func.count().label('count')
+        )
+        .filter(
+            Resultado.id_escaneo.in_(ids_escaneo_especificos),
+            Resultado.codigo_respuesta == 200
+        )         
+        .filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
+        #.filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
+        .group_by(Resultado.id_escaneo, 'intervalo_carga', Resultado.dominio)
+        .all()
+    )
+
+    # Procesamos los resultados para estructurarlos en un diccionario
+    for resultado in resultados_por_escaneo:
+        id_escaneo = resultado.id_escaneo
+        dominio = resultado.dominio
+        intervalo_carga = resultado.intervalo_carga
+        count = resultado.count
+
+        if id_escaneo not in resultados_agrupados_dos:
+            resultados_agrupados_dos[id_escaneo] = []
+
+        resultados_agrupados_dos[id_escaneo].append((dominio, intervalo_carga, count))
 
 
     # Utilizamos una sola consulta para mejorar la eficiencia
@@ -529,16 +757,19 @@ def ortografia():
             Resultado.id_escaneo,
             Resultado.dominio,
             case(
-                (Resultado.num_errores_ortograficos == 0, 'Sin errores'),
-                (Resultado.num_errores_ortograficos > 0, 'Con errores'),
-                else_='Otros motivos'  # Puedes cambiar 'Otra etiqueta' por lo que desees
+                (Resultado.lang == 'en', 'Inglés'),
+                (Resultado.lang == 'ca', 'Catalan'),
+                (Resultado.lang == 'es', 'Español'),
+                (Resultado.lang == 'fr', 'Frances'),
+                else_='Otros idiomas'  # Puedes cambiar 'Otra etiqueta' por lo que desees
                 
             ).label('intervalo_carga'),
             func.count().label('count')
         )
         .filter(
-            Resultado.id_escaneo.in_(ids_escaneo_especificos),
-            Resultado.codigo_respuesta == 200
+            Resultado.id_escaneo.in_(IDS_ESCANEO),
+            Resultado.codigo_respuesta == 200,
+            Resultado.num_errores_ortograficos >= 1
         )         
         .filter(~Resultado.pagina.like('%#%'))  # Excluir URLs que contengan '#'
         .filter(~Resultado.pagina.like('%redirect%'))  # Excluir URLs que contengan 'redirect'
@@ -567,7 +798,7 @@ def ortografia():
     )
 
     # Enviamos los resultados al template
-    return render_template('tools/dicc/ortografia.html', resultados=paginas_ortografia, detalles=resultados_agrupados, resumen=sumarios)
+    return render_template('tools/dicc/ortografia.html', resultados=paginas_ortografia, detalles_dos = resultados_agrupados_dos, detalles=resultados_agrupados, resumen=sumarios)
 
 
 @app.route('/diccionarios/spanish')

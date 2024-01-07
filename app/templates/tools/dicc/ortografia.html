@@ -1,4 +1,13 @@
 <!-- app/templates/usa/analisis_aaa.html -->
+{% macro get_intervalo_color_class(intervalo) %}
+    {% if intervalo >= 200 %}
+        intervalo-color-violeta
+    {% elif intervalo >= 100 %}
+        intervalo-color-rojo
+    {% elif intervalo >= 20  %}
+        intervalo-color-amarillo
+    {% endif %}
+{% endmacro %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -287,16 +296,17 @@
                     {% for dominio in dominios_ordenados %}
                         {% for stat in resumen if stat.dominio == dominio %}
                         <div class="col-md-4">
-                            <div class="card {% if stat.tiempo_medio is not none and stat.tiempo_medio < 1 %} bg-success {% elif stat.tiempo_medio < 3 %} bg-warning {% else %} bg-danger {% endif %} text-white mb-4">
+                            <div class="card {% if stat.tiempo_medio is not none and stat.tiempo_medio < 1 %} bg-success {% elif stat.tiempo_medio is not none and stat.tiempo_medio < 3 %} bg-warning {% else %} bg-danger {% endif %} text-white mb-4">
                                 <div class="card-body">
                                     <h4 class="card-title font-weight-bolder text-white">{{ stat.dominio }}</h4>
                                     <h5 class="card-title font-weight-bolder text-white">{{ stat.tiempo_medio }} seg</h5>
                                     <p class="card-text">
                                         <strong>Fecha:</strong> {{ stat.fecha }}<br>
                                         <strong>Páginas analizadas:</strong> {{ stat.total_paginas }}<br />
-                                        <strong>Páginas con errores_ortograficos</strong>{{ resultados|length }}<br />
+                                        <strong>Páginas con errores_ortograficos</strong>{{ stat.pages_err_orto}}<br />
                                         
-                                        <strong>Duración:</strong> {{ stat.duracion_total }}<br>
+                                        <strong>Duración:</strong> {{ stat.duracion_total // 3600 }} horas y {{ (stat.duracion_total % 3600) // 60 }} minutos
+
                                     </p>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
@@ -313,20 +323,38 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Intervalo de carga</th>
-                                                    <th>Cantidad</th>
+                                                    <th>Idioma</th>
+                                                    <th>Paginas</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {% for dominio, intervalo, count in detalles[stat.id_escaneo] %}
-                                                    <tr>
-                                                        <td>{{ intervalo }}</td>
-                                                        <td>{{ count }}</td>
-                                                    </tr>
-                                                {% endfor %}
+                                             {% for dominio, intervalo, count in detalles[stat.id_escaneo] %}
+                                                   <tr class="{{ get_intervalo_color_class(count) }}">
+                                                      <td>{{ intervalo }}</td>
+                                                      <td>{{ count }}</td>
+                                                   </tr>
+                                             {% endfor %}
                                             </tbody>
                                         </table>
                                         <!-- Fin de la tabla de cargas por segundos -->
+                                        <!-- Agrega aquí la tabla para los resultados de cargas por segundos -->
+                                        <table class="table">
+                                          <thead>
+                                              <tr>
+                                                  <th>Idioma</th>
+                                                  <th>Paginas</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                           {% for dominio, intervalo, count in detalles_dos[stat.id_escaneo] %}
+                                                 <tr class="{{ get_intervalo_color_class(count) }}">
+                                                    <td>{{ intervalo }}</td>
+                                                    <td>{{ count }}</td>
+                                                 </tr>
+                                           {% endfor %}
+                                          </tbody>
+                                      </table>
+                                      <!-- Fin de la tabla de cargas por segundos -->
                                     </div>
                                 </div>
                             </div>
@@ -419,16 +447,16 @@
                                         <td>
                                            {{ result.lang }}
                                         </td>
-                                        <td>
+                                        <td class="tiempo-celda {% if result.num_errores_ortograficos is not none and result.num_errores_ortograficos <= 10 %} tiempo-verde {% elif result.num_errores_ortograficos is not none and result.num_errores_ortograficos <= 50 %} tiempo-amarillo {% else %} tiempo-rojo {% endif %}">
                                            {{ result.num_errores_ortograficos }}
                                         </td>
                                         <td>
                                              <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal{{ result.id }}">
-                                                <i class="fas fa-plus"></i>
+                                                <i class="fa-solid fa-pen-to-square"></i>
                                              </button>
                                              
                                              <button type="button" class="btn btn-info" onclick="abrirPopup({{ result.id }})">
-                                                <i class="fas fa-plus"></i>
+                                                <i class="fa-solid fa-magnifying-glass"></i>
                                             </button>
                 
                                          
