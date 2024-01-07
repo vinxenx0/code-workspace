@@ -19,3 +19,5 @@ env
 *.log
 .priv
 config.py
+logs
+results
