@@ -1106,10 +1106,15 @@ if __name__ == "__main__":
                                     tag.wrap(new_tag)
 
                             # Guardar el HTML modificado en el campo html_copy
-                            modified_html = str(soup).encode('utf-8')
+                            # modified_html = str(soup).encode('utf-8')
+                            # Obtener el HTML modificado y limpiar espacios y caracteres de formato
+                            modified_html = str(soup).encode('utf-8').decode('utf-8', 'ignore')
+                            modified_html = ' '.join(modified_html.split())  # Eliminar espacios adicionales
+                            modified_html = modified_html.replace('\n', '').replace('\t', '').replace('\r', '')
+
 
                             # Limitar la longitud del contenido para cada campo
-                            max_length = 61024 // 2  # Dividir en dos campos
+                            max_length = 65535  # campos maximo
                             resultado.html_copy = modified_html[:max_length].decode('utf-8', 'ignore')
                             resultado.html_copy_dos = modified_html[max_length:max_length*2].decode('utf-8', 'ignore')
 
