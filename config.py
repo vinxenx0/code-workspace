@@ -11,8 +11,8 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 IDS_ESCANEO = ['29f2a2bdfff2730fcdd8a5e6e6885b7f0d2445f7b9cacca3aa813fc074c5ccdd',
         '2f47060f663cdd0bc988faf1825d23181f31f5d54aaff94a5f637ef21d33b1aa',
-        #'d8876252d72462e4de9333d0d5a1884a21f9e0be63bf88f992950646cdb0ed33'
-        '600ce9cb0f56f949d30bf6004076a2aa541f22b5ae6c2381137bc2937733a506'
+        'd8876252d72462e4de9333d0d5a1884a21f9e0be63bf88f992950646cdb0ed33'
+        #'600ce9cb0f56f949d30bf6004076a2aa541f22b5ae6c2381137bc2937733a506'
            ]  # Reemplaza con los IDs específicos que se proporcionarán
 
 SECRET_KEY = 'your_secret_key_here'

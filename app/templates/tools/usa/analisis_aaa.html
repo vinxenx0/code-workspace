@@ -275,7 +275,7 @@
                      {% for dominio in dominios_ordenados %}
                         {% for stat in resumen if stat.dominio == dominio %}
                         <div class="col-md-4">
-                            <div class="card {% if (stat.valid_aaaa_pages*100/stat.total_paginas) > 85 %} bg-success {% elif (stat.valid_aaaa_pages*100/stat.total_paginas) > 65 %} bg-warning {% else %} bg-danger {% endif %} text-white mb-4">
+                            <div class="card {% if (stat.valid_aaaa_pages*100/stat.total_paginas) > 75 %} bg-success {% elif (stat.valid_aaaa_pages*100/stat.total_paginas) > 50 %} bg-warning {% else %} bg-danger {% endif %} text-white mb-4">
                                 <div class="card-body">
                                     <h4 class="card-title font-weight-bolder text-white">{{ stat.dominio }}</h4>
                                     <h5 class="card-title font-weight-bolder text-white">{{ "%.2f"|format(stat.valid_aaaa_pages * 100 / stat.total_paginas) }} %</h5>
@@ -302,8 +302,8 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Intervalo de carga</th>
-                                                    <th>Cantidad</th>
+                                                    <th>tipo pagina</th>
+                                                    <th>cantidad</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -423,44 +423,40 @@
                                         </td>
                                        
                                     </tr>
-                                    
-                                    <div class="modal fade" id="infoModal{{ result.id }}" tabindex="-1"
-                                    aria-labelledby="infoModalLabel{{ result.id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                       <div class="modal-content bg-white text-dark">
-                                          <div class="modal-header">
-                                             <h5 class="modal-title" id="infoModalLabel{{ result.id }}">Sugerencias #{{ result.id }}</h5>
-
-                                             <button type="button" class="btn-close btn-close-white"
-                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                          </div>
-                                          <div class="modal-body">
-                                             <div class="suggestion">
-                                                <div class="label">Todas las validaciones:</div>
-                                                <div class="value">
-                                                {% if result.wcagaaa %}
-
-                                                   {% for consejo in result.wcagaaa %}
-                                                       <div class="{{ 'odd' if loop.index is odd else 'even' }}">                                                       
-                                                         <strong>type:</strong> {{ consejo.type }}<br>
-                                                         <strong>code:</strong> {{ consejo.code }}<br>
-                                                         <strong>message:</strong> {{ consejo.message }}<br>
-                                                         <strong>context:</strong> {{ consejo.context  }}<br>
-                                                         <strong>selector:</strong> {{ consejo.selector }}<br>
-                                                       </div>
-                                                   {% endfor %}
-                                               {% else %}
-                                                   <div class="{{ 'odd' if loop.index0 is odd else 'even' }}">
-                                                       No hay consejos disponibles.<br><br>
-                                                   </div>
-                                               {% endif %}
-                                               
+                                    <div class="modal fade" id="infoModal{{ result.id }}" tabindex="-1" aria-labelledby="infoModalLabel{{ result.id }}"
+                                       aria-hidden="true">
+                                       <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Añadido 'modal-lg' para un modal más grande -->
+                                          <div class="modal-content bg-white text-dark">
+                                                <div class="modal-header">
+                                                   <h5 class="modal-title" id="infoModalLabel{{ result.id }}">Sugerencias #{{ result.id }}</h5>
+                                                   <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                                      aria-label="Close"></button>
                                                 </div>
-                                            </div>
-                                            
+                                                <div class="modal-body">
+                                                   <div class="suggestion">
+                                                      <div class="label">Todas las validaciones:</div>
+                                                      <div class="value">
+                                                            {% if result.wcagaaa %}
+                                                               {% for consejo in result.wcagaaa %}
+                                                                  <div class="{{ 'row odd' if loop.index is odd else 'row even' }}"> <!-- Añadido 'row' para presentar en horizontal -->
+                                                                         <div class="col-md-4"><strong>{{ consejo.code }}</strong> </div>
+                                                                        <div class="col-md-4">{{ consejo.message }}</div>
+                                                                        <div class="col-md-4">{{ consejo.context }}</div>
+                                                                        
+                                                                  </div>
+                                                               {% endfor %}
+                                                            {% else %}
+                                                               <div class="{{ 'row odd' if loop.index0 is odd else 'row even' }}">
+                                                                  No hay consejos disponibles.<br><br>
+                                                               </div>
+                                                            {% endif %}
+                                                      </div>
+                                                   </div>
+                                                </div>
                                           </div>
                                        </div>
                                     </div>
+
                                  </div> 
                                {% endfor %}
                             </tbody>
