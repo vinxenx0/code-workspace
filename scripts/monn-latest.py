@@ -1107,7 +1107,7 @@ if __name__ == "__main__":
 
                             # Guardar el HTML modificado en el campo html_copy
                             # modified_html = str(soup).encode('utf-8')
-                             # Obtener el HTML modificado y limpiar espacios y caracteres de formato
+                            # Obtener el HTML modificado y limpiar espacios y caracteres de formato
                             modified_html = str(soup).encode('utf-8').decode('utf-8', 'ignore')
                             modified_html = ' '.join(modified_html.split())  # Eliminar espacios adicionales
                             modified_html = modified_html.replace('\n', '').replace('\t', '').replace('\r', '')
