@@ -898,11 +898,11 @@ if __name__ == "__main__":
 
     start_script_time = time.time()
 
-    urls_a_escanear = ["http://zonnox.net","https://mc-mutuadeb.zonnox.net","http://hispalis.net","http://circuitosaljarafe.com"] #,"https://4glsp.com"]
+    #urls_a_escanear = ["http://zonnox.net","https://mc-mutuadeb.zonnox.net","http://hispalis.net","http://circuitosaljarafe.com"] #,"https://4glsp.com"]
     #urls_a_escanear += ["https://4glsp.com"] #,"https://santomera.es"]
-    #urls_a_escanear = ["https://www.mc-mutual.com","https://mejoratuabsentismo.mc-mutual.com"] #,"https://prevencion.mc-mutual.com"]
+    urls_a_escanear = ["https://www.mc-mutual.com","https://mejoratuabsentismo.mc-mutual.com"] #,"https://prevencion.mc-mutual.com"]
     #urls_a_escanear += ["https://prevencion.mc-mutual.com"]
-    patrones_exclusion = [] #'#','redirect'] #,'tel:'] #,"/asset_publisher/","/documents/", "/estaticos/", "productos","tel:"] #,"/asset_publisher/"
+    patrones_exclusion = ['#','redirect'] #,'tel:'] #,"/asset_publisher/","/documents/", "/estaticos/", "productos","tel:"] #,"/asset_publisher/"
             # Agrega tus patrones para el modo rÃƒÂ¡pido
         #]
 
@@ -1095,7 +1095,6 @@ if __name__ == "__main__":
                     for resultado in resultados_errores_ortograficos:
                         # Descargar la página
                         print(f"Descargando la página: {resultado.pagina}")
-                        #response = False 
                         response = requests.get(resultado.pagina)
                         if response.status_code == 200:
                             # Parsear el HTML y buscar palabras de errores ortográficos
@@ -1107,12 +1106,13 @@ if __name__ == "__main__":
                                     tag.wrap(new_tag)
 
                             # Guardar el HTML modificado en el campo html_copy
-                            tmp = str(soup).encode('utf-8')
-                            # Calcular la mitad del contenido
-                            half_length = len(tmp) // 2
-                            # Dividir el contenido en dos partes
-                            resultado.html_copy = tmp[:half_length]
-                            resultado.html_copy_dos = tmp[half_length:]
+                            modified_html = str(soup).encode('utf-8')
+
+                            # Limitar la longitud del contenido para cada campo
+                            max_length = 61024 // 2  # Dividir en dos campos
+                            resultado.html_copy = modified_html[:max_length].decode('utf-8', 'ignore')
+                            resultado.html_copy_dos = modified_html[max_length:max_length*2].decode('utf-8', 'ignore')
+
 
                             # Confirmar los cambios en la base de datos
                             # session.commit()
