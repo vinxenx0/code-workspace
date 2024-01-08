@@ -608,7 +608,7 @@
                                         <td>{{ result.dominio }}</td>
                                         <td>{{ result.id }}</td>
                                         <td><a href="{{ result.pagina }}" alt="{{ result.pagina }}" target="_blank">{{ result.pagina }}</a></td>
-                                        <td>{{ result.imagenes|length }}</td>
+                                        <td>{% if result.imagenes %}{{ result.imagenes|length }}{% endif %}</td>
                                         <td>{{ result.images_1MB }}</td>
                                         <td class="tiempo-celda {% if result.tiempo_medio is not none and result.tiempo_respuesta <= 5 %} tiempo-verde {% elif result.tiempo_respuesta <= 15 %} tiempo-amarillo {% else %} tiempo-rojo {% endif %}">
                                             {{ result.tiempo_respuesta }}
