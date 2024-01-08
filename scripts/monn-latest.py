@@ -750,7 +750,7 @@ def generar_informe_resumen(resumen, nombre_archivo):
             id_escaneo = datos['id_escaneo']
             #paginas_inseguras = sum(pagina.get('enlaces_inseguros', 0) > 0 for pagina in datos.get('paginas', []))
             total_404 = sum(pagina.get('codigo_respuesta', 0) == 404 for pagina in datos.get('paginas', []))
-            tiempo_medio = (sum(pagina.get('tiempo_respuesta', 0) for pagina in datos.get('paginas', []))) / (total_paginas)
+            tiempo_medio = 0 #(sum(pagina.get('tiempo_respuesta', 0) for pagina in datos.get('paginas', []))) / (total_paginas)
             pages_err_orto = 0
             pages_alt_vacias = 0
             peso_total_paginas = 0
@@ -898,11 +898,11 @@ if __name__ == "__main__":
 
     start_script_time = time.time()
 
-    #urls_a_escanear = ["http://zonnox.net"]#,"https://mc-mutuadeb.zonnox.net","http://hispalis.net","http://circuitosaljarafe.com","https://4glsp.com"]
+    urls_a_escanear = ["http://zonnox.net","https://mc-mutuadeb.zonnox.net","http://hispalis.net","http://circuitosaljarafe.com"] #,"https://4glsp.com"]
     #urls_a_escanear += ["https://4glsp.com"] #,"https://santomera.es"]
-    urls_a_escanear = ["https://www.mc-mutual.com","https://mejoratuabsentismo.mc-mutual.com"] #,"https://prevencion.mc-mutual.com"]
+    #urls_a_escanear = ["https://www.mc-mutual.com","https://mejoratuabsentismo.mc-mutual.com"] #,"https://prevencion.mc-mutual.com"]
     #urls_a_escanear += ["https://prevencion.mc-mutual.com"]
-    patrones_exclusion = ['#','redirect'] #,'tel:'] #,"/asset_publisher/","/documents/", "/estaticos/", "productos","tel:"] #,"/asset_publisher/"
+    patrones_exclusion = [] #'#','redirect'] #,'tel:'] #,"/asset_publisher/","/documents/", "/estaticos/", "productos","tel:"] #,"/asset_publisher/"
             # Agrega tus patrones para el modo rÃƒÂ¡pido
         #]
 
@@ -1095,10 +1095,11 @@ if __name__ == "__main__":
                     for resultado in resultados_errores_ortograficos:
                         # Descargar la página
                         print(f"Descargando la página: {resultado.pagina}")
+                        #response = False 
                         response = requests.get(resultado.pagina)
                         if response.status_code == 200:
                             # Parsear el HTML y buscar palabras de errores ortográficos
-                            soup = [] #BeautifulSoup(response.text, 'html.parser')
+                            soup = BeautifulSoup(response.text, 'html.parser')
                             for palabra in resultado.errores_ortograficos:
                                 # Modificar el HTML
                                 for tag in soup.find_all(string=palabra):
@@ -1130,13 +1131,12 @@ if __name__ == "__main__":
                     sumario_existente.html_count = html_count
                     sumario_existente.others_count = others_count
                     sumario_existente.pages_err_orto = len(resultados_errores_ortograficos)
-            
-                    # Confirmar los cambios en la base de datos
-                    session.commit()
                 else:
                     # Manejar el caso en que no se encontró el Sumario existente (puede imprimir un mensaje o lanzar una excepción según tus necesidades)
                     print(f"¡No se encontró un Sumario existente para el id_escaneo {resumen['id_escaneo']}!")
-         
+            
+                # Confirmar los cambios en la base de datos
+                session.commit()
 
            
 
