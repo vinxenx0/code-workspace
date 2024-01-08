@@ -898,9 +898,9 @@ if __name__ == "__main__":
 
     start_script_time = time.time()
 
-    #urls_a_escanear = ["http://zonnox.net"]#,"https://mc-mutuadeb.zonnox.net","http://hispalis.net","http://circuitosaljarafe.com","https://4glsp.com"]
+    urls_a_escanear = ["http://zonnox.net","https://mc-mutuadeb.zonnox.net","http://hispalis.net","http://circuitosaljarafe.com"] #,"https://4glsp.com"]
     #urls_a_escanear += ["https://4glsp.com"] #,"https://santomera.es"]
-    urls_a_escanear = ["https://www.mc-mutual.com","https://mejoratuabsentismo.mc-mutual.com"] #,"https://prevencion.mc-mutual.com"]
+    #urls_a_escanear = ["https://www.mc-mutual.com","https://mejoratuabsentismo.mc-mutual.com"] #,"https://prevencion.mc-mutual.com"]
     #urls_a_escanear += ["https://prevencion.mc-mutual.com"]
     patrones_exclusion = ['#','redirect'] #,'tel:'] #,"/asset_publisher/","/documents/", "/estaticos/", "productos","tel:"] #,"/asset_publisher/"
             # Agrega tus patrones para el modo rÃƒÂ¡pido
@@ -1095,10 +1095,11 @@ if __name__ == "__main__":
                     for resultado in resultados_errores_ortograficos:
                         # Descargar la página
                         print(f"Descargando la página: {resultado.pagina}")
+                        #response = False 
                         response = requests.get(resultado.pagina)
                         if response.status_code == 200:
                             # Parsear el HTML y buscar palabras de errores ortográficos
-                            soup = [] #BeautifulSoup(response.text, 'html.parser')
+                            soup = BeautifulSoup(response.text, 'html.parser')
                             for palabra in resultado.errores_ortograficos:
                                 # Modificar el HTML
                                 for tag in soup.find_all(string=palabra):

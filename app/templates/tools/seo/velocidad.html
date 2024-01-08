@@ -249,9 +249,9 @@
                <ol class="breadcrumb mb-4">
                   <li class="breadcrumb-item active">Velocidad de respuesta</li>
                </ol>
-
+               <!-- Overall Satisfaction Score Doughnut Chart
                <div class="row">
-                  <!-- Overall Satisfaction Score Doughnut Chart -->
+                  
                   <div class="col-md-6 my-4">
                      <h2 class="text-center">Score</h2>
                      <div class="text-center">
@@ -260,7 +260,7 @@
                      </div>
                   </div>
 
-                  <!-- Page Load Time KPI -->
+                  
                   <div class="col-md-6 my-4">
                      <h2 class="text-center">Tiempo de Respuesta</h2>
                      <div class="text-center">
@@ -269,11 +269,12 @@
                      </div>
                   </div>
                </div>
+               
 
 
 
                <div class="row mt-4">
-                  <!-- Gráfico de barras para comparativa entre dominios -->
+                 
                   <div class="col-md-6">
                       <h2 class="text-center">Comparativa entre Dominios</h2>
                       <canvas id="barChartComparativa" width="800" height="400"></canvas>
@@ -281,13 +282,13 @@
               </div>
 
               <div class="row mt-4">
-               <!-- Gráfico de barras para detalles por dominio -->
+               
                <div class="col-md-6">
                    <h2 class="text-center">Detalles por Dominio</h2>
                    <canvas id="barChartDetalles" width="800" height="400"></canvas>
                </div>
            </div>
-
+         -->
             <script>
                // Obtener datos del servidor Flask
                var detalles = {{ graficos | safe }};
